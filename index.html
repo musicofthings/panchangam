@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7b1fa2" />
+    <title>Tamil Panchangam (Drik Ganitha)</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1 id="app-title">தமிழ் பஞ்சாங்கம்</h1>
+      <button id="lang-toggle" type="button">English</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel inputs">
+        <h2 id="calc-title">கணக்கிடு</h2>
+        <div class="field">
+          <label for="date-input" id="label-date">தேதி</label>
+          <input type="date" id="date-input" />
+        </div>
+
+        <div class="field">
+          <label for="city-select" id="label-city">நகரம்</label>
+          <select id="city-select"></select>
+        </div>
+
+        <div class="coords">
+          <div class="field">
+            <label for="lat-input" id="label-lat">அகலாங்கம் (Lat)</label>
+            <input type="number" id="lat-input" step="0.0001" />
+          </div>
+          <div class="field">
+            <label for="lon-input" id="label-lon">நெட்டாங்கம் (Lon)</label>
+            <input type="number" id="lon-input" step="0.0001" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="geo-btn" type="button">Use My Location</button>
+          <button id="calc-btn" type="button">Calculate</button>
+        </div>
+
+        <div class="actions">
+          <button id="notify-btn" type="button">Enable Reminder</button>
+        </div>
+      </section>
+
+      <section class="panel results">
+        <h2 id="result-title">இன்றைய பலன்கள்</h2>
+        <div id="results-grid" class="results-grid"></div>
+      </section>
+
+      <aside class="panel news">
+        <h2 id="news-title">Bhakti News</h2>
+        <div class="field">
+          <label for="rss-select" id="label-rss">RSS Source</label>
+          <select id="rss-select"></select>
+        </div>
+        <button id="rss-load-btn" type="button">Load Feed</button>
+        <ul id="news-feed"></ul>
+      </aside>
+    </main>
+
+    <footer>
+      <small id="footer-note">Offline-ready PWA • Client-side only</small>
+    </footer>
+
+    <script src="assets/swisseph.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
