@@ -27,3 +27,13 @@ The client calls `/api/rss?url=...`, and the function fetches the whitelisted up
 
 - `assets/swisseph.js` is a lightweight shim for demo/offline use.
 - Replace it with an official `swisseph` browser build and place ephemeris files inside `assets/ephe/` for accurate astronomical results.
+
+
+## RSS sources bundled
+
+- Hinduism Today
+- Tamil Brahmins Forum
+- Aanmeegam
+- Tamil and Vedas
+- TemplePurohit
+- Sadhguru Wisdom

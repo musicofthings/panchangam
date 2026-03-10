@@ -7,8 +7,12 @@ const CITY_PRESETS = [
 ];
 
 const RSS_SOURCES = [
-  { name: 'Hinduism Today', url: 'https://www.hinduismtoday.com/feed/' },
-  { name: 'Tamil Brahmins Forum', url: 'https://www.tamilbrahmins.com/forums/-/index.rss' }
+  { name: 'Hinduism Today', url: 'https://www.hinduismtoday.com/feed/', tag: 'Featured' },
+  { name: 'Tamil Brahmins Forum', url: 'https://www.tamilbrahmins.com/forums/-/index.rss', tag: 'Community' },
+  { name: 'Aanmeegam', url: 'https://aanmeegam.in/feed/', tag: 'Tamil Bhakthi' },
+  { name: 'Tamil and Vedas', url: 'https://tamilandvedas.com/feed/', tag: 'Tamil Bhakthi' },
+  { name: 'TemplePurohit', url: 'https://www.templepurohit.com/feed/', tag: 'Devotional' },
+  { name: 'Sadhguru Wisdom', url: 'https://isha.sadhguru.org/in/en/wisdom/rss.xml', tag: 'Devotional' }
 ];
 
 const TITHI_NAMES = ['Pirathamai', 'Thuthiyai', 'Thiruthiyai', 'Sathurthi', 'Panjami', 'Shasti', 'Sapthami', 'Astami', 'Navami', 'Thasami', 'Egadashi', 'Duvadasi', 'Thirayodasi', 'Sathuradasi', 'Pournami', 'Pirathamai', 'Thuthiyai', 'Thiruthiyai', 'Sathurthi', 'Panjami', 'Shasti', 'Sapthami', 'Astami', 'Navami', 'Thasami', 'Egadashi', 'Duvadasi', 'Thirayodasi', 'Sathuradasi', 'Amavasai'];
@@ -42,6 +46,8 @@ const I18N = {
 let currentLang = 'ta';
 let notifyTimeout;
 let currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let newsArticles = [];
+let activeNewsTag = 'All';
 
 const t = (k) => I18N[currentLang][k] || k;
 const fmtTime = (d) => d.toLocaleTimeString(currentLang === 'ta' ? 'ta-IN' : 'en-IN', { hour: '2-digit', minute: '2-digit' });
@@ -67,9 +73,11 @@ function initUI() {
   RSS_SOURCES.forEach((s, idx) => {
     const opt = document.createElement('option');
     opt.value = idx;
-    opt.textContent = s.name;
+    opt.textContent = `${s.name} (${s.tag})`;
     rssSelect.appendChild(opt);
   });
+  renderNewsChips();
+  document.getElementById('news-search').addEventListener('input', renderNewsCards);
 
   document.getElementById('lang-toggle').addEventListener('click', () => {
     currentLang = currentLang === 'ta' ? 'en' : 'ta';
@@ -97,6 +105,7 @@ function hydrateLabels() {
     'label-rss': 'rss', 'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
   };
   Object.entries(map).forEach(([id, key]) => { document.getElementById(id).textContent = t(key); });
+  document.getElementById('news-search').placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search your articles';
   renderWeekdayRail();
 }
 
@@ -189,28 +198,81 @@ function scheduleReminder() {
   alert(t('remSet'));
 }
 
-function parseAndRenderRSS(xmlDoc) {
+function extractImageFromItem(item, description) {
+  const media = item.querySelector('media\:content, content');
+  if (media?.getAttribute('url')) return media.getAttribute('url');
+  const enclosure = item.querySelector('enclosure');
+  if (enclosure?.getAttribute('url')) return enclosure.getAttribute('url');
+  const match = description.match(/<img[^>]+src=["']([^"']+)/i);
+  return match ? match[1] : '';
+}
+
+function parseAndRenderRSS(xmlDoc, sourceMeta) {
   const output = document.getElementById('news-feed');
-  if (!xmlDoc) return output.innerHTML = '<li>Feed unavailable (CORS or offline).</li>';
-  const items = Array.from(xmlDoc.querySelectorAll('item')).slice(0, 5);
-  output.innerHTML = items.map((item) => `<li><a href="${item.querySelector('link')?.textContent || '#'}" target="_blank" rel="noopener">${item.querySelector('title')?.textContent || 'Untitled'}</a><br><small>${(item.querySelector('description')?.textContent || '').replace(/<[^>]+>/g, '').slice(0, 120)}...</small></li>`).join('');
+  if (!xmlDoc) return output.innerHTML = '<p>Feed unavailable (CORS or offline).</p>';
+  const items = Array.from(xmlDoc.querySelectorAll('item')).slice(0, 12);
+  const mapped = items.map((item) => {
+    const title = item.querySelector('title')?.textContent?.trim() || 'Untitled';
+    const link = item.querySelector('link')?.textContent?.trim() || '#';
+    const description = item.querySelector('description')?.textContent || '';
+    const clean = description.replace(/<[^>]+>/g, '').trim();
+    const pub = item.querySelector('pubDate')?.textContent || '';
+    return {
+      title,
+      link,
+      summary: clean.slice(0, 120),
+      dateText: pub ? new Date(pub).toLocaleDateString(currentLang === 'ta' ? 'ta-IN' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+      image: extractImageFromItem(item, description),
+      tag: sourceMeta.tag,
+      source: sourceMeta.name
+    };
+  });
+  newsArticles = mapped;
+  renderNewsCards();
+}
+
+function renderNewsChips() {
+  const container = document.getElementById('news-chips');
+  const tags = ['All', ...new Set(RSS_SOURCES.map((s) => s.tag))];
+  container.innerHTML = tags.map((tag) => `<button type="button" class="news-chip ${tag === activeNewsTag ? 'active' : ''}" data-tag="${tag}">${tag}</button>`).join('');
+  container.querySelectorAll('.news-chip').forEach((btn) => btn.addEventListener('click', () => {
+    activeNewsTag = btn.getAttribute('data-tag');
+    renderNewsChips();
+    renderNewsCards();
+  }));
+}
+
+function renderNewsCards() {
+  const q = document.getElementById('news-search').value.trim().toLowerCase();
+  const output = document.getElementById('news-feed');
+  const filtered = newsArticles.filter((a) => {
+    const tagOk = activeNewsTag === 'All' || a.tag === activeNewsTag;
+    const qOk = !q || (`${a.title} ${a.summary} ${a.source}`.toLowerCase().includes(q));
+    return tagOk && qOk;
+  });
+  if (!filtered.length) {
+    output.innerHTML = '<p>No articles found.</p>';
+    return;
+  }
+  output.innerHTML = filtered.map((a) => `<article class="news-card"><img src="${a.image || 'assets/icon-512.svg'}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer"><div class="news-card-body"><div class="news-date">${a.dateText || a.source}</div><a class="news-title-link" href="${a.link}" target="_blank" rel="noopener">${a.title}</a></div></article>`).join('');
 }
 
 function loadRSS(url) {
   const output = document.getElementById('news-feed');
-  output.innerHTML = '<li>Loading...</li>';
+  output.innerHTML = '<p>Loading...</p>';
+  const sourceMeta = RSS_SOURCES.find((r) => r.url === url) || { name: 'Unknown', tag: 'Featured' };
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `/api/rss?url=${encodeURIComponent(url)}`);
   xhr.responseType = 'text';
   xhr.onload = () => {
-    if (xhr.status >= 200 && xhr.status < 300) return parseAndRenderRSS(new DOMParser().parseFromString(xhr.responseText, 'application/xml'));
+    if (xhr.status >= 200 && xhr.status < 300) return parseAndRenderRSS(new DOMParser().parseFromString(xhr.responseText, 'application/xml'), sourceMeta);
     const direct = new XMLHttpRequest();
     direct.open('GET', url); direct.responseType = 'document';
-    direct.onload = () => parseAndRenderRSS(direct.responseXML);
-    direct.onerror = () => { output.innerHTML = '<li>Could not load feed.</li>'; };
+    direct.onload = () => parseAndRenderRSS(direct.responseXML, sourceMeta);
+    direct.onerror = () => { output.innerHTML = '<p>Could not load feed.</p>'; };
     direct.send();
   };
-  xhr.onerror = () => { output.innerHTML = '<li>Could not load feed.</li>'; };
+  xhr.onerror = () => { output.innerHTML = '<p>Could not load feed.</p>'; };
   xhr.send();
 }
 

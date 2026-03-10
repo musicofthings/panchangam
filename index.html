@@ -60,13 +60,17 @@
       </section>
 
       <aside class="panel news">
-        <h2 id="news-title">Bhakti News</h2>
+        <div class="news-head">
+          <h2 id="news-title">Bhakti News</h2>
+          <input id="news-search" type="search" placeholder="Search articles" />
+        </div>
         <div class="field">
           <label for="rss-select" id="label-rss">RSS Source</label>
           <select id="rss-select"></select>
         </div>
+        <div id="news-chips" class="news-chips"></div>
         <button id="rss-load-btn" type="button">Load Feed</button>
-        <ul id="news-feed"></ul>
+        <div id="news-feed" class="news-grid"></div>
       </aside>
     </main>
 

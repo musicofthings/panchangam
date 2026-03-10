@@ -3,7 +3,11 @@
 
 const ALLOWED = new Set([
   'https://www.hinduismtoday.com/feed/',
-  'https://www.tamilbrahmins.com/forums/-/index.rss'
+  'https://www.tamilbrahmins.com/forums/-/index.rss',
+  'https://aanmeegam.in/feed/',
+  'https://tamilandvedas.com/feed/',
+  'https://www.templepurohit.com/feed/',
+  'https://isha.sadhguru.org/in/en/wisdom/rss.xml'
 ]);
 
 export async function onRequestGet({ request }) {
