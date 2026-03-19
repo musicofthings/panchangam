@@ -69,13 +69,6 @@ function initUI() {
   });
   applyCity(CITY_PRESETS[0]);
 
-  const rssSelect = document.getElementById('rss-select');
-  RSS_SOURCES.forEach((s, idx) => {
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = `${s.name} (${s.tag})`;
-    rssSelect.appendChild(opt);
-  });
   renderNewsChips();
   document.getElementById('news-search').addEventListener('input', renderNewsCards);
 
@@ -89,20 +82,21 @@ function initUI() {
   document.getElementById('calc-btn').addEventListener('click', calculateAndRender);
   document.getElementById('geo-btn').addEventListener('click', useGeolocation);
   document.getElementById('notify-btn').addEventListener('click', scheduleReminder);
-  document.getElementById('rss-load-btn').addEventListener('click', () => loadRSS(RSS_SOURCES[rssSelect.value].url));
+  document.getElementById('rss-load-btn').addEventListener('click', loadAllFeeds);
   document.getElementById('month-prev').addEventListener('click', () => moveMonth(-1));
   document.getElementById('month-next').addEventListener('click', () => moveMonth(1));
 
   hydrateLabels();
   renderFromCache();
   renderMonthViewFromInputs();
+  loadAllFeeds();
 }
 
 function hydrateLabels() {
   const map = {
     'app-title': 'appTitle', 'calc-title': 'calc', 'label-date': 'date', 'label-city': 'city', 'label-lat': 'lat', 'label-lon': 'lon',
     'geo-btn': 'useLoc', 'calc-btn': 'calculate', 'notify-btn': 'reminders', 'result-title': 'results', 'news-title': 'news',
-    'label-rss': 'rss', 'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
+    'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
   };
   Object.entries(map).forEach(([id, key]) => { document.getElementById(id).textContent = t(key); });
   document.getElementById('news-search').placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search your articles';
@@ -123,22 +117,165 @@ function useGeolocation() {
   }, (err) => alert(err.message));
 }
 
+// NOAA solar calculator — returns UTC Date objects for sunrise and sunset
+function calcSunriseSunset(date, lat, lon) {
+  const jd = 2440587.5 + date.getTime() / 86400000;
+  const T = (jd - 2451545.0) / 36525;
+  let L0 = ((280.46646 + 36000.76983 * T) % 360 + 360) % 360;
+  let M = ((357.52911 + 35999.05029 * T) % 360 + 360) % 360;
+  const Mrad = M * Math.PI / 180;
+  const C = (1.914602 - 0.004817 * T) * Math.sin(Mrad)
+    + 0.019993 * Math.sin(2 * Mrad)
+    + 0.000289 * Math.sin(3 * Mrad);
+  const sunLon = L0 + C;
+  const omega = 125.04 - 1934.136 * T;
+  const lambda = sunLon - 0.00569 - 0.00478 * Math.sin(omega * Math.PI / 180);
+  const epsilon = (23.439291111 - 0.013004167 * T) * Math.PI / 180;
+  const decl = Math.asin(Math.sin(epsilon) * Math.sin(lambda * Math.PI / 180));
+  const L0rad = L0 * Math.PI / 180;
+  const e = 0.016708634 - 0.000042037 * T;
+  const y = Math.tan(epsilon / 2) ** 2;
+  const eot = 4 * (180 / Math.PI) * (
+    y * Math.sin(2 * L0rad) - 2 * e * Math.sin(Mrad)
+    + 4 * e * y * Math.sin(Mrad) * Math.cos(2 * L0rad)
+    - 0.5 * y * y * Math.sin(4 * L0rad)
+    - 1.25 * e * e * Math.sin(2 * Mrad)
+  );
+  const latRad = lat * Math.PI / 180;
+  const cosH = (Math.cos(90.833 * Math.PI / 180) - Math.sin(latRad) * Math.sin(decl))
+    / (Math.cos(latRad) * Math.cos(decl));
+  const solarNoonUTC = 720 - 4 * lon - eot;
+  if (cosH < -1 || cosH > 1) {
+    const noon = new Date(date.getTime() + solarNoonUTC * 60000);
+    return { sunrise: new Date(noon.getTime() - 6 * 3600000), sunset: new Date(noon.getTime() + 6 * 3600000) };
+  }
+  const H = Math.acos(cosH) * 180 / Math.PI;
+  return {
+    sunrise: new Date(date.getTime() + (solarNoonUTC - H * 4) * 60000),
+    sunset: new Date(date.getTime() + (solarNoonUTC + H * 4) * 60000)
+  };
+}
+
 function getSunrise(date, lat, lon) {
-  if (window.SwissEph && typeof window.SwissEph.getSunrise === 'function') return window.SwissEph.getSunrise(date, lat, lon);
+  return calcSunriseSunset(date, lat, lon).sunrise;
+}
+
+// Moon rasi from real moon longitude
+function calcMoonRasi(date) {
   const d = new Date(date);
   d.setHours(6, 0, 0, 0);
-  d.setMinutes(d.getMinutes() + Math.round(Math.sin((date.getMonth() / 11) * Math.PI * 2) * 30 + (Math.abs(lat) / 90) * 40 + ((lon % 30) / 3)));
-  return d;
+  const jd = 2440587.5 + d.getTime() / 86400000;
+  return RASI[Math.floor(getMoonLongitude(jd) / 30)];
+}
+
+// Tamil solar calendar day: Sun's degree within current rasi (~1°/day)
+function calcTamilDay(date) {
+  const d = new Date(date);
+  d.setHours(6, 0, 0, 0);
+  const jd = 2440587.5 + d.getTime() / 86400000;
+  return Math.floor(getSunLongitude(jd) % 30) + 1;
 }
 const addMinutes = (date, mins) => new Date(date.getTime() + mins * 60000);
 const getRahuKalam = (sunrise) => ({ start: addMinutes(sunrise, 90), end: addMinutes(sunrise, 180) });
 const getYamagandam = (sunrise) => ({ start: addMinutes(sunrise, 450), end: addMinutes(sunrise, 540) });
 const getAbhijitMuhurta = (sunrise) => ({ start: addMinutes(sunrise, 504), end: addMinutes(sunrise, 552) });
-const pseudoTithi = (date) => (date.getDate() % 30) + 1;
-const pseudoNakshatra = (date) => ((date.getDate() + date.getMonth() * 2) % 27) + 1;
+
+// Real astronomical calculations (Meeus, Astronomical Algorithms 2nd ed.)
+function getSunLongitude(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  let L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  L0 = ((L0 % 360) + 360) % 360;
+  let M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+  M = ((M % 360) + 360) % 360;
+  const Mrad = M * Math.PI / 180;
+  const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
+    + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+    + 0.000289 * Math.sin(3 * Mrad);
+  return ((( L0 + C) % 360) + 360) % 360;
+}
+
+function getMoonLongitude(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  const T2 = T * T; const T3 = T2 * T; const T4 = T3 * T;
+  const r = Math.PI / 180;
+  const L = ((218.3164477 + 481267.88123421 * T - 0.0015786 * T2 + T3 / 538841 - T4 / 65194000) % 360 + 360) % 360;
+  const D = ((297.8501921 + 445267.1114034 * T - 0.0018819 * T2 + T3 / 545868 - T4 / 113065000) % 360 + 360) % 360;
+  const M = ((357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000) % 360 + 360) % 360;
+  const Mp = ((134.9633964 + 477198.8675055 * T + 0.0087414 * T2 + T3 / 69699 - T4 / 14712000) % 360 + 360) % 360;
+  const F = ((93.2720950 + 483202.0175233 * T - 0.0036539 * T2 - T3 / 3526000 + T4 / 863310000) % 360 + 360) % 360;
+  const Dr = D * r; const Mr = M * r; const Mpr = Mp * r; const Fr = F * r;
+  const dL = (6288774 * Math.sin(Mpr)
+    + 1274027 * Math.sin(2 * Dr - Mpr)
+    + 658314 * Math.sin(2 * Dr)
+    + 213618 * Math.sin(2 * Mpr)
+    - 185116 * Math.sin(Mr)
+    - 114332 * Math.sin(2 * Fr)
+    + 58793 * Math.sin(2 * Dr - 2 * Mpr)
+    + 57066 * Math.sin(2 * Dr - Mr - Mpr)
+    + 53322 * Math.sin(2 * Dr + Mpr)
+    + 45758 * Math.sin(2 * Dr - Mr)
+    - 40923 * Math.sin(Mr - Mpr)
+    - 34720 * Math.sin(Dr)
+    - 30383 * Math.sin(Mr + Mpr)
+    + 15327 * Math.sin(2 * Dr - 2 * Fr)
+    + 10980 * Math.sin(Mpr - 2 * Fr)
+    + 10675 * Math.sin(4 * Dr - Mpr)
+    + 10034 * Math.sin(3 * Mpr)
+    + 8548 * Math.sin(4 * Dr - 2 * Mpr)
+    - 7888 * Math.sin(2 * Dr + Mr - Mpr)
+    - 6766 * Math.sin(2 * Dr + Mr)
+    - 5163 * Math.sin(Dr - Mpr)
+    + 4987 * Math.sin(Dr + Mr)
+    + 4036 * Math.sin(2 * Dr - Mr + Mpr)
+    + 3994 * Math.sin(2 * Dr + 2 * Mpr)
+    + 3861 * Math.sin(4 * Dr)
+    + 3665 * Math.sin(2 * Dr - 3 * Mpr)
+    - 2689 * Math.sin(Mr - 2 * Mpr)
+    + 2390 * Math.sin(2 * Dr - Mr - 2 * Mpr)
+    - 2348 * Math.sin(Dr + Mpr)
+    + 2236 * Math.sin(2 * Dr - 2 * Mr)
+    - 2120 * Math.sin(Mr + 2 * Mpr)
+    + 2048 * Math.sin(2 * Dr - 2 * Mr - Mpr)
+    - 1773 * Math.sin(2 * Dr + Mpr - 2 * Fr)
+    + 1215 * Math.sin(4 * Dr - Mr - Mpr)
+    - 892 * Math.sin(3 * Dr - Mpr)
+    - 810 * Math.sin(2 * Dr + Mr + Mpr)
+    + 759 * Math.sin(4 * Dr - Mr - 2 * Mpr)
+    - 713 * Math.sin(2 * Mr - Mpr)
+    + 691 * Math.sin(2 * Dr + Mr - 2 * Mpr)
+    + 549 * Math.sin(4 * Dr + Mpr)
+    + 537 * Math.sin(4 * Mpr)
+    + 520 * Math.sin(4 * Dr - Mr)
+    - 487 * Math.sin(Dr - 2 * Mpr)
+    - 381 * Math.sin(2 * Mpr - 2 * Fr)
+    + 351 * Math.sin(Dr + Mr + Mpr)
+    - 340 * Math.sin(3 * Dr - 2 * Mpr)
+    + 330 * Math.sin(4 * Dr - 3 * Mpr)
+    - 323 * Math.sin(2 * Mr + Mpr)
+    + 299 * Math.sin(Dr + Mr - Mpr)) * 1e-6;
+  return ((( L + dL) % 360) + 360) % 360;
+}
+
+// Tithi = Moon-Sun elongation / 12°, 1-indexed (30 = Amavasai)
+function calcTithi(date) {
+  const d = new Date(date);
+  d.setHours(6, 0, 0, 0); // approximate sunrise
+  const jd = 2440587.5 + d.getTime() / 86400000;
+  let elong = getMoonLongitude(jd) - getSunLongitude(jd);
+  if (elong < 0) elong += 360;
+  return Math.floor(elong / 12) + 1;
+}
+
+// Nakshatra = Moon longitude / (360/27)°, 1-indexed
+function calcNakshatra(date) {
+  const d = new Date(date);
+  d.setHours(6, 0, 0, 0);
+  const jd = 2440587.5 + d.getTime() / 86400000;
+  return Math.floor(getMoonLongitude(jd) / (360 / 27)) + 1;
+}
 
 function getShashti(date) {
-  const tithi = pseudoTithi(date);
+  const tithi = calcTithi(date);
   if (tithi === 6 || tithi === 21) {
     const paksha = tithi < 15 ? (currentLang === 'ta' ? 'சுக்க்ல பக்ஷம்' : 'Shukla Paksha') : (currentLang === 'ta' ? 'கிருஷ்ண பக்ஷம்' : 'Krishna Paksha');
     return t('shashtiMsg').replace('{paksha}', paksha);
@@ -146,7 +283,7 @@ function getShashti(date) {
   return t('noShashti');
 }
 function getAuspicious(date) {
-  return [5, 6, 10, 13, 14, 18].includes(pseudoNakshatra(date)) ? t('goodNak') : t('notMarked');
+  return [5, 6, 10, 13, 14, 18].includes(calcNakshatra(date)) ? t('goodNak') : t('notMarked');
 }
 
 function calculatePanchangam(date, lat, lon) {
@@ -207,27 +344,44 @@ function extractImageFromItem(item, description) {
   return match ? match[1] : '';
 }
 
-function parseAndRenderRSS(xmlDoc, sourceMeta) {
-  const output = document.getElementById('news-feed');
-  if (!xmlDoc) return output.innerHTML = '<p>Feed unavailable (CORS or offline).</p>';
-  const items = Array.from(xmlDoc.querySelectorAll('item')).slice(0, 12);
-  const mapped = items.map((item) => {
+function parseRSSItems(xmlDoc, sourceMeta) {
+  if (!xmlDoc) return [];
+  return Array.from(xmlDoc.querySelectorAll('item')).slice(0, 12).map((item) => {
     const title = item.querySelector('title')?.textContent?.trim() || 'Untitled';
     const link = item.querySelector('link')?.textContent?.trim() || '#';
     const description = item.querySelector('description')?.textContent || '';
     const clean = description.replace(/<[^>]+>/g, '').trim();
     const pub = item.querySelector('pubDate')?.textContent || '';
     return {
-      title,
-      link,
+      title, link,
       summary: clean.slice(0, 120),
+      pubMs: pub ? new Date(pub).getTime() : 0,
       dateText: pub ? new Date(pub).toLocaleDateString(currentLang === 'ta' ? 'ta-IN' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
       image: extractImageFromItem(item, description),
       tag: sourceMeta.tag,
       source: sourceMeta.name
     };
   });
-  newsArticles = mapped;
+}
+
+async function fetchFeed(source) {
+  const parse = (text) => parseRSSItems(new DOMParser().parseFromString(text, 'application/xml'), source);
+  try {
+    const res = await fetch(`/api/rss?url=${encodeURIComponent(source.url)}`);
+    if (res.ok) return parse(await res.text());
+  } catch {}
+  try {
+    const res = await fetch(source.url);
+    if (res.ok) return parse(await res.text());
+  } catch {}
+  return [];
+}
+
+async function loadAllFeeds() {
+  const output = document.getElementById('news-feed');
+  output.innerHTML = '<p>Loading…</p>';
+  const results = await Promise.all(RSS_SOURCES.map(fetchFeed));
+  newsArticles = results.flat().sort((a, b) => b.pubMs - a.pubMs);
   renderNewsCards();
 }
 
@@ -257,28 +411,10 @@ function renderNewsCards() {
   output.innerHTML = filtered.map((a) => `<article class="news-card"><img src="${a.image || 'assets/icon-512.svg'}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer"><div class="news-card-body"><div class="news-date">${a.dateText || a.source}</div><a class="news-title-link" href="${a.link}" target="_blank" rel="noopener">${a.title}</a></div></article>`).join('');
 }
 
-function loadRSS(url) {
-  const output = document.getElementById('news-feed');
-  output.innerHTML = '<p>Loading...</p>';
-  const sourceMeta = RSS_SOURCES.find((r) => r.url === url) || { name: 'Unknown', tag: 'Featured' };
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `/api/rss?url=${encodeURIComponent(url)}`);
-  xhr.responseType = 'text';
-  xhr.onload = () => {
-    if (xhr.status >= 200 && xhr.status < 300) return parseAndRenderRSS(new DOMParser().parseFromString(xhr.responseText, 'application/xml'), sourceMeta);
-    const direct = new XMLHttpRequest();
-    direct.open('GET', url); direct.responseType = 'document';
-    direct.onload = () => parseAndRenderRSS(direct.responseXML, sourceMeta);
-    direct.onerror = () => { output.innerHTML = '<p>Could not load feed.</p>'; };
-    direct.send();
-  };
-  xhr.onerror = () => { output.innerHTML = '<p>Could not load feed.</p>'; };
-  xhr.send();
-}
 
 function getFestivalTags(date) {
   const tags = [];
-  const tithi = pseudoTithi(date);
+  const tithi = calcTithi(date);
   if ([6, 21].includes(tithi)) tags.push('Shasti Vratam');
   if ([15].includes(tithi)) tags.push('Pournami');
   if ([30].includes(tithi)) tags.push('Amavasai');
@@ -287,13 +423,12 @@ function getFestivalTags(date) {
 }
 
 function getMonthCellData(date, lat, lon) {
-  const sunrise = getSunrise(date, lat, lon);
-  const sunset = addMinutes(sunrise, 705 + Math.round(Math.cos(date.getMonth()) * 15));
-  const tithi = pseudoTithi(date);
-  const nak = pseudoNakshatra(date);
+  const { sunrise, sunset } = calcSunriseSunset(date, lat, lon);
+  const tithi = calcTithi(date);
+  const nak = calcNakshatra(date);
   const paksha = tithi <= 15 ? 'S' : 'K';
-  const moonRasi = RASI[(date.getDate() + date.getMonth()) % 12];
-  const tamilDay = ((date.getDate() + 15) % 30) + 1;
+  const moonRasi = calcMoonRasi(date);
+  const tamilDay = calcTamilDay(date);
   return { sunrise: fmtTime(sunrise), sunset: fmtTime(sunset), tithi: `${TITHI_NAMES[tithi - 1]} ${paksha}`, nakshatra: `${NAKSHATRA[nak - 1]}`, moon: moonRasi, tamilDay, festivals: getFestivalTags(date) };
 }
 
