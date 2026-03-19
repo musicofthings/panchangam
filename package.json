@@ -1,8 +1,5 @@
 {
   "name": "dakshin-panchangam",
   "private": true,
-  "type": "module",
-  "dependencies": {
-    "sweph": "^2.10.3-b-1"
-  }
+  "type": "module"
 }

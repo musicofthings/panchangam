@@ -1,9 +1,10 @@
 /**
  * Cloudflare Pages Function: GET /api/panchangam
  *
- * Uses the `sweph` npm package (Swiss Ephemeris WASM, Moshier algorithm).
- * Moshier: no .se1 data files required; Moon accuracy ~3 arcmin, Sun ~1 arcmin.
- * Compare: client-side Meeus 60-term ELP2000 gives ~30 arcmin (0.5°) Moon error.
+ * Pure-JavaScript astronomy — no native Node.js addons, no npm deps.
+ * Sun accuracy ~1 arcmin (Meeus Ch 25).
+ * Moon accuracy ~30 arcmin (Meeus Ch 47, 60-term ELP2000-82).
+ * Sunrise/sunset accuracy ~1-2 min (NOAA algorithm, same as Ch 15).
  *
  * Query params:
  *   date    = YYYY-MM-DD  (required)
@@ -18,96 +19,241 @@
  *   [{ date, tithi, nakshatra, moonRasi, tamilDay, sunriseMs, sunsetMs }, ...]
  */
 
-import sweph from 'sweph';
-
-const {
-  SE_SUN,
-  SE_MOON,
-  SEFLG_MOSEPH,
-  SE_CALC_RISE,
-  SE_CALC_SET,
-  SE_GREG_CAL,
-} = sweph.constants;
-
-// Moshier algorithm requires no ephemeris files; path can be empty.
-sweph.set_ephe_path('');
-
 const CORS = {
   'content-type': 'application/json; charset=UTF-8',
   'access-control-allow-origin': '*',
   'cache-control': 'public, max-age=3600',
 };
 
-/**
- * Convert a YYYY-MM-DD date string to Julian Day Number at a given UT hour.
- */
-function toJD(dateStr, hourUT) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return sweph.julday(y, m, d, hourUT, SE_GREG_CAL);
+const RAD = Math.PI / 180;
+const DEG = 180 / Math.PI;
+
+// ---------------------------------------------------------------------------
+// Julian Day utilities
+// ---------------------------------------------------------------------------
+
+function julianDay(year, month, day, hourUT = 0) {
+  if (month <= 2) { year -= 1; month += 12; }
+  const A = Math.floor(year / 100);
+  const B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (year + 4716))
+       + Math.floor(30.6001 * (month + 1))
+       + day + hourUT / 24 + B - 1524.5;
 }
 
-/**
- * Convert Julian Day Number to milliseconds since Unix epoch (UTC).
- */
+function jdFromDateStr(dateStr, hourUT = 0) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return julianDay(y, m, d, hourUT);
+}
+
 function jdToMs(jd) {
   return Math.round((jd - 2440587.5) * 86400000);
 }
 
-/**
- * Compute panchangam values for a single date at the given location.
- * Returns { date, tithi, nakshatra, moonRasi, tamilDay, sunriseMs, sunsetMs }.
- */
+// ---------------------------------------------------------------------------
+// Sun ecliptic longitude — Meeus, Astronomical Algorithms, Ch 25
+// Accuracy ~1 arcmin
+// ---------------------------------------------------------------------------
+
+function sunLongitude(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  let L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  L0 = ((L0 % 360) + 360) % 360;
+  let M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+  M = ((M % 360) + 360) % 360;
+  const Mrad = M * RAD;
+  const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
+          + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+          + 0.000289 * Math.sin(3 * Mrad);
+  const sunLon = L0 + C;
+  const omega = ((125.04 - 1934.136 * T) % 360 + 360) % 360;
+  const apparent = sunLon - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+  return ((apparent % 360) + 360) % 360;
+}
+
+// ---------------------------------------------------------------------------
+// Moon ecliptic longitude — Meeus Ch 47 (ELP2000-82, 60 terms)
+// Accuracy ~30 arcmin
+// ---------------------------------------------------------------------------
+
+function moonLongitude(jd) {
+  const T  = (jd - 2451545.0) / 36525;
+  const T2 = T * T, T3 = T2 * T, T4 = T3 * T;
+
+  const L1 = 218.3164477 + 481267.88123421 * T - 0.0015786 * T2 + T3 / 538841    - T4 / 65194000;
+  const D  = 297.8501921 + 445267.1114034  * T - 0.0018819 * T2 + T3 / 545868    - T4 / 113065000;
+  const M  = 357.5291092 + 35999.0502909   * T - 0.0001536 * T2 + T3 / 24490000;
+  const M1 = 134.9633964 + 477198.8675055  * T + 0.0087414 * T2 + T3 / 69699     - T4 / 14712000;
+  const F  = 93.2720950  + 483202.0175233  * T - 0.0036539 * T2 - T3 / 3526000   + T4 / 863310000;
+
+  const A1 = 119.75 + 131.849 * T;
+  const A2 = 53.09  + 479264.290 * T;
+  const E  = 1 - 0.002516 * T - 0.0000074 * T2;
+
+  const Dr = D * RAD, Mr = M * RAD, M1r = M1 * RAD, Fr = F * RAD;
+
+  // Meeus Table 47.A — periodic terms for longitude.
+  // Coefficients are in units of 0.000001 degrees; sum / 1000000 = degrees.
+  // [D, M, M', F, coefficient]
+  const terms = [
+    [ 0, 0, 1, 0,  6288774],
+    [ 2, 0,-1, 0,  1274027],
+    [ 2, 0, 0, 0,   658314],
+    [ 0, 0, 2, 0,   213618],
+    [ 0, 1, 0, 0,  -185116],
+    [ 0, 0, 0, 2,  -114332],
+    [ 2, 0,-2, 0,    58793],
+    [ 2,-1,-1, 0,    57066],
+    [ 2, 0, 1, 0,    53322],
+    [ 2,-1, 0, 0,    45758],
+    [ 0, 1,-1, 0,   -40923],
+    [ 1, 0, 0, 0,   -34720],
+    [ 0, 1, 1, 0,   -30383],
+    [ 2, 0, 0,-2,    15327],
+    [ 0, 0, 1, 2,   -12528],
+    [ 0, 0, 1,-2,    10980],
+    [ 4, 0,-1, 0,    10675],
+    [ 0, 0, 3, 0,    10034],
+    [ 4, 0,-2, 0,     8548],
+    [ 2, 1,-1, 0,    -7888],
+    [ 2, 1, 0, 0,    -6766],
+    [ 1, 0,-1, 0,    -5163],
+    [ 1, 1, 0, 0,     4987],
+    [ 2,-1, 1, 0,     4036],
+    [ 2, 0, 2, 0,     3994],
+    [ 4, 0, 0, 0,     3861],
+    [ 2, 0,-3, 0,     3665],
+    [ 0, 1,-2, 0,    -2689],
+    [ 2, 0,-1, 2,    -2602],
+    [ 2,-1,-2, 0,     2390],
+    [ 1, 0, 1, 0,    -2348],
+    [ 2,-2, 0, 0,     2236],
+    [ 0, 1, 2, 0,    -2120],
+    [ 0, 2, 0, 0,    -2069],
+    [ 2,-2,-1, 0,     2048],
+    [ 2, 0, 1,-2,    -1773],
+    [ 2, 0, 0, 2,    -1595],
+    [ 4,-1,-1, 0,     1215],
+    [ 0, 0, 2, 2,    -1110],
+    [ 3, 0,-1, 0,     -892],
+    [ 2, 1, 1, 0,     -810],
+    [ 4,-1,-2, 0,      759],
+    [ 0, 2,-1, 0,     -713],
+    [ 2, 2,-1, 0,     -700],
+    [ 2, 1,-2, 0,      691],
+    [ 2,-1, 0,-2,      596],
+    [ 4, 0, 1, 0,      549],
+    [ 0, 0, 4, 0,      537],
+    [ 4,-1, 0, 0,      520],
+    [ 1, 0,-2, 0,     -487],
+    [ 2, 1, 0,-2,     -399],
+    [ 0, 0, 2,-2,     -381],
+    [ 1, 1, 1, 0,      351],
+    [ 3, 0,-2, 0,     -340],
+    [ 4, 0,-3, 0,      330],
+    [ 2,-1, 2, 0,      327],
+    [ 0, 2, 1, 0,     -323],
+    [ 1, 1,-1, 0,      299],
+    [ 2, 0, 3, 0,      294],
+  ];
+
+  let sumL = 0;
+  for (const [d, m, m1, f, coeff] of terms) {
+    const arg = d * Dr + m * Mr + m1 * M1r + f * Fr;
+    let c = coeff;
+    if (Math.abs(m) === 1) c *= E;
+    else if (Math.abs(m) === 2) c *= E * E;
+    sumL += c * Math.sin(arg);
+  }
+
+  // Additional corrections (Meeus p. 342)
+  sumL += 3958 * Math.sin(A1 * RAD)
+        + 1962 * Math.sin((L1 - F) * RAD)
+        +  318 * Math.sin(A2 * RAD);
+
+  const lon = L1 + sumL / 1000000;
+  return ((lon % 360) + 360) % 360;
+}
+
+// ---------------------------------------------------------------------------
+// Sunrise / sunset — NOAA algorithm (Meeus Ch 15 equivalent)
+// Returns JD of the event for the given UTC date.
+// ---------------------------------------------------------------------------
+
+function sunEvent(jd, lat, lon, isSunrise) {
+  const T = (jd - 2451545.0) / 36525;
+
+  // Geometric mean longitude and anomaly
+  let L0 = ((280.46646 + 36000.76983 * T) % 360 + 360) % 360;
+  let M  = ((357.52911 + 35999.05029 * T) % 360 + 360) % 360;
+  const Mrad = M * RAD;
+
+  const C = (1.914602 - 0.004817 * T) * Math.sin(Mrad)
+          + 0.019993 * Math.sin(2 * Mrad)
+          + 0.000289 * Math.sin(3 * Mrad);
+  const sunLon = L0 + C;
+  const omega  = 125.04 - 1934.136 * T;
+  const lambda = sunLon - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+
+  // Obliquity and solar declination
+  const epsilon = (23.439291111 - 0.013004167 * T) * RAD;
+  const decl    = Math.asin(Math.sin(epsilon) * Math.sin(lambda * RAD));
+
+  // Equation of time (minutes)
+  const L0r = L0 * RAD;
+  const e   = 0.016708634 - 0.000042037 * T;
+  const y   = Math.tan(epsilon / 2) ** 2;
+  const eot = 4 * DEG * (
+      y * Math.sin(2 * L0r)
+    - 2 * e * Math.sin(Mrad)
+    + 4 * e * y * Math.sin(Mrad) * Math.cos(2 * L0r)
+    - 0.5 * y * y * Math.sin(4 * L0r)
+    - 1.25 * e * e * Math.sin(2 * Mrad)
+  );
+
+  // Hour angle at horizon (standard 0.833° below for refraction + solar disk)
+  const latRad = lat * RAD;
+  const cosH   = (Math.cos(90.833 * RAD) - Math.sin(latRad) * Math.sin(decl))
+               / (Math.cos(latRad) * Math.cos(decl));
+
+  // Solar noon in minutes from midnight UTC
+  const solarNoon = 720 - 4 * lon - eot;
+
+  if (cosH < -1 || cosH > 1) {
+    // Polar day or night — return solar noon ± 6 h as fallback
+    return jd + (solarNoon + (isSunrise ? -360 : 360)) / 1440;
+  }
+
+  const H      = Math.acos(cosH) * DEG;
+  const offset = isSunrise ? -H * 4 : H * 4; // minutes
+  return jd + (solarNoon + offset) / 1440;
+}
+
+// ---------------------------------------------------------------------------
+// Panchangam for a single day
+// ---------------------------------------------------------------------------
+
 function computeDay(dateStr, lat, lon) {
-  // Start search for sunrise/sunset from the beginning of the UTC day.
-  const jdDayStart = toJD(dateStr, 0.0);
+  const jdDayStart = jdFromDateStr(dateStr, 0.0);
 
-  // Sunrise
-  const riseResult = sweph.rise_trans(
-    jdDayStart,
-    SE_SUN,
-    '',
-    SEFLG_MOSEPH,
-    SE_CALC_RISE,
-    [lat, lon, 0],
-    0,
-    0,
-  );
+  const jdSunrise = sunEvent(jdDayStart, lat, lon, true);
+  const jdSunset  = sunEvent(jdDayStart, lat, lon, false);
 
-  // Sunset
-  const setResult = sweph.rise_trans(
-    jdDayStart,
-    SE_SUN,
-    '',
-    SEFLG_MOSEPH,
-    SE_CALC_SET,
-    [lat, lon, 0],
-    0,
-    0,
-  );
+  const moonLon = moonLongitude(jdSunrise);
+  const sunLon  = sunLongitude(jdSunrise);
 
-  // tret[0] = JD of the event.  Fall back to solar noon ± 6h if unavailable.
-  const jdSunrise = riseResult.tret?.[0] ?? (jdDayStart + 0.25);
-  const jdSunset  = setResult.tret?.[0]  ?? (jdDayStart + 0.75);
-
-  // Compute Moon and Sun ecliptic longitudes at local sunrise.
-  const moonResult = sweph.calc_ut(jdSunrise, SE_MOON, SEFLG_MOSEPH);
-  const sunResult  = sweph.calc_ut(jdSunrise, SE_SUN,  SEFLG_MOSEPH);
-
-  const moonLon = moonResult.longitude ?? moonResult.data?.[0] ?? 0;
-  const sunLon  = sunResult.longitude  ?? sunResult.data?.[0]  ?? 0;
-
-  // Tithi: Moon–Sun elongation / 12°, 1-indexed (30 = Amavasya).
+  // Tithi: Moon–Sun elongation / 12°, 1-indexed (30 = Amavasya)
   let elong = moonLon - sunLon;
   if (elong < 0) elong += 360;
   const tithi = Math.floor(elong / 12) + 1;
 
-  // Nakshatra: Moon longitude / (360/27)°, 1-indexed.
+  // Nakshatra: Moon longitude / (360/27)°, 1-indexed
   const nakshatra = Math.floor(moonLon / (360 / 27)) + 1;
 
-  // Moon Rasi index: 0–11.
+  // Moon Rasi index: 0–11
   const moonRasi = Math.floor(moonLon / 30);
 
-  // Tamil solar calendar day: Sun's degree within current rasi.
+  // Tamil solar calendar day: Sun's degree within current rasi
   const tamilDay = Math.floor(sunLon % 30) + 1;
 
   return {
@@ -121,11 +267,15 @@ function computeDay(dateStr, lat, lon) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Request handler
+// ---------------------------------------------------------------------------
+
 export async function onRequestGet({ request }) {
-  const url    = new URL(request.url);
-  const date   = url.searchParams.get('date');
-  const lat    = parseFloat(url.searchParams.get('lat'));
-  const lon    = parseFloat(url.searchParams.get('lon'));
+  const url     = new URL(request.url);
+  const date    = url.searchParams.get('date');
+  const lat     = parseFloat(url.searchParams.get('lat'));
+  const lon     = parseFloat(url.searchParams.get('lon'));
   const endDate = url.searchParams.get('endDate');
 
   if (!date || isNaN(lat) || isNaN(lon)) {
@@ -137,7 +287,6 @@ export async function onRequestGet({ request }) {
 
   try {
     if (endDate && endDate >= date) {
-      // Batch mode: return one entry per day from date to endDate (inclusive).
       const results = [];
       const cur = new Date(`${date}T00:00:00Z`);
       const end = new Date(`${endDate}T00:00:00Z`);
