@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "sweph": "^3.0.0"
+    "sweph": "^2.10.3-b-1"
   }
 }
