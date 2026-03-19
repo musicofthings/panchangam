@@ -10,9 +10,9 @@ Designed for brahmins, temple priests, and devotees who need accurate daily panc
 
 **Dakshin Panchangam** aims to be the definitive all-in-one platform for South Indian Hinduism:
 
-- **Lunar calendar accuracy** — Tithi, Nakshatra, Rahu Kalam, Yamagandam, Abhijit Muhurta, Brahma Muhurta, Amrita Kalam computed from real astronomical algorithms (Meeus ELP2000 / VSOP87 / NOAA)
+- **Drik Ganitha accuracy** — Swiss Ephemeris (Moshier algorithm, ~3 arcmin Moon) via Cloudflare Edge Function, with Meeus ELP2000/VSOP87 as offline fallback
 - **All four Dravidian languages** — Tamil (தமிழ்), Telugu (తెలుగు), Kannada (ಕನ್ನಡ), Malayalam (മലയാളം), plus English
-- **South India focused** — cities across Tamil Nadu, Andhra Pradesh, Telangana, Karnataka, and Kerala; plus diaspora locations in Singapore, Malaysia, USA, UK, and Australia
+- **South India focused** — 27 city presets across Tamil Nadu, Andhra Pradesh, Telangana, Karnataka, and Kerala; plus diaspora locations in Singapore, Malaysia, USA, UK, and Australia
 - **Temple & priest workflow** — festivals (Amavasai, Pournami, Shashti Vratam, Soma Pradosh, Shivaratri), auspicious nakshatras, and muhurtas for daily puja scheduling
 - **Real-time notifications** — web push for Rahu Kalam reminders (Android & iOS apps planned)
 - **Devotional news aggregator** — 11 curated South Indian Hindu RSS feeds, auto-loaded and sorted newest-first
@@ -21,18 +21,25 @@ Designed for brahmins, temple priests, and devotees who need accurate daily panc
 
 ## Features
 
-### Astronomical Calculations (Client-side, No API Key)
-| Feature | Algorithm |
-|---|---|
-| Tithi (1–30, Amavasai/Pournami accurate) | Moon–Sun elongation / 12° via Meeus ELP2000 |
-| Nakshatra (1–27) | Moon longitude / 13.333° |
-| Moon Rasi | Moon longitude / 30° |
-| Tamil/Solar calendar day | Sun's degree within current zodiac sign |
-| Sunrise & Sunset | NOAA solar calculator (declination + equation of time + hour angle) |
-| Rahu Kalam, Yamagandam, Abhijit, Brahma, Amrita | Derived from sunrise by traditional time divisions |
+### Astronomical Calculations
+
+Two-tier accuracy model: the Cloudflare Edge Function is tried first; local calculations run instantly when offline.
+
+| Feature | Online (CF Function) | Offline fallback |
+|---|---|---|
+| Sun longitude | Swiss Ephemeris — Moshier (~1 arcmin) | VSOP87 simplified (Meeus Ch. 25, ~0.01°) |
+| Moon longitude | Swiss Ephemeris — Moshier (~3 arcmin) | ELP2000 60-term (Meeus Ch. 47, ~0.5°) |
+| Sunrise & Sunset | Swiss Ephemeris `rise_trans` | NOAA solar calculator (~1 min) |
+| Tithi (1–30) | Moon–Sun elongation / 12° | Same formula, local Moon/Sun |
+| Nakshatra (1–27) | Moon longitude / 13.333° | Same formula, local Moon |
+| Moon Rasi | Moon longitude / 30° | Same formula, local Moon |
+| Tamil/Solar calendar day | Sun's degree within current rasi | Same formula, local Sun |
+| Rahu Kalam, Yamagandam, Abhijit, Brahma, Amrita | Derived from CF sunrise | Derived from NOAA sunrise |
+
+The `GET /api/panchangam` endpoint supports batch queries (`?date=&endDate=&lat=&lon=`) so the entire month calendar is fetched in a single request.
 
 ### Languages
-Switch between **Tamil · Telugu · Kannada · Malayalam · English** — tithi names, nakshatra names, rasi names, and all UI strings are fully localized.
+Switch between **Tamil · Telugu · Kannada · Malayalam · English** — tithi names, nakshatra names, rasi names, paksha, weekday labels, and all UI strings are fully localized.
 
 ### Cities (27 presets)
 - **Tamil Nadu**: Chennai, Madurai, Thanjavur, Kanchipuram, Tiruchirapalli, Coimbatore, Tirunelveli
@@ -60,11 +67,14 @@ Amavasai · Pournami · Shashti Vratam (Shukla & Krishna) · Soma Pradosh · Shi
 | Tamil Brahmins Forum | Community |
 | Mathrubhumi Astrology | Kerala / Jyotish |
 
+All 11 feeds load automatically on page open, sorted newest-first. Filter by tag or use the search box.
+
 ---
 
 ## Roadmap
 
-- [ ] **Telugu, Kannada, Malayalam** script UI (in progress — i18n groundwork complete)
+- [x] **Drik Ganitha accuracy** — Swiss Ephemeris Moshier via Cloudflare Pages Function
+- [ ] **Sub-arcsecond precision** — mount Swiss Ephemeris `.se1` / `.se2` data files via Cloudflare R2 for traditional *Drik* calculations
 - [ ] **Web Push Notifications** — real-time Rahu Kalam, festival, and puja alerts via browser Service Worker
 - [ ] **Android App** — React Native / Capacitor wrapper
 - [ ] **iOS App** — React Native / Capacitor wrapper
@@ -84,28 +94,53 @@ python -m http.server 8000
 ```
 Open <http://localhost:8000>.
 
+The `/api/panchangam` endpoint requires Cloudflare Pages. To test it locally:
+
+```bash
+npm install
+npx wrangler pages dev . --compatibility-flag=nodejs_compat
+```
+
 ---
 
 ## Deployment — Cloudflare Pages
 
 | Setting | Value |
 |---|---|
-| Build command | *(none)* |
+| Build command | `npm install` |
 | Build output directory | `/` |
 | Framework preset | `None` |
+| Compatibility flag | `nodejs_compat` |
 
-The Cloudflare Pages Function at `functions/api/rss.js` proxies RSS feeds to avoid CORS. All permitted feed URLs are explicitly allowlisted.
+Two Cloudflare Pages Functions are deployed automatically:
+
+| Function | Path | Purpose |
+|---|---|---|
+| `rss.js` | `/api/rss` | CORS proxy for 11 RSS feeds (allowlisted) |
+| `panchangam.js` | `/api/panchangam` | Swiss Ephemeris calculations (Moshier, WASM) |
 
 ---
 
 ## Astronomical Accuracy Notes
 
-The app uses JavaScript implementations of:
-- **Sun longitude**: VSOP87 simplified (Meeus Ch. 25) — accurate to ~0.01°
-- **Moon longitude**: ELP2000 with 60 principal terms (Meeus Ch. 47) — accurate to ~0.5°
-- **Sunrise/Sunset**: NOAA solar calculator — accurate to within ~1 minute for most latitudes
+### Online (Cloudflare Edge Function)
+Uses the [`sweph`](https://github.com/timotejroiko/sweph) npm package — the Swiss Ephemeris compiled to WebAssembly with the built-in **Moshier algorithm** (no data files required):
 
-For sub-arcminute precision (required for traditional *Drik Ganitha* panchangam), replace `assets/swisseph.js` with the official [swisseph-js](https://github.com/timotejroiko/sweph) browser build and place Swiss Ephemeris data files (`.se1`/`.se2`) in `assets/ephe/`.
+| Body | Accuracy |
+|---|---|
+| Sun longitude | ~1 arcmin |
+| Moon longitude | ~3 arcmin |
+| Sunrise/Sunset | ~10 seconds |
+
+This is sufficient for correct tithi, nakshatra, and muhurta determination in all practical panchangam use.
+
+### Offline Fallback (Client-side JS)
+- **Sun longitude**: VSOP87 simplified (Meeus Ch. 25) — accurate to ~0.01°
+- **Moon longitude**: ELP2000 with 60 principal terms (Meeus Ch. 47) — accurate to ~0.5° (30 arcmin)
+- **Sunrise/Sunset**: NOAA solar calculator — accurate to within ~1 minute
+
+### Path to Sub-arcsecond Precision
+For traditional *Drik Ganitha* precision (< 1 arcsec), upload Swiss Ephemeris data files (`.se1` / `.se2`) to a Cloudflare R2 bucket and update `panchangam.js` to call `sweph.set_ephe_path()` pointing at the R2-mounted path. No client-side changes are needed.
 
 ---
 
