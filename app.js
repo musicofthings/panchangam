@@ -82,7 +82,8 @@ const I18N = {
     mondayTuesday: 'ஆம்', no: 'இல்லை', goodNak: 'மங்கல நட்சத்திரம்!', notMarked: 'சாதாரண நாள்', rssLoad: 'புதுப்பி',
     shuklaPaksha: 'சுக்ல பக்ஷம்', krishnaPaksha: 'கிருஷ்ண பக்ஷம்',
     remSet: 'ராகு காலம் தொடங்க 30 நிமிடங்களுக்கு முன் நினைவூட்டு அமைக்கப்பட்டது', remNow: 'ராகு காலம் தொடங்க போகுது—பூஜை தள்ளி வைக்கலாம்',
-    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'], festival: 'விழா'
+    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'], festival: 'விழா',
+    shashtiFestival: 'சஷ்டி விரதம்', somaPradosh: 'சோம பிரதோஷம்', searchPlaceholder: 'கட்டுரை தேடல்'
   },
   te: {
     appTitle: 'దక్షిణ పంచాంగం', calc: 'లెక్కించు', date: 'తేది', city: 'నగరం', lat: 'అక్షాంశం (Lat)', lon: 'రేఖాంశం (Lon)',
@@ -93,7 +94,8 @@ const I18N = {
     mondayTuesday: 'అవును', no: 'కాదు', goodNak: 'మంగళ నక్షత్రం!', notMarked: 'సాధారణ రోజు', rssLoad: 'రిఫ్రెష్',
     shuklaPaksha: 'శుక్ల పక్షం', krishnaPaksha: 'కృష్ణ పక్షం',
     remSet: 'రాహు కాలానికి 30 నిమిషాల ముందు రిమైండర్ సెట్ చేయబడింది', remNow: 'రాహు కాలం మొదలవుతోంది—పూజ వాయిదా వేయండి',
-    weekdays: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'], festival: 'పండుగ'
+    weekdays: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'], festival: 'పండుగ',
+    shashtiFestival: 'షష్ఠి వ్రతం', somaPradosh: 'సోమ ప్రదోష్', searchPlaceholder: 'వ్యాసం వెతకండి'
   },
   kn: {
     appTitle: 'ದಕ್ಷಿಣ ಪಂಚಾಂಗ', calc: 'ಲೆಕ್ಕಿಸು', date: 'ದಿನಾಂಕ', city: 'ನಗರ', lat: 'ಅಕ್ಷಾಂಶ (Lat)', lon: 'ರೇಖಾಂಶ (Lon)',
@@ -104,7 +106,8 @@ const I18N = {
     mondayTuesday: 'ಹೌದು', no: 'ಇಲ್ಲ', goodNak: 'ಮಂಗಳ ನಕ್ಷತ್ರ!', notMarked: 'ಸಾಮಾನ್ಯ ದಿನ', rssLoad: 'ರಿಫ್ರೆಶ್',
     shuklaPaksha: 'ಶುಕ್ಲ ಪಕ್ಷ', krishnaPaksha: 'ಕೃಷ್ಣ ಪಕ್ಷ',
     remSet: 'ರಾಹು ಕಾಲಕ್ಕೆ 30 ನಿಮಿಷ ಮೊದಲು ರಿಮೈಂಡರ್ ಹೊಂದಿಸಲಾಗಿದೆ', remNow: 'ರಾಹು ಕಾಲ ಪ್ರಾರಂಭವಾಗಲಿದೆ—ಪೂಜೆ ಮುಂದೂಡಿ',
-    weekdays: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'], festival: 'ಹಬ್ಬ'
+    weekdays: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'], festival: 'ಹಬ್ಬ',
+    shashtiFestival: 'ಷಷ್ಠಿ ವ್ರತ', somaPradosh: 'ಸೋಮ ಪ್ರದೋಷ', searchPlaceholder: 'ಲೇಖನ ಹುಡುಕಿ'
   },
   ml: {
     appTitle: 'ദക്ഷിണ പഞ്ചാംഗം', calc: 'കണക്കാക്കുക', date: 'തീയതി', city: 'നഗരം', lat: 'അക്ഷാംശം (Lat)', lon: 'രേഖാംശം (Lon)',
@@ -115,7 +118,8 @@ const I18N = {
     mondayTuesday: 'അതെ', no: 'ഇല്ല', goodNak: 'മംഗള നക്ഷത്രം!', notMarked: 'സാധാരണ ദിവസം', rssLoad: 'റിഫ്രഷ്',
     shuklaPaksha: 'ശുക്ല പക്ഷം', krishnaPaksha: 'കൃഷ്ണ പക്ഷം',
     remSet: 'രാഹു കാലത്തിന് 30 മിനിറ്റ് മുമ്പ് റിമൈൻഡർ സജ്ജമാക്കി', remNow: 'രാഹു കാലം തുടങ്ങാൻ പോകുന്നു—പൂജ മാറ്റിവക്കൂ',
-    weekdays: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], festival: 'ഉത്സവം'
+    weekdays: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], festival: 'ഉത്സവം',
+    shashtiFestival: 'ഷഷ്ഠി വ്രതം', somaPradosh: 'സോമ പ്രദോഷം', searchPlaceholder: 'ലേഖനം തിരയുക'
   },
   en: {
     appTitle: 'Dakshin Panchangam', calc: 'Calculate', date: 'Date', city: 'City', lat: 'Latitude (Lat)', lon: 'Longitude (Lon)',
@@ -126,7 +130,8 @@ const I18N = {
     mondayTuesday: 'Yes', no: 'No', goodNak: 'Mangala nakshatra!', notMarked: 'Regular day', rssLoad: 'Refresh',
     shuklaPaksha: 'Shukla Paksha', krishnaPaksha: 'Krishna Paksha',
     remSet: 'Reminder set for 30 mins before Rahu Kalam', remNow: 'Rahu Kalam starts soon—consider postponing puja',
-    weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], festival: 'Festival'
+    weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], festival: 'Festival',
+    shashtiFestival: 'Shashti Vratam', somaPradosh: 'Soma Pradosh', searchPlaceholder: 'Search articles'
   }
 };
 
@@ -145,7 +150,7 @@ const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', 
 
 function initUI() {
   const dateInput = document.getElementById('date-input');
-  dateInput.valueAsDate = new Date();
+  dateInput.value = toLocalDateStr(new Date());
 
   const citySelect = document.getElementById('city-select');
   CITY_PRESETS.forEach((c, idx) => {
@@ -189,7 +194,7 @@ function hydrateLabels() {
     'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
   };
   Object.entries(map).forEach(([id, key]) => { document.getElementById(id).textContent = t(key); });
-  document.getElementById('news-search').placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search your articles';
+  document.getElementById('news-search').placeholder = t('searchPlaceholder');
   renderWeekdayRail();
 }
 
@@ -205,6 +210,10 @@ function useGeolocation() {
     document.getElementById('lon-input').value = pos.coords.longitude.toFixed(4);
     renderMonthViewFromInputs();
   }, (err) => alert(err.message));
+}
+
+function toLocalDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 // NOAA solar calculator — returns UTC Date objects for sunrise and sunset
@@ -387,7 +396,7 @@ function calculatePanchangam(date, lat, lon, precomputed) {
   const rahu  = getRahuKalam(sunrise);
   const shashtiStr = getShashti(tithi);
   return {
-    date: date.toISOString(), lat, lon, rahu,
+    date: toLocalDateStr(date), lat, lon, rahu,
     yama: getYamagandam(sunrise), abhijit: getAbhijitMuhurta(sunrise),
     shashti: shashtiStr, auspicious: getAuspicious(nak),
     amrita: { start: addMinutes(sunrise, 240), end: addMinutes(sunrise, 288) },
@@ -431,8 +440,8 @@ async function fetchMonthData(year, month, lat, lon) {
   const gridEnd = new Date(lastOfMonth);
   gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()));
 
-  const startStr = gridStart.toISOString().slice(0, 10);
-  const endStr   = gridEnd.toISOString().slice(0, 10);
+  const startStr = toLocalDateStr(gridStart);
+  const endStr   = toLocalDateStr(gridEnd);
   const cacheKey = `month:${startStr}:${endStr}:${lat}:${lon}`;
 
   if (apiCache[cacheKey]) return apiCache[cacheKey];
@@ -567,10 +576,11 @@ function renderNewsCards() {
 
 function getFestivalTags(date, tithi) {
   const tags = [];
-  if ([6, 21].includes(tithi)) tags.push('Shasti Vratam');
-  if (tithi === 15) tags.push('Pournami');
-  if (tithi === 30) tags.push('Amavasai');
-  if (date.getDay() === 1 && [13, 28].includes(tithi)) tags.push('Soma Pradosh');
+  const tithiNames = TITHI_NAMES[currentLang] || TITHI_NAMES.en;
+  if ([6, 21].includes(tithi)) tags.push(t('shashtiFestival'));
+  if (tithi === 15) tags.push(tithiNames[14]);
+  if (tithi === 30) tags.push(tithiNames[29]);
+  if (date.getDay() === 1 && [13, 28].includes(tithi)) tags.push(t('somaPradosh'));
   return tags;
 }
 
@@ -615,7 +625,7 @@ function renderMonthViewFromInputs() {
 }
 
 async function renderMonthGrid(anchorDate, lat, lon) {
-  const title = anchorDate.toLocaleDateString(currentLang === 'ta' ? 'ta-IN' : 'en-IN', { month: 'long', year: 'numeric' });
+  const title = anchorDate.toLocaleDateString(LOCALE_MAP[currentLang] || 'en-IN', { month: 'long', year: 'numeric' });
   document.getElementById('month-title').textContent = title;
 
   const first = new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1);
@@ -636,11 +646,11 @@ async function renderMonthGrid(anchorDate, lat, lon) {
       const sameMonth = cursor.getMonth() === anchorDate.getMonth();
       const isFocused = cursor.toDateString() === selectedDate.toDateString();
       const isHoliday = cursor.getDay() === 0;
-      const dateStr = cursor.toISOString().slice(0, 10);
+      const dateStr = toLocalDateStr(cursor);
       const apiDay = apiMonthData ? apiMonthData[dateStr] : null;
       const cell = getMonthCellData(cursor, lat, lon, apiDay);
       const events = cell.festivals.length ? `<div class="dpCellFestivalName">${cell.festivals.join(', ')}</div>` : '';
-      html += `<div class="dpMonthGridCell ${sameMonth ? '' : 'dpInert'} ${isFocused ? 'dpCurrentFocusedDay' : ''} ${isHoliday ? 'dpHoliday' : ''}" data-date="${dateStr}"><div class="dpCellDate"><span class="dpSunriseTiming">🌅<br>${cell.sunrise}</span><span class="dpBigDate">${cursor.getDate()}<br><span class="dpCellBriefedWeekday">${cursor.toLocaleDateString('en-US', { weekday: 'short' })}</span></span><span class="dpSmallDate">${cell.tamilDay}</span><span class="dpSunsetTiming">🌇<br>${cell.sunset}</span></div><span class="dpCellTithi">${cell.tithi}</span><div class="dpMoonTiming">🌙 ${cell.moon}</div><div class="dpNakshatra">⭐ ${cell.nakshatra}</div>${events}</div>`;
+      html += `<div class="dpMonthGridCell ${sameMonth ? '' : 'dpInert'} ${isFocused ? 'dpCurrentFocusedDay' : ''} ${isHoliday ? 'dpHoliday' : ''}" data-date="${dateStr}"><div class="dpCellDate"><span class="dpSunriseTiming">🌅<br>${cell.sunrise}</span><span class="dpBigDate">${cursor.getDate()}<br><span class="dpCellBriefedWeekday">${t('weekdays')[cursor.getDay()]}</span></span><span class="dpSmallDate">${cell.tamilDay}</span><span class="dpSunsetTiming">🌇<br>${cell.sunset}</span></div><span class="dpCellTithi">${cell.tithi}</span><div class="dpMoonTiming">🌙 ${cell.moon}</div><div class="dpNakshatra">⭐ ${cell.nakshatra}</div>${events}</div>`;
       cursor.setDate(cursor.getDate() + 1);
     }
     html += '</div>';
