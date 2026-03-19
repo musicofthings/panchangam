@@ -136,6 +136,9 @@ let currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(),
 let newsArticles = [];
 let activeNewsTag = 'All';
 
+// Cache for /api/panchangam responses keyed by "date:lat:lon" or "month:start:end:lat:lon".
+const apiCache = {};
+
 const LOCALE_MAP = { ta: 'ta-IN', te: 'te-IN', kn: 'kn-IN', ml: 'ml-IN', en: 'en-IN' };
 const t = (k) => (I18N[currentLang] || I18N.en)[k] || k;
 const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', { hour: '2-digit', minute: '2-digit' });
@@ -361,28 +364,35 @@ function calcNakshatra(date) {
   return Math.floor(getMoonLongitude(jd) / (360 / 27)) + 1;
 }
 
-function getShashti(date) {
-  const tithi = calcTithi(date);
+function getShashti(tithi) {
   if (tithi === 6 || tithi === 21) {
     const paksha = tithi <= 15 ? t('shuklaPaksha') : t('krishnaPaksha');
     return t('shashtiMsg').replace('{paksha}', paksha);
   }
   return t('noShashti');
 }
-function getAuspicious(date) {
-  return [5, 6, 10, 13, 14, 18].includes(calcNakshatra(date)) ? t('goodNak') : t('notMarked');
+function getAuspicious(nak) {
+  return [5, 6, 10, 13, 14, 18].includes(nak) ? t('goodNak') : t('notMarked');
 }
 
-function calculatePanchangam(date, lat, lon) {
-  const sunrise = getSunrise(date, lat, lon);
-  const rahu = getRahuKalam(sunrise);
+function calculatePanchangam(date, lat, lon, precomputed) {
+  let sunrise;
+  if (precomputed) {
+    sunrise = new Date(precomputed.sunriseMs);
+  } else {
+    sunrise = getSunrise(date, lat, lon);
+  }
+  const tithi = precomputed ? precomputed.tithi : calcTithi(date);
+  const nak   = precomputed ? precomputed.nakshatra : calcNakshatra(date);
+  const rahu  = getRahuKalam(sunrise);
+  const shashtiStr = getShashti(tithi);
   return {
     date: date.toISOString(), lat, lon, rahu,
     yama: getYamagandam(sunrise), abhijit: getAbhijitMuhurta(sunrise),
-    shashti: getShashti(date), auspicious: getAuspicious(date),
+    shashti: shashtiStr, auspicious: getAuspicious(nak),
     amrita: { start: addMinutes(sunrise, 240), end: addMinutes(sunrise, 288) },
     brahma: { start: addMinutes(sunrise, -96), end: addMinutes(sunrise, -48) },
-    tivaraatri: [1, 2].includes(date.getDay()) && /Shashti|சஷ்டி/.test(getShashti(date))
+    tivaraatri: [1, 2].includes(date.getDay()) && (tithi === 6 || tithi === 21)
   };
 }
 
@@ -391,13 +401,69 @@ function renderResults(data) {
   document.getElementById('results-grid').innerHTML = cards.map(([ttl, txt]) => `<article class="card"><h3>${ttl}</h3><p>${txt}</p></article>`).join('');
 }
 
-function calculateAndRender() {
+/**
+ * Fetch Swiss Ephemeris data for a single date from the CF Function.
+ * Returns the precomputed object on success, null on failure (triggers local fallback).
+ */
+async function fetchDayData(dateStr, lat, lon) {
+  const key = `${dateStr}:${lat}:${lon}`;
+  if (apiCache[key]) return apiCache[key];
+  try {
+    const res = await fetch(`/api/panchangam?date=${encodeURIComponent(dateStr)}&lat=${lat}&lon=${lon}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (!data.error) { apiCache[key] = data; return data; }
+    }
+  } catch (_) {}
+  return null;
+}
+
+/**
+ * Fetch Swiss Ephemeris data for all days in the month-grid window (batch).
+ * Returns a map of { "YYYY-MM-DD": dayObj } on success, null on failure.
+ */
+async function fetchMonthData(year, month, lat, lon) {
+  // Compute the full grid window (Sun → Sat rows covering the month).
+  const firstOfMonth = new Date(year, month, 1);
+  const gridStart = new Date(firstOfMonth);
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay());
+  const lastOfMonth = new Date(year, month + 1, 0);
+  const gridEnd = new Date(lastOfMonth);
+  gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()));
+
+  const startStr = gridStart.toISOString().slice(0, 10);
+  const endStr   = gridEnd.toISOString().slice(0, 10);
+  const cacheKey = `month:${startStr}:${endStr}:${lat}:${lon}`;
+
+  if (apiCache[cacheKey]) return apiCache[cacheKey];
+  try {
+    const res = await fetch(
+      `/api/panchangam?date=${encodeURIComponent(startStr)}&endDate=${encodeURIComponent(endStr)}&lat=${lat}&lon=${lon}`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        const map = {};
+        data.forEach((d) => {
+          map[d.date] = d;
+          apiCache[`${d.date}:${lat}:${lon}`] = d;
+        });
+        apiCache[cacheKey] = map;
+        return map;
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
+async function calculateAndRender() {
   const dateValue = document.getElementById('date-input').value;
   const lat = Number.parseFloat(document.getElementById('lat-input').value);
   const lon = Number.parseFloat(document.getElementById('lon-input').value);
   if (!dateValue || Number.isNaN(lat) || Number.isNaN(lon)) return alert('Provide date + valid coordinates');
   const selectedDate = new Date(`${dateValue}T00:00:00`);
-  const result = calculatePanchangam(selectedDate, lat, lon);
+  const precomputed = await fetchDayData(dateValue, lat, lon);
+  const result = calculatePanchangam(selectedDate, lat, lon, precomputed);
   localStorage.setItem('panchangam:last', JSON.stringify(result));
   renderResults(result);
   currentMonthDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -499,26 +565,37 @@ function renderNewsCards() {
 }
 
 
-function getFestivalTags(date) {
+function getFestivalTags(date, tithi) {
   const tags = [];
-  const tithi = calcTithi(date);
   if ([6, 21].includes(tithi)) tags.push('Shasti Vratam');
-  if ([15].includes(tithi)) tags.push('Pournami');
-  if ([30].includes(tithi)) tags.push('Amavasai');
+  if (tithi === 15) tags.push('Pournami');
+  if (tithi === 30) tags.push('Amavasai');
   if (date.getDay() === 1 && [13, 28].includes(tithi)) tags.push('Soma Pradosh');
   return tags;
 }
 
-function getMonthCellData(date, lat, lon) {
-  const { sunrise, sunset } = calcSunriseSunset(date, lat, lon);
-  const tithi = calcTithi(date);
-  const nak = calcNakshatra(date);
-  const paksha = tithi <= 15 ? 'S' : 'K';
+function getMonthCellData(date, lat, lon, apiDay) {
+  let sunrise, sunset, tithi, nak, moonRasi, tamilDay;
+  if (apiDay) {
+    sunrise  = new Date(apiDay.sunriseMs);
+    sunset   = new Date(apiDay.sunsetMs);
+    tithi    = apiDay.tithi;
+    nak      = apiDay.nakshatra;
+    moonRasi = (RASI[currentLang] || RASI.ta)[apiDay.moonRasi];
+    tamilDay = apiDay.tamilDay;
+  } else {
+    const ss = calcSunriseSunset(date, lat, lon);
+    sunrise  = ss.sunrise;
+    sunset   = ss.sunset;
+    tithi    = calcTithi(date);
+    nak      = calcNakshatra(date);
+    moonRasi = calcMoonRasi(date);
+    tamilDay = calcTamilDay(date);
+  }
+  const paksha    = tithi <= 15 ? 'S' : 'K';
   const langTithi = (TITHI_NAMES[currentLang] || TITHI_NAMES.ta)[tithi - 1];
-  const langNak = (NAKSHATRA[currentLang] || NAKSHATRA.ta)[nak - 1];
-  const moonRasi = calcMoonRasi(date);
-  const tamilDay = calcTamilDay(date);
-  return { sunrise: fmtTime(sunrise), sunset: fmtTime(sunset), tithi: `${langTithi} ${paksha}`, nakshatra: langNak, moon: moonRasi, tamilDay, festivals: getFestivalTags(date) };
+  const langNak   = (NAKSHATRA[currentLang]   || NAKSHATRA.ta)[nak - 1];
+  return { sunrise: fmtTime(sunrise), sunset: fmtTime(sunset), tithi: `${langTithi} ${paksha}`, nakshatra: langNak, moon: moonRasi, tamilDay, festivals: getFestivalTags(date, tithi) };
 }
 
 function renderWeekdayRail() {
@@ -537,14 +614,16 @@ function renderMonthViewFromInputs() {
   renderMonthGrid(currentMonthDate, lat, lon);
 }
 
-function renderMonthGrid(anchorDate, lat, lon) {
+async function renderMonthGrid(anchorDate, lat, lon) {
   const title = anchorDate.toLocaleDateString(currentLang === 'ta' ? 'ta-IN' : 'en-IN', { month: 'long', year: 'numeric' });
   document.getElementById('month-title').textContent = title;
 
   const first = new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1);
-  const last = new Date(anchorDate.getFullYear(), anchorDate.getMonth() + 1, 0);
   const start = new Date(first);
   start.setDate(start.getDate() - start.getDay());
+
+  // Batch-fetch Swiss Ephemeris data for the entire grid; fall back to Meeus if unavailable.
+  const apiMonthData = await fetchMonthData(anchorDate.getFullYear(), anchorDate.getMonth(), lat, lon);
 
   const selectedDate = document.getElementById('date-input').value ? new Date(`${document.getElementById('date-input').value}T00:00:00`) : new Date();
   const body = document.getElementById('month-grid-body');
@@ -557,9 +636,11 @@ function renderMonthGrid(anchorDate, lat, lon) {
       const sameMonth = cursor.getMonth() === anchorDate.getMonth();
       const isFocused = cursor.toDateString() === selectedDate.toDateString();
       const isHoliday = cursor.getDay() === 0;
-      const cell = getMonthCellData(cursor, lat, lon);
+      const dateStr = cursor.toISOString().slice(0, 10);
+      const apiDay = apiMonthData ? apiMonthData[dateStr] : null;
+      const cell = getMonthCellData(cursor, lat, lon, apiDay);
       const events = cell.festivals.length ? `<div class="dpCellFestivalName">${cell.festivals.join(', ')}</div>` : '';
-      html += `<div class="dpMonthGridCell ${sameMonth ? '' : 'dpInert'} ${isFocused ? 'dpCurrentFocusedDay' : ''} ${isHoliday ? 'dpHoliday' : ''}" data-date="${cursor.toISOString().slice(0, 10)}"><div class="dpCellDate"><span class="dpSunriseTiming">🌅<br>${cell.sunrise}</span><span class="dpBigDate">${cursor.getDate()}<br><span class="dpCellBriefedWeekday">${cursor.toLocaleDateString('en-US', { weekday: 'short' })}</span></span><span class="dpSmallDate">${cell.tamilDay}</span><span class="dpSunsetTiming">🌇<br>${cell.sunset}</span></div><span class="dpCellTithi">${cell.tithi}</span><div class="dpMoonTiming">🌙 ${cell.moon}</div><div class="dpNakshatra">⭐ ${cell.nakshatra}</div>${events}</div>`;
+      html += `<div class="dpMonthGridCell ${sameMonth ? '' : 'dpInert'} ${isFocused ? 'dpCurrentFocusedDay' : ''} ${isHoliday ? 'dpHoliday' : ''}" data-date="${dateStr}"><div class="dpCellDate"><span class="dpSunriseTiming">🌅<br>${cell.sunrise}</span><span class="dpBigDate">${cursor.getDate()}<br><span class="dpCellBriefedWeekday">${cursor.toLocaleDateString('en-US', { weekday: 'short' })}</span></span><span class="dpSmallDate">${cell.tamilDay}</span><span class="dpSunsetTiming">🌇<br>${cell.sunset}</span></div><span class="dpCellTithi">${cell.tithi}</span><div class="dpMoonTiming">🌙 ${cell.moon}</div><div class="dpNakshatra">⭐ ${cell.nakshatra}</div>${events}</div>`;
       cursor.setDate(cursor.getDate() + 1);
     }
     html += '</div>';
