@@ -1,43 +1,130 @@
 const CITY_PRESETS = [
-  { name: 'Chennai', lat: 13.0827, lon: 80.2707 },
-  { name: 'New York', lat: 40.7128, lon: -74.006 },
-  { name: 'London', lat: 51.5074, lon: -0.1278 },
-  { name: 'Sydney', lat: -33.8688, lon: 151.2093 },
-  { name: 'Hyderabad', lat: 17.385, lon: 78.4867 }
+  // Tamil Nadu
+  { name: 'Chennai',           region: 'Tamil Nadu',        lat: 13.0827,  lon: 80.2707  },
+  { name: 'Madurai',           region: 'Tamil Nadu',        lat: 9.9252,   lon: 78.1198  },
+  { name: 'Thanjavur',         region: 'Tamil Nadu',        lat: 10.7870,  lon: 79.1378  },
+  { name: 'Kanchipuram',       region: 'Tamil Nadu',        lat: 12.8333,  lon: 79.7000  },
+  { name: 'Tiruchirapalli',    region: 'Tamil Nadu',        lat: 10.7905,  lon: 78.7047  },
+  { name: 'Coimbatore',        region: 'Tamil Nadu',        lat: 11.0168,  lon: 76.9558  },
+  { name: 'Tirunelveli',       region: 'Tamil Nadu',        lat: 8.7139,   lon: 77.7567  },
+  // Andhra Pradesh / Telangana
+  { name: 'Tirupati',          region: 'Andhra Pradesh',    lat: 13.6288,  lon: 79.4192  },
+  { name: 'Vijayawada',        region: 'Andhra Pradesh',    lat: 16.5062,  lon: 80.6480  },
+  { name: 'Visakhapatnam',     region: 'Andhra Pradesh',    lat: 17.6868,  lon: 83.2185  },
+  { name: 'Hyderabad',         region: 'Telangana',         lat: 17.3850,  lon: 78.4867  },
+  { name: 'Warangal',          region: 'Telangana',         lat: 17.9784,  lon: 79.5941  },
+  // Karnataka
+  { name: 'Bengaluru',         region: 'Karnataka',         lat: 12.9716,  lon: 77.5946  },
+  { name: 'Mysuru',            region: 'Karnataka',         lat: 12.2958,  lon: 76.6394  },
+  { name: 'Udupi',             region: 'Karnataka',         lat: 13.3409,  lon: 74.7421  },
+  { name: 'Mangaluru',         region: 'Karnataka',         lat: 12.9141,  lon: 74.8560  },
+  { name: 'Dharwad',           region: 'Karnataka',         lat: 15.4589,  lon: 75.0078  },
+  // Kerala
+  { name: 'Thiruvananthapuram',region: 'Kerala',            lat: 8.5241,   lon: 76.9366  },
+  { name: 'Kochi',             region: 'Kerala',            lat: 9.9312,   lon: 76.2673  },
+  { name: 'Kozhikode',         region: 'Kerala',            lat: 11.2588,  lon: 75.7804  },
+  { name: 'Thrissur',          region: 'Kerala',            lat: 10.5276,  lon: 76.2144  },
+  { name: 'Guruvayur',         region: 'Kerala',            lat: 10.5938,  lon: 76.0417  },
+  // Diaspora
+  { name: 'Singapore',         region: 'Singapore',         lat: 1.3521,   lon: 103.8198 },
+  { name: 'Kuala Lumpur',      region: 'Malaysia',          lat: 3.1390,   lon: 101.6869 },
+  { name: 'New York',          region: 'USA',               lat: 40.7128,  lon: -74.0060 },
+  { name: 'London',            region: 'UK',                lat: 51.5074,  lon: -0.1278  },
+  { name: 'Sydney',            region: 'Australia',         lat: -33.8688, lon: 151.2093 }
 ];
 
 const RSS_SOURCES = [
-  { name: 'Hinduism Today', url: 'https://www.hinduismtoday.com/feed/', tag: 'Featured' },
-  { name: 'Tamil Brahmins Forum', url: 'https://www.tamilbrahmins.com/forums/-/index.rss', tag: 'Community' },
-  { name: 'Aanmeegam', url: 'https://aanmeegam.in/feed/', tag: 'Tamil Bhakthi' },
-  { name: 'Tamil and Vedas', url: 'https://tamilandvedas.com/feed/', tag: 'Tamil Bhakthi' },
-  { name: 'TemplePurohit', url: 'https://www.templepurohit.com/feed/', tag: 'Devotional' },
-  { name: 'Sadhguru Wisdom', url: 'https://isha.sadhguru.org/in/en/wisdom/rss.xml', tag: 'Devotional' }
+  { name: 'Hinduism Today',        url: 'https://www.hinduismtoday.com/feed/',                        tag: 'Featured'   },
+  { name: 'Indica Today',          url: 'https://www.indica.today/feed/',                             tag: 'Indic'      },
+  { name: 'Speaking Tree',         url: 'https://www.speakingtree.in/rss',                            tag: 'Spiritual'  },
+  { name: 'TemplePurohit',         url: 'https://www.templepurohit.com/feed/',                        tag: 'Temples'    },
+  { name: 'Sadhguru Wisdom',       url: 'https://isha.sadhguru.org/in/en/wisdom/rss.xml',             tag: 'Spiritual'  },
+  { name: 'Ramakrishna Math',      url: 'https://belurmath.org/feed/',                                tag: 'Mutt'       },
+  { name: 'Sringeri Mutt',         url: 'https://www.sringeri.net/feed/',                             tag: 'Mutt'       },
+  { name: 'Aanmeegam',             url: 'https://aanmeegam.in/feed/',                                 tag: 'Tamil'      },
+  { name: 'Tamil and Vedas',       url: 'https://tamilandvedas.com/feed/',                            tag: 'Tamil'      },
+  { name: 'Tamil Brahmins Forum',  url: 'https://www.tamilbrahmins.com/forums/-/index.rss',           tag: 'Community'  },
+  { name: 'Mathrubhumi Astrology', url: 'https://english.mathrubhumi.com/rss/astrology.xml',          tag: 'Jyotish'    }
 ];
 
-const TITHI_NAMES = ['Pirathamai', 'Thuthiyai', 'Thiruthiyai', 'Sathurthi', 'Panjami', 'Shasti', 'Sapthami', 'Astami', 'Navami', 'Thasami', 'Egadashi', 'Duvadasi', 'Thirayodasi', 'Sathuradasi', 'Pournami', 'Pirathamai', 'Thuthiyai', 'Thiruthiyai', 'Sathurthi', 'Panjami', 'Shasti', 'Sapthami', 'Astami', 'Navami', 'Thasami', 'Egadashi', 'Duvadasi', 'Thirayodasi', 'Sathuradasi', 'Amavasai'];
-const NAKSHATRA = ['Aswini', 'Bharani', 'Karthigai', 'Rohini', 'Mirugasirisham', 'Thiruvathirai', 'Punarpoosam', 'Poosam', 'Ayilyam', 'Magam', 'Pooram', 'Uthiram', 'Hastham', 'Chithirai', 'Swathi', 'Visakam', 'Anusham', 'Kettai', 'Moolam', 'Pooradam', 'Uthiradam', 'Thiruvonam', 'Avittam', 'Sathayam', 'Poorattathi', 'Uthirattathi', 'Revathi'];
-const RASI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrischika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+// Astronomical term names per language (ta / te / kn / ml / en)
+const TITHI_NAMES = {
+  ta: ['பிரதமை','துதியை','திருதியை','சதுர்த்தி','பஞ்சமி','சஷ்டி','சப்தமி','அஷ்டமி','நவமி','தசமி','ஏகாதசி','துவாதசி','திரயோதசி','சதுர்தசி','பௌர்ணமி','பிரதமை','துதியை','திருதியை','சதுர்த்தி','பஞ்சமி','சஷ்டி','சப்தமி','அஷ்டமி','நவமி','தசமி','ஏகாதசி','துவாதசி','திரயோதசி','சதுர்தசி','அமாவாசை'],
+  te: ['పాడ్యమి','విదియ','తదియ','చవితి','పంచమి','షష్ఠి','సప్తమి','అష్టమి','నవమి','దశమి','ఏకాదశి','ద్వాదశి','త్రయోదశి','చతుర్దశి','పౌర్ణమి','పాడ్యమి','విదియ','తదియ','చవితి','పంచమి','షష్ఠి','సప్తమి','అష్టమి','నవమి','దశమి','ఏకాదశి','ద్వాదశి','త్రయోదశి','చతుర్దశి','అమావాస్య'],
+  kn: ['ಪಾಡ್ಯಮಿ','ಬಿದಿಗೆ','ತದಿಗೆ','ಚವಿತಿ','ಪಂಚಮಿ','ಷಷ್ಠಿ','ಸಪ್ತಮಿ','ಅಷ್ಟಮಿ','ನವಮಿ','ದಶಮಿ','ಏಕಾದಶಿ','ದ್ವಾದಶಿ','ತ್ರಯೋದಶಿ','ಚತುರ್ದಶಿ','ಹುಣ್ಣಿಮೆ','ಪಾಡ್ಯಮಿ','ಬಿದಿಗೆ','ತದಿಗೆ','ಚವಿತಿ','ಪಂಚಮಿ','ಷಷ್ಠಿ','ಸಪ್ತಮಿ','ಅಷ್ಟಮಿ','ನವಮಿ','ದಶಮಿ','ಏಕಾದಶಿ','ದ್ವಾದಶಿ','ತ್ರಯೋದಶಿ','ಚತುರ್ದಶಿ','ಅಮಾವಾಸ್ಯೆ'],
+  ml: ['പ്രതിപദം','ദ്വിതീയ','തൃതീയ','ചതുർത്ഥി','പഞ്ചമി','ഷഷ്ഠി','സപ്തമി','അഷ്ടമി','നവമി','ദശമി','ഏകാദശി','ദ്വാദശി','ത്രയോദശി','ചതുർദശി','പൗർണമി','പ്രതിപദം','ദ്വിതീയ','തൃതീയ','ചതുർത്ഥി','പഞ്ചമി','ഷഷ്ഠി','സപ്തമി','അഷ്ടമി','നവമി','ദശമി','ഏകാദശി','ദ്വാദശി','ത്രയോദശി','ചതുർദശി','അമാവാസ്യ'],
+  en: ['Pratipada','Dvitiya','Tritiya','Chaturthi','Panchami','Shashti','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dvadashi','Trayodashi','Chaturdashi','Pournami','Pratipada','Dvitiya','Tritiya','Chaturthi','Panchami','Shashti','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dvadashi','Trayodashi','Chaturdashi','Amavasya']
+};
+
+const NAKSHATRA = {
+  ta: ['அஸ்வினி','பரணி','கார்த்திகை','ரோகிணி','மிருகசிரிஷம்','திருவாதிரை','புனர்பூசம்','பூசம்','ஆயில்யம்','மகம்','பூரம்','உத்திரம்','ஹஸ்தம்','சித்திரை','சுவாதி','விசாகம்','அனுஷம்','கேட்டை','மூலம்','பூராடம்','உத்திராடம்','திருவோணம்','அவிட்டம்','சதயம்','பூரட்டாதி','உத்திரட்டாதி','ரேவதி'],
+  te: ['అశ్వని','భరణి','కృత్తిక','రోహిణి','మృగశిర','ఆర్ద్ర','పునర్వసు','పుష్యమి','ఆశ్లేష','మఖ','పుబ్బ','ఉత్తర','హస్త','చిత్త','స్వాతి','విశాఖ','అనూరాధ','జ్యేష్ఠ','మూల','పూర్వాషాఢ','ఉత్తరాషాఢ','శ్రవణ','ధనిష్ఠ','శతభిష','పూర్వాభాద్ర','ఉత్తరాభాద్ర','రేవతి'],
+  kn: ['ಅಶ್ವಿನಿ','ಭರಣಿ','ಕೃತ್ತಿಕೆ','ರೋಹಿಣಿ','ಮೃಗಶಿರ','ಆರ್ದ್ರ','ಪುನರ್ವಸು','ಪುಷ್ಯ','ಆಶ್ಲೇಷ','ಮಘ','ಪೂರ್ವ','ಉತ್ತರ','ಹಸ್ತ','ಚಿತ್ತ','ಸ್ವಾತಿ','ವಿಶಾಖ','ಅನುರಾಧ','ಜ್ಯೇಷ್ಠ','ಮೂಲ','ಪೂರ್ವಾಷಾಢ','ಉತ್ತರಾಷಾಢ','ಶ್ರವಣ','ಧನಿಷ್ಠ','ಶತಭಿಷ','ಪೂರ್ವಭಾದ್ರ','ಉತ್ತರಭಾದ್ರ','ರೇವತಿ'],
+  ml: ['അശ്വതി','ഭരണി','കാർത്തിക','രോഹിണി','മകയിരം','തിരുവാതിര','പുണർതം','പൂയം','ആയില്യം','മകം','പൂരം','ഉത്രം','അത്തം','ചിത്ര','ചോതി','വിശാഖം','അനിഴം','തൃക്കേട്ട','മൂലം','പൂരാടം','ഉത്രാടം','തിരുവോണം','അവിട്ടം','ചതയം','പൂരുരുട്ടാതി','ഉത്രട്ടാതി','രേവതി'],
+  en: ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Moola','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati']
+};
+
+const RASI = {
+  ta: ['மேஷம்','ரிஷபம்','மிதுனம்','கர்கடகம்','சிம்மம்','கன்னி','துலாம்','விருச்சிகம்','தனுசு','மகரம்','கும்பம்','மீனம்'],
+  te: ['మేష','వృషభ','మిధున','కర్కాటక','సింహ','కన్య','తుల','వృశ్చిక','ధను','మకర','కుంభ','మీన'],
+  kn: ['ಮೇಷ','ವೃಷಭ','ಮಿಥುನ','ಕರ್ಕಾಟಕ','ಸಿಂಹ','ಕನ್ಯ','ತುಲ','ವೃಶ್ಚಿಕ','ಧನು','ಮಕರ','ಕುಂಭ','ಮೀನ'],
+  ml: ['മേടം','ഇടവം','മിഥുനം','കർക്കിടകം','ചിങ്ങം','കന്നി','തുലാം','വൃശ്ചികം','ധനു','മകരം','കുംഭം','മീനം'],
+  en: ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces']
+};
 
 const I18N = {
   ta: {
-    appTitle: 'தமிழ் பஞ்சாங்கம்', calc: 'கணக்கிடு', date: 'தேதி', city: 'நகரம்', lat: 'அகலாங்கம் (Lat)', lon: 'நெட்டாங்கம் (Lon)',
-    useLoc: 'என் இருப்பிடம்', calculate: 'கணக்கு', reminders: 'நினைவூட்டு இயக்கு', results: 'இன்றைய பலன்கள்', news: 'பக்தி செய்திகள்', rss: 'RSS மூலம்',
+    appTitle: 'தக்ஷிண பஞ்சாங்கம்', calc: 'கணக்கிடு', date: 'தேதி', city: 'நகரம்', lat: 'அகலாங்கம் (Lat)', lon: 'நெட்டாங்கம் (Lon)',
+    useLoc: 'என் இருப்பிடம்', calculate: 'கணக்கு', reminders: 'நினைவூட்டு இயக்கு', results: 'இன்றைய பலன்கள்', news: 'பக்தி செய்திகள்',
     footer: 'ஆஃப்லைன் PWA • client-side மட்டும்', monthTitle: 'மாத பஞ்சாங்கம்',
     rahu: 'ராகு காலம்', yama: 'யமகண்டம்', abhijit: 'அபிஜித் முஹூர்த்தம்', shashti: 'சஷ்டி நிலை', amrita: 'அமிர்த காலம்', brahma: 'பிரஹ்ம முகூர்த்தம்',
     tivaraatri: 'திவராத்திரி', ausp: 'மங்கள நாள்', shashtiMsg: 'சஷ்டி விரதம் ({paksha}) — காலை பூஜை மறக்காதீங்க!', noShashti: 'இன்று சஷ்டி இல்லை',
-    mondayTuesday: 'ஆம்', no: 'இல்லை', goodNak: 'மங்கல நட்சத்திரம்!', notMarked: 'சாதாரண நாள்', rssLoad: 'RSS ஏற்று',
+    mondayTuesday: 'ஆம்', no: 'இல்லை', goodNak: 'மங்கல நட்சத்திரம்!', notMarked: 'சாதாரண நாள்', rssLoad: 'புதுப்பி',
+    shuklaPaksha: 'சுக்ல பக்ஷம்', krishnaPaksha: 'கிருஷ்ண பக்ஷம்',
     remSet: 'ராகு காலம் தொடங்க 30 நிமிடங்களுக்கு முன் நினைவூட்டு அமைக்கப்பட்டது', remNow: 'ராகு காலம் தொடங்க போகுது—பூஜை தள்ளி வைக்கலாம்',
-    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'],
-    festival: 'விழா'
+    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'], festival: 'விழா'
+  },
+  te: {
+    appTitle: 'దక్షిణ పంచాంగం', calc: 'లెక్కించు', date: 'తేది', city: 'నగరం', lat: 'అక్షాంశం (Lat)', lon: 'రేఖాంశం (Lon)',
+    useLoc: 'నా స్థానం', calculate: 'లెక్కించు', reminders: 'రిమైండర్ ప్రారంభించు', results: 'నేటి పంచాంగం', news: 'భక్తి వార్తలు',
+    footer: 'Offline PWA • క్లయింట్ సైడ్ మాత్రమే', monthTitle: 'నెల పంచాంగం',
+    rahu: 'రాహు కాలం', yama: 'యమగండం', abhijit: 'అభిజిత్ ముహూర్తం', shashti: 'షష్ఠి', amrita: 'అమృత కాలం', brahma: 'బ్రహ్మ ముహూర్తం',
+    tivaraatri: 'శివరాత్రి', ausp: 'శుభ దినం', shashtiMsg: 'షష్ఠి వ్రతం ({paksha}) — ఉదయం పూజ మర్చిపోకండి!', noShashti: 'నేడు షష్ఠి లేదు',
+    mondayTuesday: 'అవును', no: 'కాదు', goodNak: 'మంగళ నక్షత్రం!', notMarked: 'సాధారణ రోజు', rssLoad: 'రిఫ్రెష్',
+    shuklaPaksha: 'శుక్ల పక్షం', krishnaPaksha: 'కృష్ణ పక్షం',
+    remSet: 'రాహు కాలానికి 30 నిమిషాల ముందు రిమైండర్ సెట్ చేయబడింది', remNow: 'రాహు కాలం మొదలవుతోంది—పూజ వాయిదా వేయండి',
+    weekdays: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'], festival: 'పండుగ'
+  },
+  kn: {
+    appTitle: 'ದಕ್ಷಿಣ ಪಂಚಾಂಗ', calc: 'ಲೆಕ್ಕಿಸು', date: 'ದಿನಾಂಕ', city: 'ನಗರ', lat: 'ಅಕ್ಷಾಂಶ (Lat)', lon: 'ರೇಖಾಂಶ (Lon)',
+    useLoc: 'ನನ್ನ ಸ್ಥಳ', calculate: 'ಲೆಕ್ಕಿಸು', reminders: 'ರಿಮೈಂಡರ್ ಪ್ರಾರಂಭಿಸು', results: 'ಇಂದಿನ ಪಂಚಾಂಗ', news: 'ಭಕ್ತಿ ಸುದ್ದಿ',
+    footer: 'Offline PWA • ಕ್ಲೈಂಟ್ ಸೈಡ್ ಮಾತ್ರ', monthTitle: 'ಮಾಸಿಕ ಪಂಚಾಂಗ',
+    rahu: 'ರಾಹು ಕಾಲ', yama: 'ಯಮಗಂಡ', abhijit: 'ಅಭಿಜಿತ್ ಮುಹೂರ್ತ', shashti: 'ಷಷ್ಠಿ', amrita: 'ಅಮೃತ ಕಾಲ', brahma: 'ಬ್ರಹ್ಮ ಮುಹೂರ್ತ',
+    tivaraatri: 'ಶಿವರಾತ್ರಿ', ausp: 'ಶುಭ ದಿನ', shashtiMsg: 'ಷಷ್ಠಿ ವ್ರತ ({paksha}) — ಬೆಳಿಗ್ಗೆ ಪೂಜೆ ಮರೆಯಬೇಡಿ!', noShashti: 'ಇಂದು ಷಷ್ಠಿ ಇಲ್ಲ',
+    mondayTuesday: 'ಹೌದು', no: 'ಇಲ್ಲ', goodNak: 'ಮಂಗಳ ನಕ್ಷತ್ರ!', notMarked: 'ಸಾಮಾನ್ಯ ದಿನ', rssLoad: 'ರಿಫ್ರೆಶ್',
+    shuklaPaksha: 'ಶುಕ್ಲ ಪಕ್ಷ', krishnaPaksha: 'ಕೃಷ್ಣ ಪಕ್ಷ',
+    remSet: 'ರಾಹು ಕಾಲಕ್ಕೆ 30 ನಿಮಿಷ ಮೊದಲು ರಿಮೈಂಡರ್ ಹೊಂದಿಸಲಾಗಿದೆ', remNow: 'ರಾಹು ಕಾಲ ಪ್ರಾರಂಭವಾಗಲಿದೆ—ಪೂಜೆ ಮುಂದೂಡಿ',
+    weekdays: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'], festival: 'ಹಬ್ಬ'
+  },
+  ml: {
+    appTitle: 'ദക്ഷിണ പഞ്ചാംഗം', calc: 'കണക്കാക്കുക', date: 'തീയതി', city: 'നഗരം', lat: 'അക്ഷാംശം (Lat)', lon: 'രേഖാംശം (Lon)',
+    useLoc: 'എൻ്റെ സ്ഥാനം', calculate: 'കണക്കാക്കുക', reminders: 'റിമൈൻഡർ പ്രവർത്തനക്ഷമമാക്കുക', results: 'ഇന്നത്തെ പഞ്ചാംഗം', news: 'ഭക്തി വാർത്തകൾ',
+    footer: 'Offline PWA • ക്ലൈൻ്റ് സൈഡ് മാത്രം', monthTitle: 'മാസ പഞ്ചാംഗം',
+    rahu: 'രാഹു കാലം', yama: 'യമഗണ്ഡം', abhijit: 'അഭിജിത് മുഹൂർത്തം', shashti: 'ഷഷ്ഠി', amrita: 'അമൃത കാലം', brahma: 'ബ്രഹ്മ മുഹൂർത്തം',
+    tivaraatri: 'ശിവരാത്രി', ausp: 'ശുഭ ദിനം', shashtiMsg: 'ഷഷ്ഠി വ്രതം ({paksha}) — രാവിലെ പൂജ മറക്കരുത്!', noShashti: 'ഇന്ന് ഷഷ്ഠി ഇല്ല',
+    mondayTuesday: 'അതെ', no: 'ഇല്ല', goodNak: 'മംഗള നക്ഷത്രം!', notMarked: 'സാധാരണ ദിവസം', rssLoad: 'റിഫ്രഷ്',
+    shuklaPaksha: 'ശുക്ല പക്ഷം', krishnaPaksha: 'കൃഷ്ണ പക്ഷം',
+    remSet: 'രാഹു കാലത്തിന് 30 മിനിറ്റ് മുമ്പ് റിമൈൻഡർ സജ്ജമാക്കി', remNow: 'രാഹു കാലം തുടങ്ങാൻ പോകുന്നു—പൂജ മാറ്റിവക്കൂ',
+    weekdays: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], festival: 'ഉത്സവം'
   },
   en: {
-    appTitle: 'Tamil Panchangam', calc: 'Calculate', date: 'Date', city: 'City', lat: 'Latitude (Lat)', lon: 'Longitude (Lon)',
-    useLoc: 'Use My Location', calculate: 'Calculate', reminders: 'Enable Reminder', results: "Today's Panchangam", news: 'Bhakti News', rss: 'RSS Source',
+    appTitle: 'Dakshin Panchangam', calc: 'Calculate', date: 'Date', city: 'City', lat: 'Latitude (Lat)', lon: 'Longitude (Lon)',
+    useLoc: 'Use My Location', calculate: 'Calculate', reminders: 'Enable Reminder', results: "Today's Panchangam", news: 'Bhakti News',
     footer: 'Offline-ready PWA • Client-side only', monthTitle: 'Monthly Panchangam',
     rahu: 'Rahu Kalam', yama: 'Yamagandam', abhijit: 'Abhijit Muhurta', shashti: 'Shashti', amrita: 'Amrita Kalam', brahma: 'Brahma Muhurta',
-    tivaraatri: 'Tivaraatri', ausp: 'Auspicious Day', shashtiMsg: 'Shashti fasting ({paksha}) — Morning puja reminder!', noShashti: 'No Shashti today',
-    mondayTuesday: 'Yes', no: 'No', goodNak: 'Mangala nakshatra!', notMarked: 'Regular day', rssLoad: 'Load Feed',
+    tivaraatri: 'Shivaratri', ausp: 'Auspicious Day', shashtiMsg: 'Shashti fasting ({paksha}) — Morning puja reminder!', noShashti: 'No Shashti today',
+    mondayTuesday: 'Yes', no: 'No', goodNak: 'Mangala nakshatra!', notMarked: 'Regular day', rssLoad: 'Refresh',
+    shuklaPaksha: 'Shukla Paksha', krishnaPaksha: 'Krishna Paksha',
     remSet: 'Reminder set for 30 mins before Rahu Kalam', remNow: 'Rahu Kalam starts soon—consider postponing puja',
     weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], festival: 'Festival'
   }
@@ -49,8 +136,9 @@ let currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(),
 let newsArticles = [];
 let activeNewsTag = 'All';
 
-const t = (k) => I18N[currentLang][k] || k;
-const fmtTime = (d) => d.toLocaleTimeString(currentLang === 'ta' ? 'ta-IN' : 'en-IN', { hour: '2-digit', minute: '2-digit' });
+const LOCALE_MAP = { ta: 'ta-IN', te: 'te-IN', kn: 'kn-IN', ml: 'ml-IN', en: 'en-IN' };
+const t = (k) => (I18N[currentLang] || I18N.en)[k] || k;
+const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', { hour: '2-digit', minute: '2-digit' });
 
 function initUI() {
   const dateInput = document.getElementById('date-input');
@@ -60,7 +148,7 @@ function initUI() {
   CITY_PRESETS.forEach((c, idx) => {
     const opt = document.createElement('option');
     opt.value = idx;
-    opt.textContent = `${c.name} (${c.lat}, ${c.lon})`;
+    opt.textContent = `${c.region} — ${c.name}`;
     citySelect.appendChild(opt);
   });
   citySelect.addEventListener('change', () => {
@@ -72,9 +160,8 @@ function initUI() {
   renderNewsChips();
   document.getElementById('news-search').addEventListener('input', renderNewsCards);
 
-  document.getElementById('lang-toggle').addEventListener('click', () => {
-    currentLang = currentLang === 'ta' ? 'en' : 'ta';
-    document.getElementById('lang-toggle').textContent = currentLang === 'ta' ? 'English' : 'தமிழ்';
+  document.getElementById('lang-toggle').addEventListener('change', (e) => {
+    currentLang = e.target.value;
     hydrateLabels();
     renderFromCache();
     renderMonthViewFromInputs();
@@ -160,12 +247,12 @@ function getSunrise(date, lat, lon) {
   return calcSunriseSunset(date, lat, lon).sunrise;
 }
 
-// Moon rasi from real moon longitude
+// Moon rasi from real moon longitude (language-aware)
 function calcMoonRasi(date) {
   const d = new Date(date);
   d.setHours(6, 0, 0, 0);
   const jd = 2440587.5 + d.getTime() / 86400000;
-  return RASI[Math.floor(getMoonLongitude(jd) / 30)];
+  return (RASI[currentLang] || RASI.ta)[Math.floor(getMoonLongitude(jd) / 30)];
 }
 
 // Tamil solar calendar day: Sun's degree within current rasi (~1°/day)
@@ -277,7 +364,7 @@ function calcNakshatra(date) {
 function getShashti(date) {
   const tithi = calcTithi(date);
   if (tithi === 6 || tithi === 21) {
-    const paksha = tithi < 15 ? (currentLang === 'ta' ? 'சுக்க்ல பக்ஷம்' : 'Shukla Paksha') : (currentLang === 'ta' ? 'கிருஷ்ண பக்ஷம்' : 'Krishna Paksha');
+    const paksha = tithi <= 15 ? t('shuklaPaksha') : t('krishnaPaksha');
     return t('shashtiMsg').replace('{paksha}', paksha);
   }
   return t('noShashti');
@@ -356,7 +443,7 @@ function parseRSSItems(xmlDoc, sourceMeta) {
       title, link,
       summary: clean.slice(0, 120),
       pubMs: pub ? new Date(pub).getTime() : 0,
-      dateText: pub ? new Date(pub).toLocaleDateString(currentLang === 'ta' ? 'ta-IN' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+      dateText: pub ? new Date(pub).toLocaleDateString(currentLang === 'en' ? 'en-US' : (LOCALE_MAP[currentLang] || 'en-IN'), { month: 'long', day: 'numeric', year: 'numeric' }) : '',
       image: extractImageFromItem(item, description),
       tag: sourceMeta.tag,
       source: sourceMeta.name
@@ -427,9 +514,11 @@ function getMonthCellData(date, lat, lon) {
   const tithi = calcTithi(date);
   const nak = calcNakshatra(date);
   const paksha = tithi <= 15 ? 'S' : 'K';
+  const langTithi = (TITHI_NAMES[currentLang] || TITHI_NAMES.ta)[tithi - 1];
+  const langNak = (NAKSHATRA[currentLang] || NAKSHATRA.ta)[nak - 1];
   const moonRasi = calcMoonRasi(date);
   const tamilDay = calcTamilDay(date);
-  return { sunrise: fmtTime(sunrise), sunset: fmtTime(sunset), tithi: `${TITHI_NAMES[tithi - 1]} ${paksha}`, nakshatra: `${NAKSHATRA[nak - 1]}`, moon: moonRasi, tamilDay, festivals: getFestivalTags(date) };
+  return { sunrise: fmtTime(sunrise), sunset: fmtTime(sunset), tithi: `${langTithi} ${paksha}`, nakshatra: langNak, moon: moonRasi, tamilDay, festivals: getFestivalTags(date) };
 }
 
 function renderWeekdayRail() {
