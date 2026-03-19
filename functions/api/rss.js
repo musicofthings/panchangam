@@ -3,11 +3,16 @@
 
 const ALLOWED = new Set([
   'https://www.hinduismtoday.com/feed/',
-  'https://www.tamilbrahmins.com/forums/-/index.rss',
+  'https://www.indica.today/feed/',
+  'https://www.speakingtree.in/rss',
+  'https://www.templepurohit.com/feed/',
+  'https://isha.sadhguru.org/in/en/wisdom/rss.xml',
+  'https://belurmath.org/feed/',
+  'https://www.sringeri.net/feed/',
   'https://aanmeegam.in/feed/',
   'https://tamilandvedas.com/feed/',
-  'https://www.templepurohit.com/feed/',
-  'https://isha.sadhguru.org/in/en/wisdom/rss.xml'
+  'https://www.tamilbrahmins.com/forums/-/index.rss',
+  'https://english.mathrubhumi.com/rss/astrology.xml'
 ]);
 
 export async function onRequestGet({ request }) {
