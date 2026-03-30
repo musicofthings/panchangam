@@ -1,101 +1,568 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#7b1fa2" />
-    <title>Dakshin Panchangam — Tamil · Telugu · Kannada · Malayalam</title>
-    <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1 id="app-title">தக்ஷிண பஞ்சாங்கம்</h1>
-      <select id="lang-toggle">
-        <option value="ta">தமிழ்</option>
-        <option value="te">తెలుగు</option>
-        <option value="kn">ಕನ್ನಡ</option>
-        <option value="ml">മലയാളം</option>
-        <option value="en">English</option>
-      </select>
-    </header>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#5e0081" />
+  <meta name="description" content="Dakshin Panchangam — Tamil, Telugu, Kannada, Malayalam daily panchangam with muhurtas, nakshatra, tithi and bhakti news." />
+  <title>Dakshin Panchangam — Tamil · Telugu · Kannada · Malayalam</title>
+  <link rel="manifest" href="manifest.webmanifest" />
 
-    <main class="layout">
-      <section class="panel inputs">
-        <h2 id="calc-title">கணக்கிடு</h2>
-        <div class="field">
-          <label for="date-input" id="label-date">தேதி</label>
-          <input type="date" id="date-input" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-container": "#562100",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "primary-fixed-dim": "#ebb2ff",
+            "inverse-surface": "#2f3037",
+            "on-tertiary-container": "#83d57e",
+            "tertiary": "#00430c",
+            "primary-fixed": "#f8d8ff",
+            "surface-variant": "#e3e1ea",
+            "background": "#fbf8ff",
+            "secondary": "#9e4200",
+            "on-surface": "#1a1b21",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#88d982",
+            "surface-tint": "#8c33b3",
+            "on-primary-container": "#e8aaff",
+            "secondary-fixed-dim": "#ffb691",
+            "secondary-fixed": "#ffdbcb",
+            "surface-container-low": "#f4f2fb",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#4e4351",
+            "on-primary-fixed-variant": "#721199",
+            "surface-container-highest": "#e3e1ea",
+            "surface-container-high": "#e9e7f0",
+            "on-tertiary-fixed-variant": "#005312",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "surface": "#fbf8ff",
+            "primary-container": "#7b1fa2",
+            "outline-variant": "#d2c1d3",
+            "on-primary-fixed": "#320047",
+            "on-primary": "#ffffff",
+            "primary": "#5e0081",
+            "on-secondary-fixed-variant": "#793100",
+            "inverse-on-surface": "#f1f0f8",
+            "tertiary-fixed": "#a3f69c",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-container": "#015d16",
+            "on-background": "#1a1b21",
+            "secondary-container": "#fb6d00",
+            "surface-bright": "#fbf8ff",
+            "on-secondary-fixed": "#341100",
+            "surface-dim": "#dad9e2",
+            "surface-container": "#efedf6",
+            "on-tertiary-fixed": "#002204",
+            "inverse-primary": "#ebb2ff",
+            "outline": "#807382"
+          },
+          fontFamily: {
+            "headline": ["Noto Serif", "serif"],
+            "body": ["Plus Jakarta Sans", "sans-serif"],
+            "label": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "1rem",
+            "xl": "1.25rem",
+            "full": "9999px"
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+      user-select: none;
+    }
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .editorial-shadow { box-shadow: 0 24px 48px -12px rgba(26,27,33,0.08); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fbf8ff; }
+    [data-view] { display: none; }
+    [data-view].active { display: block; }
+    .nav-item.active .nav-icon { background-color: #f8d8ff; border-radius: 1rem; }
+    .nav-item.active .nav-label { color: #5e0081; font-weight: 700; }
+    .sidebar-item.active { background-color: #f8d8ff; color: #5e0081; font-weight: 700; }
+    .sidebar-item.active .material-symbols-outlined { color: #5e0081; }
+    #settings-panel {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #settings-panel.open { transform: translateX(0); }
+    .chip-active { background-color: #5e0081; color: #ffffff; }
+    .chip-inactive { background-color: #efedf6; color: #4e4351; }
+  </style>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen font-body">
+
+  <!-- Hidden state inputs for app.js compatibility -->
+  <input type="hidden" id="date-input" />
+  <input type="hidden" id="lat-input" />
+  <input type="hidden" id="lon-input" />
+
+  <!-- ========== DESKTOP SIDEBAR (w-64, fixed left) ========== -->
+  <aside id="sidebar" class="hidden lg:flex flex-col fixed top-0 left-0 h-full w-64 bg-surface-container-low border-r border-outline-variant z-50 py-6 px-4 gap-2">
+    <!-- App brand -->
+    <div class="flex items-center gap-3 px-2 mb-6">
+      <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-on-primary text-lg">brightness_5</span>
+      </div>
+      <div>
+        <div id="app-title" class="font-headline font-bold text-on-surface text-base leading-tight">தக்ஷிண பஞ்சாங்கம்</div>
+        <div id="current-location-display" class="text-[10px] text-on-surface-variant truncate">Chennai, Tamil Nadu</div>
+      </div>
+    </div>
+
+    <!-- Nav items -->
+    <nav class="flex flex-col gap-1 flex-1">
+      <button onclick="showView('today')" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="today">
+        <span class="material-symbols-outlined text-primary text-xl">calendar_today</span>
+        <span class="text-sm font-medium">Today</span>
+      </button>
+      <button onclick="showView('calendar')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="calendar">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">calendar_month</span>
+        <span class="text-sm font-medium">Calendar</span>
+      </button>
+      <button onclick="showView('festivals')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="festivals">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">celebration</span>
+        <span class="text-sm font-medium">Festivals</span>
+      </button>
+      <button onclick="showView('temples')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="temples">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">temple_hindu</span>
+        <span class="text-sm font-medium">Temples</span>
+      </button>
+      <button onclick="showView('news')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="news">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">newspaper</span>
+        <span class="text-sm font-medium">Bhakti News</span>
+      </button>
+    </nav>
+
+    <!-- Settings button at bottom -->
+    <button id="settings-btn-sidebar" onclick="toggleSettings()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-high transition-all mt-auto">
+      <span class="material-symbols-outlined text-on-surface-variant text-xl">settings</span>
+      <span class="text-sm font-medium text-on-surface-variant">Settings</span>
+    </button>
+  </aside>
+
+  <!-- ========== TOP HEADER (fixed, mobile + desktop with sidebar offset) ========== -->
+  <header class="fixed top-0 left-0 lg:left-64 right-0 h-14 bg-surface/90 backdrop-blur-md border-b border-outline-variant z-40 flex items-center px-4 gap-3">
+    <!-- Mobile menu button -->
+    <button id="mobile-menu-btn" class="lg:hidden p-1.5 rounded-xl hover:bg-surface-container transition-colors" onclick="document.getElementById('mobile-drawer').classList.toggle('translate-x-[-100%]')">
+      <span class="material-symbols-outlined text-on-surface">menu</span>
+    </button>
+
+    <!-- View title -->
+    <h1 id="view-title" class="flex-1 font-headline font-bold text-on-surface text-base">Today's Panchangam</h1>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-1">
+      <button id="notify-btn" type="button" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors" title="Enable Reminder">
+        <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+      </button>
+      <button id="settings-btn-header" onclick="toggleSettings()" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-on-surface-variant">settings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MOBILE DRAWER NAV ========== -->
+  <div id="mobile-drawer" class="fixed inset-0 z-[60] lg:hidden translate-x-[-100%] transition-transform duration-300">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')"></div>
+    <div class="relative w-72 h-full bg-surface-container-low flex flex-col py-6 px-4 gap-2">
+      <div class="flex items-center gap-3 px-2 mb-6">
+        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-primary text-lg">brightness_5</span>
         </div>
-
-        <div class="field">
-          <label for="city-select" id="label-city">நகரம்</label>
-          <select id="city-select"></select>
+        <div>
+          <div class="font-headline font-bold text-on-surface text-base leading-tight">தக்ஷிண பஞ்சாங்கம்</div>
+          <div class="text-[10px] text-on-surface-variant">Dakshin Panchangam</div>
         </div>
+      </div>
+      <nav class="flex flex-col gap-1">
+        <button onclick="showView('today'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
+          <span class="material-symbols-outlined text-primary text-xl">calendar_today</span>
+          <span class="text-sm font-medium">Today</span>
+        </button>
+        <button onclick="showView('calendar'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
+          <span class="material-symbols-outlined text-on-surface-variant text-xl">calendar_month</span>
+          <span class="text-sm font-medium">Calendar</span>
+        </button>
+        <button onclick="showView('festivals'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
+          <span class="material-symbols-outlined text-on-surface-variant text-xl">celebration</span>
+          <span class="text-sm font-medium">Festivals</span>
+        </button>
+        <button onclick="showView('temples'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
+          <span class="material-symbols-outlined text-on-surface-variant text-xl">temple_hindu</span>
+          <span class="text-sm font-medium">Temples</span>
+        </button>
+        <button onclick="showView('news'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
+          <span class="material-symbols-outlined text-on-surface-variant text-xl">newspaper</span>
+          <span class="text-sm font-medium">Bhakti News</span>
+        </button>
+      </nav>
+      <button onclick="toggleSettings(); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-high transition-all mt-auto">
+        <span class="material-symbols-outlined text-on-surface-variant text-xl">settings</span>
+        <span class="text-sm font-medium text-on-surface-variant">Settings</span>
+      </button>
+    </div>
+  </div>
 
-        <div class="coords">
-          <div class="field">
-            <label for="lat-input" id="label-lat">அகலாங்கம் (Lat)</label>
-            <input type="number" id="lat-input" step="0.0001" />
+  <!-- ========== MAIN CONTENT AREA ========== -->
+  <main class="lg:ml-64 pt-14 pb-24 lg:pb-6 min-h-screen">
+
+    <!-- ===== TODAY VIEW ===== -->
+    <div data-view="today" class="active p-4 lg:p-6 max-w-5xl mx-auto">
+
+      <!-- Alert Banner (hidden by default) -->
+      <div id="alert-banner-wrap" class="hidden mb-4">
+        <div class="flex items-center gap-3 px-4 py-3 bg-secondary-container/20 border border-secondary-container/40 rounded-xl">
+          <span class="material-symbols-outlined text-secondary text-xl">festival</span>
+          <p id="alert-banner" class="text-sm font-medium text-on-surface flex-1"></p>
+          <button onclick="document.getElementById('alert-banner-wrap').classList.add('hidden')" class="text-on-surface-variant hover:text-on-surface">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero date card -->
+      <div class="bg-gradient-to-br from-primary to-primary-container rounded-2xl p-5 mb-4 editorial-shadow text-on-primary">
+        <div class="flex items-start justify-between">
+          <div>
+            <div id="today-date-num" class="font-headline font-bold text-6xl leading-none">30</div>
+            <div id="today-tamil-month" class="text-primary-fixed-dim text-sm font-medium mt-1">Panguni 15</div>
+            <div id="today-location-pill" class="text-primary-fixed/70 text-xs mt-2">Chennai · Monday, 30 March 2026</div>
           </div>
-          <div class="field">
-            <label for="lon-input" id="label-lon">நெட்டாங்கம் (Lon)</label>
-            <input type="number" id="lon-input" step="0.0001" />
+          <div class="text-right flex flex-col items-end gap-2">
+            <div class="flex items-center gap-2 bg-on-primary/10 rounded-full px-3 py-1">
+              <span class="material-symbols-outlined text-sm text-primary-fixed-dim">wb_sunny</span>
+              <span id="today-sunrise" class="text-xs font-medium text-primary-fixed">06:14 AM</span>
+            </div>
+            <div class="flex items-center gap-2 bg-on-primary/10 rounded-full px-3 py-1">
+              <span class="material-symbols-outlined text-sm text-secondary-fixed-dim">wb_twilight</span>
+              <span id="today-sunset" class="text-xs font-medium text-primary-fixed">06:28 PM</span>
+            </div>
+          </div>
+        </div>
+        <!-- Paksha + Tithi chips -->
+        <div id="today-paksha-tithi-chips" class="flex flex-wrap gap-2 mt-4">
+          <span class="px-3 py-1 bg-on-primary/20 rounded-full text-xs font-bold text-primary-fixed">Shukla Paksha</span>
+          <span class="px-3 py-1 bg-on-primary/20 rounded-full text-xs font-bold text-primary-fixed">Panchami</span>
+        </div>
+      </div>
+
+      <!-- Moon + Nakshatra row -->
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary text-xl">brightness_2</span>
+            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Moon Rasi</span>
+          </div>
+          <div id="today-moon-rasi" class="font-headline font-bold text-on-surface text-lg">Simha</div>
+          <div id="today-moon-auspicious" class="text-xs text-secondary font-medium mt-1">Regular day</div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary text-xl">star</span>
+            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Nakshatra</span>
+          </div>
+          <div id="today-nakshatra-chip" class="font-headline font-bold text-on-surface text-lg">Magha</div>
+        </div>
+      </div>
+
+      <!-- Auspicious badge row -->
+      <div id="auspicious-badges" class="flex flex-wrap gap-2 mb-4"></div>
+
+      <!-- Muhurta grid (6 cards) -->
+      <div class="mb-4">
+        <h2 class="font-headline font-bold text-on-surface text-base mb-3">Muhurtas &amp; Timings</h2>
+        <div id="muhurta-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <!-- Filled by app.js renderResults() -->
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="grid grid-cols-3 gap-3">
+        <button onclick="showView('calendar')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
+          <span class="material-symbols-outlined text-primary text-2xl">calendar_month</span>
+          <span class="text-xs font-medium text-on-surface-variant text-center">Calendar</span>
+        </button>
+        <button onclick="showView('news')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
+          <span class="material-symbols-outlined text-primary text-2xl">newspaper</span>
+          <span class="text-xs font-medium text-on-surface-variant text-center">Bhakti News</span>
+        </button>
+        <button onclick="showView('festivals')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
+          <span class="material-symbols-outlined text-primary text-2xl">celebration</span>
+          <span class="text-xs font-medium text-on-surface-variant text-center">Festivals</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== CALENDAR VIEW ===== -->
+    <div data-view="calendar" class="p-4 lg:p-6 max-w-6xl mx-auto">
+      <!-- Month navigation -->
+      <div class="flex items-center justify-between mb-4">
+        <button id="cal-prev-btn" class="p-2 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface">chevron_left</span>
+        </button>
+        <h2 id="cal-month-title" class="font-headline font-bold text-on-surface text-lg">March 2026</h2>
+        <button id="cal-next-btn" class="p-2 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface">chevron_right</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-4">
+        <!-- Calendar grid -->
+        <div class="flex-1 bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow">
+          <!-- Weekday header row (static) -->
+          <div class="grid grid-cols-7 border-b border-outline-variant/50">
+            <div class="p-2 text-center text-xs font-bold text-error">Sun</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Mon</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Tue</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Wed</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Thu</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Fri</div>
+            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Sat</div>
+          </div>
+          <!-- Calendar body — filled by app.js -->
+          <div id="cal-grid-body" class="grid grid-cols-7 divide-x divide-y divide-outline-variant/30">
+            <!-- Loading skeleton -->
+            <div class="col-span-7 p-8 text-center text-on-surface-variant text-sm">Loading calendar…</div>
           </div>
         </div>
 
-        <div class="actions">
-          <button id="geo-btn" type="button">Use My Location</button>
-          <button id="calc-btn" type="button">Calculate</button>
+        <!-- Desktop right panel: day detail -->
+        <div class="hidden lg:flex flex-col w-72 shrink-0 bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
+          <h3 id="cal-day-detail-title" class="font-headline font-bold text-on-surface text-base mb-4">Select a day</h3>
+          <div id="cal-day-detail-timings" class="flex flex-col gap-3 text-sm text-on-surface-variant">
+            <p class="text-xs">Click on any date to see full panchangam details here.</p>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="actions">
-          <button id="notify-btn" type="button">Enable Reminder</button>
+    <!-- ===== FESTIVALS VIEW ===== -->
+    <div data-view="festivals" class="p-4 lg:p-6 max-w-3xl mx-auto">
+      <div class="bg-surface-container-lowest rounded-2xl p-8 editorial-shadow text-center">
+        <span class="material-symbols-outlined text-primary text-5xl mb-4 block">celebration</span>
+        <h2 class="font-headline font-bold text-on-surface text-2xl mb-2">Festivals</h2>
+        <p class="text-on-surface-variant text-sm mb-6">Festival dates are derived from the tithi (lunar day). Browse the calendar and click on any day to see festival information. Monthly festival listing coming soon.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left mt-6">
+          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+            <span class="material-symbols-outlined text-primary text-lg">brightness_5</span>
+            <div>
+              <div class="text-sm font-bold text-on-surface">Shashti Vratam</div>
+              <div class="text-xs text-on-surface-variant">Tithi 6 &amp; 21 — Murugan</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+            <span class="material-symbols-outlined text-primary text-lg">brightness_7</span>
+            <div>
+              <div class="text-sm font-bold text-on-surface">Pournami</div>
+              <div class="text-xs text-on-surface-variant">Tithi 15 — Full Moon</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+            <span class="material-symbols-outlined text-primary text-lg">brightness_3</span>
+            <div>
+              <div class="text-sm font-bold text-on-surface">Amavasai</div>
+              <div class="text-xs text-on-surface-variant">Tithi 30 — New Moon</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+            <span class="material-symbols-outlined text-primary text-lg">self_improvement</span>
+            <div>
+              <div class="text-sm font-bold text-on-surface">Soma Pradosh</div>
+              <div class="text-xs text-on-surface-variant">Monday Tithi 13/28 — Shiva</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TEMPLES VIEW ===== -->
+    <div data-view="temples" class="p-4 lg:p-6 max-w-3xl mx-auto">
+      <div class="bg-surface-container-lowest rounded-2xl p-8 editorial-shadow text-center">
+        <span class="material-symbols-outlined text-primary text-5xl mb-4 block">temple_hindu</span>
+        <h2 class="font-headline font-bold text-on-surface text-2xl mb-2">Temple Directory</h2>
+        <p class="text-on-surface-variant text-sm mb-4">A curated directory of South Indian temples with timings and special events is coming soon.</p>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-xs font-bold text-on-surface-variant mt-2">
+          <span class="material-symbols-outlined text-sm">construction</span>
+          Coming Soon
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NEWS VIEW ===== -->
+    <div data-view="news" class="p-4 lg:p-6 max-w-7xl mx-auto">
+      <!-- Search + chips row -->
+      <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+          <input id="news-search" type="search" placeholder="Search articles"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/30" />
+        </div>
+        <button id="news-refresh-btn" type="button" onclick="loadAllFeeds()" class="flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-base">refresh</span>
+          <span id="rss-load-btn">Refresh</span>
+        </button>
+      </div>
+
+      <!-- Tag filter chips -->
+      <div id="news-chips" class="flex flex-wrap gap-2 mb-6 no-scrollbar overflow-x-auto">
+        <!-- Filled by app.js renderNewsChips() -->
+      </div>
+
+      <!-- News feed grid -->
+      <div id="news-feed" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <!-- Loading state -->
+        <div class="bg-surface-container-lowest rounded-xl p-6 animate-pulse h-64"></div>
+        <div class="bg-surface-container-lowest rounded-xl p-6 animate-pulse h-64"></div>
+        <div class="bg-surface-container-lowest rounded-xl p-6 animate-pulse h-64"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========== BOTTOM NAV (mobile only, above footer) ========== -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/95 backdrop-blur border-t border-outline-variant z-40 flex items-center justify-around h-16 px-2">
+    <button onclick="showView('today')" class="nav-item active flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all" data-view-btn="today">
+      <div class="nav-icon w-12 h-7 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl">calendar_today</span>
+      </div>
+      <span class="nav-label text-[10px] font-medium text-on-surface-variant">Today</span>
+    </button>
+    <button onclick="showView('calendar')" class="nav-item flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all" data-view-btn="calendar">
+      <div class="nav-icon w-12 h-7 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl text-on-surface-variant">calendar_month</span>
+      </div>
+      <span class="nav-label text-[10px] font-medium text-on-surface-variant">Calendar</span>
+    </button>
+    <button onclick="showView('festivals')" class="nav-item flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all" data-view-btn="festivals">
+      <div class="nav-icon w-12 h-7 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl text-on-surface-variant">celebration</span>
+      </div>
+      <span class="nav-label text-[10px] font-medium text-on-surface-variant">Festivals</span>
+    </button>
+    <button onclick="showView('news')" class="nav-item flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all" data-view-btn="news">
+      <div class="nav-icon w-12 h-7 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl text-on-surface-variant">newspaper</span>
+      </div>
+      <span class="nav-label text-[10px] font-medium text-on-surface-variant">News</span>
+    </button>
+    <button onclick="toggleSettings()" class="nav-item flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all">
+      <div class="nav-icon w-12 h-7 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl text-on-surface-variant">settings</span>
+      </div>
+      <span class="nav-label text-[10px] font-medium text-on-surface-variant">Settings</span>
+    </button>
+  </nav>
+
+  <!-- ========== SETTINGS PANEL (slide-in from right) ========== -->
+  <div id="settings-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[80] hidden" onclick="toggleSettings()"></div>
+  <aside id="settings-panel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-surface-container-low z-[90] flex flex-col overflow-y-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant sticky top-0 bg-surface-container-low">
+      <h2 class="font-headline font-bold text-on-surface text-lg">Settings</h2>
+      <button onclick="toggleSettings()" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <div class="flex-1 px-5 py-4 flex flex-col gap-6">
+
+      <!-- Language -->
+      <section>
+        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Language</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-primary text-on-primary" data-lang="ta">தமிழ்</button>
+          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="te">తెలుగు</button>
+          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="kn">ಕನ್ನಡ</button>
+          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="ml">മലയാളം</button>
+          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="en">English</button>
         </div>
       </section>
 
-      <section class="panel results">
-        <h2 id="result-title">இன்றைய பலன்கள்</h2>
-        <div id="results-grid" class="results-grid"></div>
+      <!-- City -->
+      <section>
+        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Location</h3>
+        <select id="city-select" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 mb-3"></select>
+        <button id="geo-btn" type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">
+          <span class="material-symbols-outlined text-base text-primary">my_location</span>
+          Use My Location
+        </button>
       </section>
 
-      <aside class="panel news">
-        <div class="news-head">
-          <h2 id="news-title">Bhakti News</h2>
-          <input id="news-search" type="search" placeholder="Search articles" />
+      <!-- Notifications -->
+      <section>
+        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Notifications</h3>
+        <div class="flex flex-col gap-3">
+          <label class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl cursor-pointer">
+            <div>
+              <div class="text-sm font-medium text-on-surface">Rahu Kalam Alert</div>
+              <div class="text-xs text-on-surface-variant">30 min before Rahu Kalam</div>
+            </div>
+            <input type="checkbox" id="notif-rahu" class="w-4 h-4 accent-primary rounded" />
+          </label>
+          <label class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl cursor-pointer">
+            <div>
+              <div class="text-sm font-medium text-on-surface">Brahma Muhurta</div>
+              <div class="text-xs text-on-surface-variant">Early morning auspicious time</div>
+            </div>
+            <input type="checkbox" id="notif-brahma" class="w-4 h-4 accent-primary rounded" />
+          </label>
         </div>
-        <div id="news-chips" class="news-chips"></div>
-        <button id="rss-load-btn" type="button">Refresh</button>
-        <div id="news-feed" class="news-grid"></div>
-      </aside>
-    </main>
+      </section>
 
-    <section class="panel month-panel">
-      <div class="month-header">
-        <h2 id="month-title-text">மாத பஞ்சாங்கம்</h2>
-        <div class="month-nav">
-          <button id="month-prev" type="button">◀</button>
-          <strong id="month-title"></strong>
-          <button id="month-next" type="button">▶</button>
+      <!-- About -->
+      <section class="pb-6">
+        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">About</h3>
+        <div class="bg-surface-container-lowest rounded-xl p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-primary text-sm">brightness_5</span>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-on-surface">Dakshin Panchangam</div>
+              <div class="text-xs text-on-surface-variant">v2.0 · Offline PWA</div>
+            </div>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">South Indian panchangam calculator using Meeus astronomical algorithms. Calculations are performed locally — no internet required after first load.</p>
+          <p id="footer-note" class="text-xs text-on-surface-variant mt-2">Offline PWA · Client-side only</p>
         </div>
-      </div>
-      <div class="dpMonthGrid dpFlex">
-        <div id="weekday-rail" class="dpGridWeekday dpFlex dpFlexColumn"></div>
-        <div id="month-grid-body" class="dpMonthGridBody"></div>
-      </div>
-    </section>
+      </section>
 
-    <footer>
-      <small id="footer-note">Offline-ready PWA • Client-side only</small>
-    </footer>
+    </div>
+  </aside>
 
-    <script src="assets/swisseph.js"></script>
-    <script src="app.js"></script>
-  </body>
+  <script src="app.js"></script>
+</body>
 </html>
