@@ -82,8 +82,7 @@ const I18N = {
     mondayTuesday: 'ஆம்', no: 'இல்லை', goodNak: 'மங்கல நட்சத்திரம்!', notMarked: 'சாதாரண நாள்', rssLoad: 'புதுப்பி',
     shuklaPaksha: 'சுக்ல பக்ஷம்', krishnaPaksha: 'கிருஷ்ண பக்ஷம்',
     remSet: 'ராகு காலம் தொடங்க 30 நிமிடங்களுக்கு முன் நினைவூட்டு அமைக்கப்பட்டது', remNow: 'ராகு காலம் தொடங்க போகுது—பூஜை தள்ளி வைக்கலாம்',
-    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'], festival: 'விழா',
-    shashtiFestival: 'சஷ்டி விரதம்', somaPradosh: 'சோம பிரதோஷம்', searchPlaceholder: 'கட்டுரை தேடல்'
+    weekdays: ['Sun<br>ஞா', 'Mon<br>தி', 'Tue<br>செ', 'Wed<br>பு', 'Thu<br>வி', 'Fri<br>வெ', 'Sat<br>ச'], festival: 'விழா'
   },
   te: {
     appTitle: 'దక్షిణ పంచాంగం', calc: 'లెక్కించు', date: 'తేది', city: 'నగరం', lat: 'అక్షాంశం (Lat)', lon: 'రేఖాంశం (Lon)',
@@ -94,8 +93,7 @@ const I18N = {
     mondayTuesday: 'అవును', no: 'కాదు', goodNak: 'మంగళ నక్షత్రం!', notMarked: 'సాధారణ రోజు', rssLoad: 'రిఫ్రెష్',
     shuklaPaksha: 'శుక్ల పక్షం', krishnaPaksha: 'కృష్ణ పక్షం',
     remSet: 'రాహు కాలానికి 30 నిమిషాల ముందు రిమైండర్ సెట్ చేయబడింది', remNow: 'రాహు కాలం మొదలవుతోంది—పూజ వాయిదా వేయండి',
-    weekdays: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'], festival: 'పండుగ',
-    shashtiFestival: 'షష్ఠి వ్రతం', somaPradosh: 'సోమ ప్రదోష్', searchPlaceholder: 'వ్యాసం వెతకండి'
+    weekdays: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'], festival: 'పండుగ'
   },
   kn: {
     appTitle: 'ದಕ್ಷಿಣ ಪಂಚಾಂಗ', calc: 'ಲೆಕ್ಕಿಸು', date: 'ದಿನಾಂಕ', city: 'ನಗರ', lat: 'ಅಕ್ಷಾಂಶ (Lat)', lon: 'ರೇಖಾಂಶ (Lon)',
@@ -106,8 +104,7 @@ const I18N = {
     mondayTuesday: 'ಹೌದು', no: 'ಇಲ್ಲ', goodNak: 'ಮಂಗಳ ನಕ್ಷತ್ರ!', notMarked: 'ಸಾಮಾನ್ಯ ದಿನ', rssLoad: 'ರಿಫ್ರೆಶ್',
     shuklaPaksha: 'ಶುಕ್ಲ ಪಕ್ಷ', krishnaPaksha: 'ಕೃಷ್ಣ ಪಕ್ಷ',
     remSet: 'ರಾಹು ಕಾಲಕ್ಕೆ 30 ನಿಮಿಷ ಮೊದಲು ರಿಮೈಂಡರ್ ಹೊಂದಿಸಲಾಗಿದೆ', remNow: 'ರಾಹು ಕಾಲ ಪ್ರಾರಂಭವಾಗಲಿದೆ—ಪೂಜೆ ಮುಂದೂಡಿ',
-    weekdays: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'], festival: 'ಹಬ್ಬ',
-    shashtiFestival: 'ಷಷ್ಠಿ ವ್ರತ', somaPradosh: 'ಸೋಮ ಪ್ರದೋಷ', searchPlaceholder: 'ಲೇಖನ ಹುಡುಕಿ'
+    weekdays: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'], festival: 'ಹಬ್ಬ'
   },
   ml: {
     appTitle: 'ദക്ഷിണ പഞ്ചാംഗം', calc: 'കണക്കാക്കുക', date: 'തീയതി', city: 'നഗരം', lat: 'അക്ഷാംശം (Lat)', lon: 'രേഖാംശം (Lon)',
@@ -118,8 +115,7 @@ const I18N = {
     mondayTuesday: 'അതെ', no: 'ഇല്ല', goodNak: 'മംഗള നക്ഷത്രം!', notMarked: 'സാധാരണ ദിവസം', rssLoad: 'റിഫ്രഷ്',
     shuklaPaksha: 'ശുക്ല പക്ഷം', krishnaPaksha: 'കൃഷ്ണ പക്ഷം',
     remSet: 'രാഹു കാലത്തിന് 30 മിനിറ്റ് മുമ്പ് റിമൈൻഡർ സജ്ജമാക്കി', remNow: 'രാഹു കാലം തുടങ്ങാൻ പോകുന്നു—പൂജ മാറ്റിവക്കൂ',
-    weekdays: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], festival: 'ഉത്സവം',
-    shashtiFestival: 'ഷഷ്ഠി വ്രതം', somaPradosh: 'സോമ പ്രദോഷം', searchPlaceholder: 'ലേഖനം തിരയുക'
+    weekdays: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'], festival: 'ഉത്സവം'
   },
   en: {
     appTitle: 'Dakshin Panchangam', calc: 'Calculate', date: 'Date', city: 'City', lat: 'Latitude (Lat)', lon: 'Longitude (Lon)',
@@ -130,8 +126,7 @@ const I18N = {
     mondayTuesday: 'Yes', no: 'No', goodNak: 'Mangala nakshatra!', notMarked: 'Regular day', rssLoad: 'Refresh',
     shuklaPaksha: 'Shukla Paksha', krishnaPaksha: 'Krishna Paksha',
     remSet: 'Reminder set for 30 mins before Rahu Kalam', remNow: 'Rahu Kalam starts soon—consider postponing puja',
-    weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], festival: 'Festival',
-    shashtiFestival: 'Shashti Vratam', somaPradosh: 'Soma Pradosh', searchPlaceholder: 'Search articles'
+    weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], festival: 'Festival'
   }
 };
 
@@ -148,10 +143,83 @@ const LOCALE_MAP = { ta: 'ta-IN', te: 'te-IN', kn: 'kn-IN', ml: 'ml-IN', en: 'en
 const t = (k) => (I18N[currentLang] || I18N.en)[k] || k;
 const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', { hour: '2-digit', minute: '2-digit' });
 
-function initUI() {
-  const dateInput = document.getElementById('date-input');
-  dateInput.value = toLocalDateStr(new Date());
+function showView(name) {
+  // Hide all views
+  document.querySelectorAll('[data-view]').forEach((el) => el.classList.remove('active'));
+  // Show target view
+  const target = document.querySelector(`[data-view="${name}"]`);
+  if (target) target.classList.add('active');
 
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach((btn) => {
+    btn.classList.toggle('active', btn.getAttribute('data-view-btn') === name);
+  });
+  // Update bottom nav active state
+  document.querySelectorAll('.nav-item').forEach((btn) => {
+    btn.classList.toggle('active', btn.getAttribute('data-view-btn') === name);
+  });
+
+  // Update header view title
+  const viewTitles = { today: t('results'), calendar: t('monthTitle'), festivals: t('festival'), temples: 'Temples', news: t('news') };
+  const viewTitleEl = document.getElementById('view-title');
+  if (viewTitleEl) viewTitleEl.textContent = viewTitles[name] || name;
+
+  // If switching to calendar, render it
+  if (name === 'calendar') renderMonthViewFromInputs();
+
+  // Update URL hash
+  history.replaceState(null, '', `#${name}`);
+}
+
+function toggleSettings() {
+  const panel = document.getElementById('settings-panel');
+  const overlay = document.getElementById('settings-overlay');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('hidden', isOpen);
+}
+
+function updateTodayHeroDate() {
+  const now = new Date();
+  const dateNumEl = document.getElementById('today-date-num');
+  if (dateNumEl) dateNumEl.textContent = now.getDate();
+
+  // Tamil month display using the sun longitude
+  const d = new Date(now);
+  d.setHours(6, 0, 0, 0);
+  const jd = 2440587.5 + d.getTime() / 86400000;
+  const sunDeg = getSunLongitude(jd);
+  const rasiIdx = Math.floor(sunDeg / 30);
+  const tamilMonthNames = ['Chithirai','Vaikasi','Aani','Aadi','Aavani','Purattasi','Aippasi','Karthigai','Margazhi','Thai','Maasi','Panguni'];
+  const tamilDay = Math.floor(sunDeg % 30) + 1;
+  const tamilMonthEl = document.getElementById('today-tamil-month');
+  if (tamilMonthEl) tamilMonthEl.textContent = `${tamilMonthNames[rasiIdx]} ${tamilDay}`;
+
+  // Location pill
+  const citySelect = document.getElementById('city-select');
+  const cityName = citySelect && citySelect.value !== '' ? (CITY_PRESETS[citySelect.value] || {}).name || 'Location' : 'Chennai';
+  const dayStr = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const locationPillEl = document.getElementById('today-location-pill');
+  if (locationPillEl) locationPillEl.textContent = `${cityName} · ${dayStr}`;
+}
+
+function updateLocationDisplay() {
+  const citySelect = document.getElementById('city-select');
+  if (!citySelect || citySelect.value === '') return;
+  const city = CITY_PRESETS[citySelect.value];
+  if (!city) return;
+  const locDisplay = document.getElementById('current-location-display');
+  if (locDisplay) locDisplay.textContent = `${city.name}, ${city.region}`;
+  updateTodayHeroDate();
+}
+
+function initUI() {
+  // Set date input to today
+  const dateInput = document.getElementById('date-input');
+  const today = new Date();
+  dateInput.value = today.toISOString().slice(0, 10);
+
+  // Populate city select
   const citySelect = document.getElementById('city-select');
   CITY_PRESETS.forEach((c, idx) => {
     const opt = document.createElement('option');
@@ -161,41 +229,76 @@ function initUI() {
   });
   citySelect.addEventListener('change', () => {
     applyCity(CITY_PRESETS[citySelect.value]);
+    updateLocationDisplay();
+    calculateAndRender();
     renderMonthViewFromInputs();
   });
   applyCity(CITY_PRESETS[0]);
+  updateLocationDisplay();
 
-  renderNewsChips();
+  // Language buttons
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      currentLang = btn.getAttribute('data-lang');
+      // Update active state on lang buttons
+      document.querySelectorAll('.lang-btn').forEach((b) => {
+        b.classList.toggle('bg-primary', b === btn);
+        b.classList.toggle('text-on-primary', b === btn);
+        b.classList.toggle('bg-surface-container', b !== btn);
+        b.classList.toggle('text-on-surface-variant', b !== btn);
+      });
+      hydrateLabels();
+      calculateAndRender();
+      renderMonthViewFromInputs();
+    });
+  });
+
+  // Geo button
+  document.getElementById('geo-btn').addEventListener('click', useGeolocation);
+  // Notify button
+  document.getElementById('notify-btn').addEventListener('click', scheduleReminder);
+
+  // News search + refresh
   document.getElementById('news-search').addEventListener('input', renderNewsCards);
 
-  document.getElementById('lang-toggle').addEventListener('change', (e) => {
-    currentLang = e.target.value;
-    hydrateLabels();
-    renderFromCache();
-    renderMonthViewFromInputs();
-  });
-  document.getElementById('calc-btn').addEventListener('click', calculateAndRender);
-  document.getElementById('geo-btn').addEventListener('click', useGeolocation);
-  document.getElementById('notify-btn').addEventListener('click', scheduleReminder);
-  document.getElementById('rss-load-btn').addEventListener('click', loadAllFeeds);
-  document.getElementById('month-prev').addEventListener('click', () => moveMonth(-1));
-  document.getElementById('month-next').addEventListener('click', () => moveMonth(1));
+  // Calendar nav buttons
+  document.getElementById('cal-prev-btn').addEventListener('click', () => moveMonth(-1));
+  document.getElementById('cal-next-btn').addEventListener('click', () => moveMonth(1));
+
+  // Hash-based routing
+  const initialView = (window.location.hash || '#today').replace('#', '') || 'today';
+  showView(initialView);
 
   hydrateLabels();
-  renderFromCache();
-  renderMonthViewFromInputs();
+  renderNewsChips();
   loadAllFeeds();
+
+  // Auto-calculate today on load
+  calculateAndRender();
 }
 
 function hydrateLabels() {
-  const map = {
-    'app-title': 'appTitle', 'calc-title': 'calc', 'label-date': 'date', 'label-city': 'city', 'label-lat': 'lat', 'label-lon': 'lon',
-    'geo-btn': 'useLoc', 'calc-btn': 'calculate', 'notify-btn': 'reminders', 'result-title': 'results', 'news-title': 'news',
-    'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
+  const safeSet = (id, key) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(key);
   };
-  Object.entries(map).forEach(([id, key]) => { document.getElementById(id).textContent = t(key); });
-  document.getElementById('news-search').placeholder = t('searchPlaceholder');
-  renderWeekdayRail();
+  safeSet('app-title', 'appTitle');
+  safeSet('rss-load-btn', 'rssLoad');
+  safeSet('footer-note', 'footer');
+
+  const searchEl = document.getElementById('news-search');
+  if (searchEl) searchEl.placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search your articles';
+
+  // Update view title if current view is visible
+  const activeView = document.querySelector('[data-view].active');
+  if (activeView) {
+    const name = activeView.getAttribute('data-view');
+    const viewTitles = { today: t('results'), calendar: t('monthTitle'), festivals: t('festival'), temples: 'Temples', news: t('news') };
+    const titleEl = document.getElementById('view-title');
+    if (titleEl) titleEl.textContent = viewTitles[name] || name;
+  }
+
+  updateTodayHeroDate();
 }
 
 function applyCity(city) {
@@ -210,10 +313,6 @@ function useGeolocation() {
     document.getElementById('lon-input').value = pos.coords.longitude.toFixed(4);
     renderMonthViewFromInputs();
   }, (err) => alert(err.message));
-}
-
-function toLocalDateStr(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 // NOAA solar calculator — returns UTC Date objects for sunrise and sunset
@@ -396,7 +495,7 @@ function calculatePanchangam(date, lat, lon, precomputed) {
   const rahu  = getRahuKalam(sunrise);
   const shashtiStr = getShashti(tithi);
   return {
-    date: toLocalDateStr(date), lat, lon, rahu,
+    date: date.toISOString(), lat, lon, rahu,
     yama: getYamagandam(sunrise), abhijit: getAbhijitMuhurta(sunrise),
     shashti: shashtiStr, auspicious: getAuspicious(nak),
     amrita: { start: addMinutes(sunrise, 240), end: addMinutes(sunrise, 288) },
@@ -406,8 +505,104 @@ function calculatePanchangam(date, lat, lon, precomputed) {
 }
 
 function renderResults(data) {
-  const cards = [[t('rahu'), `${fmtTime(new Date(data.rahu.start))} - ${fmtTime(new Date(data.rahu.end))}`], [t('yama'), `${fmtTime(new Date(data.yama.start))} - ${fmtTime(new Date(data.yama.end))}`], [t('abhijit'), `${fmtTime(new Date(data.abhijit.start))} - ${fmtTime(new Date(data.abhijit.end))}`], [t('amrita'), `${fmtTime(new Date(data.amrita.start))} - ${fmtTime(new Date(data.amrita.end))}`], [t('brahma'), `${fmtTime(new Date(data.brahma.start))} - ${fmtTime(new Date(data.brahma.end))}`], [t('shashti'), data.shashti], [t('tivaraatri'), data.tivaraatri ? t('mondayTuesday') : t('no')], [t('ausp'), data.auspicious]];
-  document.getElementById('results-grid').innerHTML = cards.map(([ttl, txt]) => `<article class="card"><h3>${ttl}</h3><p>${txt}</p></article>`).join('');
+  const fmt = (interval) => {
+    if (!interval || !interval.start) return '—';
+    return `${fmtTime(new Date(interval.start))} – ${fmtTime(new Date(interval.end))}`;
+  };
+
+  // Alert banner (shashti)
+  const alertWrap = document.getElementById('alert-banner-wrap');
+  const alertEl = document.getElementById('alert-banner');
+  if (alertEl && alertWrap) {
+    if (data.shashti && data.shashti !== t('noShashti')) {
+      alertEl.textContent = data.shashti;
+      alertWrap.classList.remove('hidden');
+    } else {
+      alertWrap.classList.add('hidden');
+    }
+  }
+
+  // Moon rasi + auspicious
+  const moonRasiEl = document.getElementById('today-moon-rasi');
+  if (moonRasiEl) {
+    const dateObj = new Date(data.date || new Date());
+    moonRasiEl.textContent = calcMoonRasi(dateObj);
+  }
+  const auspEl = document.getElementById('today-moon-auspicious');
+  if (auspEl) auspEl.textContent = data.auspicious || t('notMarked');
+
+  // Nakshatra
+  const nakEl = document.getElementById('today-nakshatra-chip');
+  if (nakEl) {
+    const dateObj = new Date(data.date || new Date());
+    const nakIdx = calcNakshatra(dateObj) - 1;
+    nakEl.textContent = (NAKSHATRA[currentLang] || NAKSHATRA.ta)[nakIdx];
+  }
+
+  // Sunrise / Sunset
+  const srEl = document.getElementById('today-sunrise');
+  const ssEl = document.getElementById('today-sunset');
+  if (data.rahu && data.rahu.start) {
+    // derive sunrise as rahu.start - 90min
+    const sunriseMs = new Date(data.rahu.start).getTime() - 90 * 60000;
+    const sunsetMs = sunriseMs + 12 * 3600000;
+    if (srEl) srEl.textContent = fmtTime(new Date(sunriseMs));
+    if (ssEl) ssEl.textContent = fmtTime(new Date(sunsetMs));
+  }
+
+  // Paksha + tithi chips
+  const chipsEl = document.getElementById('today-paksha-tithi-chips');
+  if (chipsEl) {
+    const dateObj = new Date(data.date || new Date());
+    const tithi = calcTithi(dateObj);
+    const paksha = tithi <= 15 ? t('shuklaPaksha') : t('krishnaPaksha');
+    const tithiName = (TITHI_NAMES[currentLang] || TITHI_NAMES.ta)[tithi - 1];
+    chipsEl.innerHTML = `
+      <span class="px-3 py-1 bg-on-primary/20 rounded-full text-xs font-bold text-primary-fixed">${paksha}</span>
+      <span class="px-3 py-1 bg-on-primary/20 rounded-full text-xs font-bold text-primary-fixed">${tithiName}</span>
+    `;
+  }
+
+  // Auspicious badges row (festival tags)
+  const badgesEl = document.getElementById('auspicious-badges');
+  if (badgesEl) {
+    const dateObj = new Date(data.date || new Date());
+    const tithi = calcTithi(dateObj);
+    const tags = getFestivalTags(dateObj, tithi);
+    if (data.auspicious && data.auspicious !== t('notMarked')) tags.push(data.auspicious);
+    if (data.tivaraatri) tags.push(t('tivaraatri'));
+    badgesEl.innerHTML = tags.map((tag) =>
+      `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full text-xs font-bold text-primary">
+        <span class="material-symbols-outlined text-sm">star</span>${tag}
+      </span>`
+    ).join('');
+  }
+
+  // Muhurta grid (6 cards)
+  const muhurtaGrid = document.getElementById('muhurta-grid');
+  if (muhurtaGrid) {
+    const muhurtaCards = [
+      { label: t('rahu'),    time: fmt(data.rahu),    icon: 'dangerous',      colorClass: 'bg-error-container text-on-error-container',           desc: 'Inauspicious' },
+      { label: t('yama'),    time: fmt(data.yama),    icon: 'timer_off',      colorClass: 'bg-inverse-surface text-inverse-on-surface',            desc: 'Avoid Ventures' },
+      { label: t('amrita'),  time: fmt(data.amrita),  icon: 'spa',            colorClass: 'bg-tertiary-container/30 text-tertiary',                desc: 'Golden Auspicious' },
+      { label: t('abhijit'), time: fmt(data.abhijit), icon: 'auto_awesome',   colorClass: 'bg-primary/10 text-primary',                            desc: 'Victory Muhurta' },
+      { label: t('brahma'),  time: fmt(data.brahma),  icon: 'self_improvement', colorClass: 'bg-secondary-container/20 text-secondary',            desc: 'Ideal for Prayer' },
+      { label: t('shashti'), time: data.shashti && data.shashti !== t('noShashti') ? data.shashti.slice(0, 40) : t('noShashti'),
+                                                       icon: 'festival',       colorClass: 'bg-primary-fixed/30 text-on-primary-fixed-variant',     desc: 'Shashti Status' },
+    ];
+    muhurtaGrid.innerHTML = muhurtaCards.map((c) => `
+      <div class="rounded-xl p-3 ${c.colorClass} flex flex-col gap-1.5 editorial-shadow">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-base">${c.icon}</span>
+          <span class="text-[11px] font-bold uppercase tracking-tight">${c.label}</span>
+        </div>
+        <div class="font-headline font-bold text-sm leading-tight">${c.time}</div>
+        <div class="text-[10px] opacity-70">${c.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  updateTodayHeroDate();
 }
 
 /**
@@ -440,8 +635,8 @@ async function fetchMonthData(year, month, lat, lon) {
   const gridEnd = new Date(lastOfMonth);
   gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()));
 
-  const startStr = toLocalDateStr(gridStart);
-  const endStr   = toLocalDateStr(gridEnd);
+  const startStr = gridStart.toISOString().slice(0, 10);
+  const endStr   = gridEnd.toISOString().slice(0, 10);
   const cacheKey = `month:${startStr}:${endStr}:${lat}:${lon}`;
 
   if (apiCache[cacheKey]) return apiCache[cacheKey];
@@ -469,7 +664,7 @@ async function calculateAndRender() {
   const dateValue = document.getElementById('date-input').value;
   const lat = Number.parseFloat(document.getElementById('lat-input').value);
   const lon = Number.parseFloat(document.getElementById('lon-input').value);
-  if (!dateValue || Number.isNaN(lat) || Number.isNaN(lon)) return alert('Provide date + valid coordinates');
+  if (!dateValue || Number.isNaN(lat) || Number.isNaN(lon)) return;
   const selectedDate = new Date(`${dateValue}T00:00:00`);
   const precomputed = await fetchDayData(dateValue, lat, lon);
   const result = calculatePanchangam(selectedDate, lat, lon, precomputed);
@@ -549,9 +744,16 @@ async function loadAllFeeds() {
 
 function renderNewsChips() {
   const container = document.getElementById('news-chips');
+  if (!container) return;
   const tags = ['All', ...new Set(RSS_SOURCES.map((s) => s.tag))];
-  container.innerHTML = tags.map((tag) => `<button type="button" class="news-chip ${tag === activeNewsTag ? 'active' : ''}" data-tag="${tag}">${tag}</button>`).join('');
-  container.querySelectorAll('.news-chip').forEach((btn) => btn.addEventListener('click', () => {
+  container.innerHTML = tags.map((tag) => {
+    const isActive = tag === activeNewsTag;
+    const cls = isActive
+      ? 'px-6 py-2 rounded-full bg-primary text-on-primary font-medium text-sm shrink-0'
+      : 'px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all shrink-0';
+    return `<button type="button" class="${cls}" data-tag="${tag}">${tag}</button>`;
+  }).join('');
+  container.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', () => {
     activeNewsTag = btn.getAttribute('data-tag');
     renderNewsChips();
     renderNewsCards();
@@ -559,28 +761,57 @@ function renderNewsChips() {
 }
 
 function renderNewsCards() {
-  const q = document.getElementById('news-search').value.trim().toLowerCase();
+  const searchEl = document.getElementById('news-search');
+  const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
   const output = document.getElementById('news-feed');
+  if (!output) return;
+
   const filtered = newsArticles.filter((a) => {
     const tagOk = activeNewsTag === 'All' || a.tag === activeNewsTag;
     const qOk = !q || (`${a.title} ${a.summary} ${a.source}`.toLowerCase().includes(q));
     return tagOk && qOk;
   });
+
   if (!filtered.length) {
-    output.innerHTML = '<p>No articles found.</p>';
+    output.innerHTML = `<div class="col-span-full flex flex-col items-center gap-3 py-16 text-on-surface-variant">
+      <span class="material-symbols-outlined text-5xl">newspaper</span>
+      <p class="text-sm">No articles found.</p>
+    </div>`;
     return;
   }
-  output.innerHTML = filtered.map((a) => `<article class="news-card"><img src="${a.image || 'assets/icon-512.svg'}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer"><div class="news-card-body"><div class="news-date">${a.dateText || a.source}</div><a class="news-title-link" href="${a.link}" target="_blank" rel="noopener">${a.title}</a></div></article>`).join('');
+
+  output.innerHTML = filtered.map((a) => {
+    const imgBlock = a.image
+      ? `<div class="aspect-video overflow-hidden"><img src="${a.image}" alt="${a.title.replace(/"/g, '&quot;')}" loading="lazy" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>`
+      : `<div class="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-4xl text-primary/30">auto_stories</span></div>`;
+    return `<article class="group bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-[0_24px_48px_-12px_rgba(26,27,33,0.12)] transition-all duration-500 flex flex-col">
+      ${imgBlock}
+      <div class="p-5 flex flex-col flex-grow">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-[11px] font-bold text-secondary uppercase tracking-tighter">${a.source}</span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          <time class="text-[11px] text-on-surface-variant">${a.dateText || ''}</time>
+        </div>
+        <h3 class="text-base font-bold font-headline text-on-surface leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">${a.title}</h3>
+        <p class="text-xs text-on-surface-variant leading-relaxed line-clamp-3 mb-4 flex-grow">${a.summary}</p>
+        <div class="pt-3 flex justify-between items-center border-t border-surface-container">
+          <a href="${a.link}" target="_blank" rel="noopener" class="text-xs font-bold text-primary flex items-center gap-1 group/link hover:gap-2 transition-all">
+            Read Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </a>
+          <span class="px-2 py-1 bg-surface-container rounded-full text-[10px] font-bold text-on-surface-variant uppercase">${a.tag}</span>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
 }
 
 
 function getFestivalTags(date, tithi) {
   const tags = [];
-  const tithiNames = TITHI_NAMES[currentLang] || TITHI_NAMES.en;
-  if ([6, 21].includes(tithi)) tags.push(t('shashtiFestival'));
-  if (tithi === 15) tags.push(tithiNames[14]);
-  if (tithi === 30) tags.push(tithiNames[29]);
-  if (date.getDay() === 1 && [13, 28].includes(tithi)) tags.push(t('somaPradosh'));
+  if ([6, 21].includes(tithi)) tags.push('Shasti Vratam');
+  if (tithi === 15) tags.push('Pournami');
+  if (tithi === 30) tags.push('Amavasai');
+  if (date.getDay() === 1 && [13, 28].includes(tithi)) tags.push('Soma Pradosh');
   return tags;
 }
 
@@ -609,7 +840,7 @@ function getMonthCellData(date, lat, lon, apiDay) {
 }
 
 function renderWeekdayRail() {
-  document.getElementById('weekday-rail').innerHTML = t('weekdays').map((w) => `<div class="dpVGridWeekdayCell dpFlexEqual"><span>${w}</span></div>`).join('');
+  // No-op: weekday header row is now static HTML in index.html
 }
 
 function moveMonth(step) {
@@ -625,42 +856,106 @@ function renderMonthViewFromInputs() {
 }
 
 async function renderMonthGrid(anchorDate, lat, lon) {
-  const title = anchorDate.toLocaleDateString(LOCALE_MAP[currentLang] || 'en-IN', { month: 'long', year: 'numeric' });
-  document.getElementById('month-title').textContent = title;
+  const localeKey = LOCALE_MAP[currentLang] || 'en-IN';
+  const title = anchorDate.toLocaleDateString(localeKey, { month: 'long', year: 'numeric' });
+  const calTitleEl = document.getElementById('cal-month-title');
+  if (calTitleEl) calTitleEl.textContent = title;
 
   const first = new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1);
   const start = new Date(first);
   start.setDate(start.getDate() - start.getDay());
 
-  // Batch-fetch Swiss Ephemeris data for the entire grid; fall back to Meeus if unavailable.
   const apiMonthData = await fetchMonthData(anchorDate.getFullYear(), anchorDate.getMonth(), lat, lon);
 
-  const selectedDate = document.getElementById('date-input').value ? new Date(`${document.getElementById('date-input').value}T00:00:00`) : new Date();
-  const body = document.getElementById('month-grid-body');
+  const today = new Date();
+  const selectedDateStr = document.getElementById('date-input').value || today.toISOString().slice(0, 10);
+  const body = document.getElementById('cal-grid-body');
+  if (!body) return;
+
   let html = '';
   let cursor = new Date(start);
 
   for (let w = 0; w < 6; w += 1) {
-    html += '<div class="dpMonthGridRow dpFlexEqual">';
     for (let d = 0; d < 7; d += 1) {
       const sameMonth = cursor.getMonth() === anchorDate.getMonth();
-      const isFocused = cursor.toDateString() === selectedDate.toDateString();
+      const dateStr = cursor.toISOString().slice(0, 10);
+      const isToday = dateStr === today.toISOString().slice(0, 10);
+      const isSelected = dateStr === selectedDateStr;
       const isHoliday = cursor.getDay() === 0;
-      const dateStr = toLocalDateStr(cursor);
       const apiDay = apiMonthData ? apiMonthData[dateStr] : null;
       const cell = getMonthCellData(cursor, lat, lon, apiDay);
-      const events = cell.festivals.length ? `<div class="dpCellFestivalName">${cell.festivals.join(', ')}</div>` : '';
-      html += `<div class="dpMonthGridCell ${sameMonth ? '' : 'dpInert'} ${isFocused ? 'dpCurrentFocusedDay' : ''} ${isHoliday ? 'dpHoliday' : ''}" data-date="${dateStr}"><div class="dpCellDate"><span class="dpSunriseTiming">🌅<br>${cell.sunrise}</span><span class="dpBigDate">${cursor.getDate()}<br><span class="dpCellBriefedWeekday">${t('weekdays')[cursor.getDay()]}</span></span><span class="dpSmallDate">${cell.tamilDay}</span><span class="dpSunsetTiming">🌇<br>${cell.sunset}</span></div><span class="dpCellTithi">${cell.tithi}</span><div class="dpMoonTiming">🌙 ${cell.moon}</div><div class="dpNakshatra">⭐ ${cell.nakshatra}</div>${events}</div>`;
+
+      let cellClasses = 'p-1.5 border border-surface-container hover:bg-surface-container transition-colors cursor-pointer group relative min-h-[70px]';
+      if (!sameMonth) cellClasses += ' opacity-40 bg-surface-container-low/30';
+      if (isToday) cellClasses += ' ring-2 ring-inset ring-primary bg-primary/5';
+      if (isSelected && !isToday) cellClasses += ' bg-primary/10';
+
+      const dayNumClass = isHoliday ? 'text-sm font-bold text-error' : 'text-sm font-bold text-on-surface';
+      const festivalDot = cell.festivals.length
+        ? `<span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-secondary"></span>`
+        : '';
+
+      html += `<div class="${cellClasses}" data-date="${dateStr}">
+        ${festivalDot}
+        <div class="flex justify-between items-start mb-0.5">
+          <span class="${dayNumClass}">${cursor.getDate()}</span>
+          <span class="text-[8px] text-on-surface-variant leading-tight text-right hidden sm:block">${cell.sunrise}<br>${cell.sunset}</span>
+        </div>
+        <div class="text-[9px] text-primary font-bold leading-tight truncate">${cell.tithi}</div>
+        <div class="text-[8px] text-on-surface-variant truncate">${cell.nakshatra}</div>
+      </div>`;
+
       cursor.setDate(cursor.getDate() + 1);
     }
-    html += '</div>';
   }
 
   body.innerHTML = html;
-  body.querySelectorAll('.dpMonthGridCell').forEach((node) => {
-    node.addEventListener('click', () => {
+
+  // Click handler: show day detail + update date input
+  body.querySelectorAll('[data-date]').forEach((node) => {
+    node.addEventListener('click', async () => {
       const dateValue = node.getAttribute('data-date');
       document.getElementById('date-input').value = dateValue;
+
+      // Update selected cell highlight
+      body.querySelectorAll('[data-date]').forEach((n) => {
+        n.classList.remove('bg-primary/10');
+        const nDate = n.getAttribute('data-date');
+        if (nDate === today.toISOString().slice(0, 10)) return;
+        if (nDate === dateValue) n.classList.add('bg-primary/10');
+      });
+
+      // Fill right-panel detail
+      const titleEl = document.getElementById('cal-day-detail-title');
+      const timingsEl = document.getElementById('cal-day-detail-timings');
+      if (titleEl && timingsEl) {
+        const clickedDate = new Date(`${dateValue}T00:00:00`);
+        titleEl.textContent = clickedDate.toLocaleDateString(localeKey, { weekday: 'long', day: 'numeric', month: 'long' });
+        timingsEl.innerHTML = '<p class="text-xs text-on-surface-variant">Loading…</p>';
+        const precomputed = await fetchDayData(dateValue, lat, lon);
+        const result = calculatePanchangam(clickedDate, lat, lon, precomputed);
+        const cellData = getMonthCellData(clickedDate, lat, lon, precomputed);
+        const fmtI = (interval) => interval ? `${fmtTime(new Date(interval.start))} – ${fmtTime(new Date(interval.end))}` : '—';
+        timingsEl.innerHTML = [
+          ['Tithi', cellData.tithi],
+          ['Nakshatra', cellData.nakshatra],
+          ['Moon Rasi', cellData.moon],
+          [t('rahu'), fmtI(result.rahu)],
+          [t('yama'), fmtI(result.yama)],
+          [t('abhijit'), fmtI(result.abhijit)],
+          [t('amrita'), fmtI(result.amrita)],
+          [t('brahma'), fmtI(result.brahma)],
+          ['Sunrise', cellData.sunrise],
+          ['Sunset', cellData.sunset],
+        ].map(([label, val]) => `
+          <div class="flex justify-between items-center py-1.5 border-b border-outline-variant/30">
+            <span class="text-xs text-on-surface-variant">${label}</span>
+            <span class="text-xs font-bold text-on-surface text-right">${val}</span>
+          </div>
+        `).join('');
+      }
+
+      // Also trigger main renderResults if on today view
       calculateAndRender();
     });
   });
