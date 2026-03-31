@@ -1,268 +1,152 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#5e0081" />
-  <meta name="description" content="Dakshin Panchangam — Tamil, Telugu, Kannada, Malayalam daily panchangam with muhurtas, nakshatra, tithi and bhakti news." />
   <title>Dakshin Panchangam — Tamil · Telugu · Kannada · Malayalam</title>
   <link rel="manifest" href="manifest.webmanifest" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-
-  <!-- Tailwind CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: "class",
       theme: {
         extend: {
           colors: {
-            "on-secondary-container": "#562100",
-            "on-error-container": "#93000a",
-            "on-error": "#ffffff",
-            "primary-fixed-dim": "#ebb2ff",
-            "inverse-surface": "#2f3037",
-            "on-tertiary-container": "#83d57e",
-            "tertiary": "#00430c",
-            "primary-fixed": "#f8d8ff",
-            "surface-variant": "#e3e1ea",
-            "background": "#fbf8ff",
-            "secondary": "#9e4200",
-            "on-surface": "#1a1b21",
-            "on-tertiary": "#ffffff",
-            "tertiary-fixed-dim": "#88d982",
-            "surface-tint": "#8c33b3",
-            "on-primary-container": "#e8aaff",
-            "secondary-fixed-dim": "#ffb691",
-            "secondary-fixed": "#ffdbcb",
-            "surface-container-low": "#f4f2fb",
-            "on-secondary": "#ffffff",
-            "on-surface-variant": "#4e4351",
-            "on-primary-fixed-variant": "#721199",
-            "surface-container-highest": "#e3e1ea",
-            "surface-container-high": "#e9e7f0",
-            "on-tertiary-fixed-variant": "#005312",
-            "error": "#ba1a1a",
-            "error-container": "#ffdad6",
-            "surface": "#fbf8ff",
-            "primary-container": "#7b1fa2",
-            "outline-variant": "#d2c1d3",
-            "on-primary-fixed": "#320047",
-            "on-primary": "#ffffff",
-            "primary": "#5e0081",
-            "on-secondary-fixed-variant": "#793100",
-            "inverse-on-surface": "#f1f0f8",
-            "tertiary-fixed": "#a3f69c",
-            "surface-container-lowest": "#ffffff",
-            "tertiary-container": "#015d16",
-            "on-background": "#1a1b21",
-            "secondary-container": "#fb6d00",
-            "surface-bright": "#fbf8ff",
-            "on-secondary-fixed": "#341100",
-            "surface-dim": "#dad9e2",
-            "surface-container": "#efedf6",
-            "on-tertiary-fixed": "#002204",
-            "inverse-primary": "#ebb2ff",
-            "outline": "#807382"
+            primary: '#5e0081',
+            'primary-light': '#f5f0ff',
+            surface: '#fbf8ff',
           },
           fontFamily: {
-            "headline": ["Noto Serif", "serif"],
-            "body": ["Plus Jakarta Sans", "sans-serif"],
-            "label": ["Plus Jakarta Sans", "sans-serif"]
-          },
-          borderRadius: {
-            "DEFAULT": "0.25rem",
-            "lg": "1rem",
-            "xl": "1.25rem",
-            "full": "9999px"
+            serif: ['"Noto Serif"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            tamil: ['"Noto Sans Tamil"', 'system-ui', 'sans-serif'],
           }
         }
       }
-    };
+    }
   </script>
-
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-      font-family: 'Material Symbols Outlined';
-      font-style: normal;
-      line-height: 1;
-      display: inline-block;
-      vertical-align: middle;
-      user-select: none;
-    }
-    .no-scrollbar { scrollbar-width: none; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .editorial-shadow { box-shadow: 0 24px 48px -12px rgba(26,27,33,0.08); }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fbf8ff; }
-    [data-view] { display: none; }
-    [data-view].active { display: block; }
-    .nav-item.active .nav-icon { background-color: #f8d8ff; border-radius: 1rem; }
-    .nav-item.active .nav-label { color: #5e0081; font-weight: 700; }
-    .sidebar-item.active { background-color: #f8d8ff; color: #5e0081; font-weight: 700; }
-    .sidebar-item.active .material-symbols-outlined { color: #5e0081; }
-    #settings-panel {
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #settings-panel.open { transform: translateX(0); }
-    .chip-active { background-color: #5e0081; color: #ffffff; }
-    .chip-inactive { background-color: #efedf6; color: #4e4351; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+<body class="bg-[#fbf8ff] text-[#1c1b1f] font-sans">
 
-<body class="bg-background text-on-surface min-h-screen font-body">
-
-  <!-- Hidden state inputs for app.js compatibility -->
-  <input type="hidden" id="date-input" />
-  <input type="hidden" id="lat-input" />
-  <input type="hidden" id="lon-input" />
-
-  <!-- ========== DESKTOP SIDEBAR (w-64, fixed left) ========== -->
-  <aside id="sidebar" class="hidden lg:flex flex-col fixed top-0 left-0 h-full w-64 bg-surface-container-low border-r border-outline-variant z-50 py-6 px-4 gap-2">
-    <!-- App brand -->
-    <div class="flex items-center gap-3 px-2 mb-6">
-      <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-        <span class="material-symbols-outlined text-on-primary text-lg">brightness_5</span>
-      </div>
-      <div>
-        <div id="app-title" class="font-headline font-bold text-on-surface text-base leading-tight">தக்ஷிண பஞ்சாங்கம்</div>
-        <div id="current-location-display" class="text-[10px] text-on-surface-variant truncate">Chennai, Tamil Nadu</div>
-      </div>
-    </div>
-
-    <!-- Nav items -->
-    <nav class="flex flex-col gap-1 flex-1">
-      <button onclick="showView('today')" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="today">
-        <span class="material-symbols-outlined text-primary text-xl">calendar_today</span>
-        <span class="text-sm font-medium">Today</span>
-      </button>
-      <button onclick="showView('calendar')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="calendar">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">calendar_month</span>
-        <span class="text-sm font-medium">Calendar</span>
-      </button>
-      <button onclick="showView('festivals')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="festivals">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">celebration</span>
-        <span class="text-sm font-medium">Festivals</span>
-      </button>
-      <button onclick="showView('temples')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="temples">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">temple_hindu</span>
-        <span class="text-sm font-medium">Temples</span>
-      </button>
-      <button onclick="showView('news')" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:bg-surface-container-high group" data-view-btn="news">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">newspaper</span>
-        <span class="text-sm font-medium">Bhakti News</span>
-      </button>
-    </nav>
-
-    <!-- Settings button at bottom -->
-    <button id="settings-btn-sidebar" onclick="toggleSettings()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-high transition-all mt-auto">
-      <span class="material-symbols-outlined text-on-surface-variant text-xl">settings</span>
-      <span class="text-sm font-medium text-on-surface-variant">Settings</span>
-    </button>
-  </aside>
-
-  <!-- ========== TOP HEADER (fixed, mobile + desktop with sidebar offset) ========== -->
-  <header class="fixed top-0 left-0 lg:left-64 right-0 h-14 bg-surface/90 backdrop-blur-md border-b border-outline-variant z-40 flex items-center px-4 gap-3">
-    <!-- Mobile menu button -->
-    <button id="mobile-menu-btn" class="lg:hidden p-1.5 rounded-xl hover:bg-surface-container transition-colors" onclick="document.getElementById('mobile-drawer').classList.toggle('translate-x-[-100%]')">
-      <span class="material-symbols-outlined text-on-surface">menu</span>
-    </button>
-
-    <!-- View title -->
-    <h1 id="view-title" class="flex-1 font-headline font-bold text-on-surface text-base">Today's Panchangam</h1>
-
-    <!-- Right actions -->
-    <div class="flex items-center gap-1">
-      <button id="notify-btn" type="button" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors" title="Enable Reminder">
-        <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
-      </button>
-      <button id="settings-btn-header" onclick="toggleSettings()" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- ========== MOBILE DRAWER NAV ========== -->
-  <div id="mobile-drawer" class="fixed inset-0 z-[60] lg:hidden translate-x-[-100%] transition-transform duration-300">
-    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')"></div>
-    <div class="relative w-72 h-full bg-surface-container-low flex flex-col py-6 px-4 gap-2">
-      <div class="flex items-center gap-3 px-2 mb-6">
-        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-          <span class="material-symbols-outlined text-on-primary text-lg">brightness_5</span>
-        </div>
+  <!-- ═══════════════════════════════════════════
+       LEFT SIDEBAR (desktop ≥1024px)
+  ═══════════════════════════════════════════ -->
+  <nav id="sidebar" class="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-[#e6e0f0] z-40 overflow-y-auto">
+    <div class="p-5 border-b border-[#e6e0f0]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#5e0081] flex items-center justify-center text-white font-bold text-lg shrink-0">🕉</div>
         <div>
-          <div class="font-headline font-bold text-on-surface text-base leading-tight">தக்ஷிண பஞ்சாங்கம்</div>
-          <div class="text-[10px] text-on-surface-variant">Dakshin Panchangam</div>
+          <h1 id="app-title" class="font-serif font-bold text-[#5e0081] text-sm leading-tight">தக்ஷிண பஞ்சாங்கம்</h1>
+          <p class="text-[11px] text-gray-500 mt-0.5">Digital Temple Sanctuary</p>
         </div>
       </div>
-      <nav class="flex flex-col gap-1">
-        <button onclick="showView('today'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
-          <span class="material-symbols-outlined text-primary text-xl">calendar_today</span>
-          <span class="text-sm font-medium">Today</span>
-        </button>
-        <button onclick="showView('calendar'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
-          <span class="material-symbols-outlined text-on-surface-variant text-xl">calendar_month</span>
-          <span class="text-sm font-medium">Calendar</span>
-        </button>
-        <button onclick="showView('festivals'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
-          <span class="material-symbols-outlined text-on-surface-variant text-xl">celebration</span>
-          <span class="text-sm font-medium">Festivals</span>
-        </button>
-        <button onclick="showView('temples'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
-          <span class="material-symbols-outlined text-on-surface-variant text-xl">temple_hindu</span>
-          <span class="text-sm font-medium">Temples</span>
-        </button>
-        <button onclick="showView('news'); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-surface-container-high transition-all">
-          <span class="material-symbols-outlined text-on-surface-variant text-xl">newspaper</span>
-          <span class="text-sm font-medium">Bhakti News</span>
-        </button>
-      </nav>
-      <button onclick="toggleSettings(); document.getElementById('mobile-drawer').classList.add('translate-x-[-100%]')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-high transition-all mt-auto">
-        <span class="material-symbols-outlined text-on-surface-variant text-xl">settings</span>
-        <span class="text-sm font-medium text-on-surface-variant">Settings</span>
+    </div>
+    <div class="flex-1 p-3 space-y-0.5">
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="today">
+        <span class="material-symbols-outlined text-xl">today</span><span id="nav-today">Today</span>
+      </button>
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="calendar">
+        <span class="material-symbols-outlined text-xl">calendar_month</span><span id="nav-calendar">Calendar</span>
+      </button>
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="festivals">
+        <span class="material-symbols-outlined text-xl">celebration</span><span id="nav-festivals">Festivals</span>
+      </button>
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="temples">
+        <span class="material-symbols-outlined text-xl">temple_hindu</span><span id="nav-temples">Temples</span>
+      </button>
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="news">
+        <span class="material-symbols-outlined text-xl">article</span><span id="nav-news">News</span>
       </button>
     </div>
-  </div>
+    <div class="p-3 border-t border-[#e6e0f0] space-y-0.5">
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="chat">
+        <span class="material-symbols-outlined text-xl">auto_awesome</span><span>AI Guide</span>
+      </button>
+      <button class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#f5f0ff] transition-colors text-left" data-screen="settings">
+        <span class="material-symbols-outlined text-xl">settings</span><span>Settings</span>
+      </button>
+    </div>
+  </nav>
 
-  <!-- ========== MAIN CONTENT AREA ========== -->
-  <main class="lg:ml-64 pt-14 pb-24 lg:pb-6 min-h-screen">
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT WRAPPER
+  ═══════════════════════════════════════════ -->
+  <div class="lg:ml-64 flex flex-col min-h-screen">
 
-    <!-- ===== TODAY VIEW ===== -->
-    <div data-view="today" class="active p-4 lg:p-6 max-w-5xl mx-auto">
+    <!-- TOP APP BAR -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-[#e6e0f0] h-14 flex items-center justify-between px-4 shrink-0">
+      <div id="top-bar-brand" class="font-serif font-bold text-[#5e0081] text-sm lg:hidden">தக்ஷிண பஞ்சாங்கம்</div>
+      <div class="hidden lg:block"></div>
+      <div class="flex items-center gap-2">
+        <button onclick="showScreen('settings')" class="p-2 rounded-xl hover:bg-gray-100 text-gray-600" title="Location & Settings">
+          <span class="material-symbols-outlined text-xl">location_on</span>
+        </button>
+        <select id="lang-toggle" class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5e0081]/20">
+          <option value="ta">தமிழ்</option>
+          <option value="te">తెలుగు</option>
+          <option value="kn">ಕನ್ನಡ</option>
+          <option value="ml">മലയാളം</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </header>
 
-      <!-- Alert Banner (hidden by default) -->
-      <div id="alert-banner-wrap" class="hidden mb-4">
-        <div class="flex items-center gap-3 px-4 py-3 bg-secondary-container/20 border border-secondary-container/40 rounded-xl">
-          <span class="material-symbols-outlined text-secondary text-xl">festival</span>
-          <p id="alert-banner" class="text-sm font-medium text-on-surface flex-1"></p>
-          <button onclick="document.getElementById('alert-banner-wrap').classList.add('hidden')" class="text-on-surface-variant hover:text-on-surface">
-            <span class="material-symbols-outlined text-base">close</span>
-          </button>
+    <!-- ══════════════════════════════════════
+         SCREEN: TODAY
+    ══════════════════════════════════════ -->
+    <div id="screen-today" class="screen p-4 lg:p-6 pb-36 lg:pb-20">
+
+      <!-- Location pill + change -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2 bg-white rounded-full px-4 py-2 border border-[#e6e0f0] shadow-sm text-sm">
+          <span class="material-symbols-outlined text-base text-[#5e0081]">location_on</span>
+          <span id="today-location-pill" class="font-medium">Chennai</span>
+          <span class="text-gray-300">·</span>
+          <span id="today-date-pill" class="text-gray-500"></span>
         </div>
+        <button onclick="showScreen('settings')" class="flex items-center gap-1 bg-[#5e0081] text-white text-xs rounded-full px-3 py-1.5 font-medium">
+          <span class="material-symbols-outlined text-sm">tune</span>Change
+        </button>
       </div>
 
-      <!-- Hero date card -->
-      <div class="bg-gradient-to-br from-primary to-primary-container rounded-2xl p-5 mb-4 editorial-shadow text-on-primary">
-        <div class="flex items-start justify-between">
-          <div>
-            <div id="today-date-num" class="font-headline font-bold text-6xl leading-none">30</div>
-            <div id="today-tamil-month" class="text-primary-fixed-dim text-sm font-medium mt-1">Panguni 15</div>
-            <div id="today-location-pill" class="text-primary-fixed/70 text-xs mt-2">Chennai · Monday, 30 March 2026</div>
-          </div>
-          <div class="text-right flex flex-col items-end gap-2">
-            <div class="flex items-center gap-2 bg-on-primary/10 rounded-full px-3 py-1">
-              <span class="material-symbols-outlined text-sm text-primary-fixed-dim">wb_sunny</span>
-              <span id="today-sunrise" class="text-xs font-medium text-primary-fixed">06:14 AM</span>
+      <!-- Alert banner -->
+      <div id="today-alert" class="hidden mb-4 bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-start gap-3">
+        <span class="material-symbols-outlined text-amber-600 text-xl mt-0.5 shrink-0">notifications_active</span>
+        <p id="today-alert-text" class="text-sm font-medium text-amber-800"></p>
+      </div>
+
+      <!-- Hero bento -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+
+        <!-- Big date card (spans 2 cols) -->
+        <div class="col-span-2 bg-gradient-to-br from-[#5e0081] to-[#9c27b0] rounded-3xl p-5 text-white relative overflow-hidden shadow-lg">
+          <div class="absolute -top-6 -right-6 w-32 h-32 bg-white/5 rounded-full pointer-events-none"></div>
+          <div class="flex items-start justify-between">
+            <div>
+              <div id="today-big-date" class="text-7xl font-bold leading-none font-serif"></div>
+              <div id="today-weekday" class="text-sm text-white/70 mt-1"></div>
             </div>
-            <div class="flex items-center gap-2 bg-on-primary/10 rounded-full px-3 py-1">
-              <span class="material-symbols-outlined text-sm text-secondary-fixed-dim">wb_twilight</span>
-              <span id="today-sunset" class="text-xs font-medium text-primary-fixed">06:28 PM</span>
+            <div class="text-right">
+              <div id="today-lunar-month" class="text-xs text-white/70 font-medium uppercase tracking-wide"></div>
+              <div id="today-lunar-day" class="text-2xl font-bold font-serif mt-0.5"></div>
+            </div>
+          </div>
+          <div class="mt-3 flex gap-2 flex-wrap">
+            <span id="today-tithi-badge" class="bg-white/20 backdrop-blur text-xs px-2.5 py-1 rounded-full font-medium"></span>
+            <span id="today-paksha-badge" class="bg-white/20 backdrop-blur text-xs px-2.5 py-1 rounded-full font-medium"></span>
+          </div>
+          <div class="mt-3 flex gap-5 text-sm">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-yellow-300">wb_sunny</span>
+              <span id="today-sunrise">—</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-orange-300">wb_twilight</span>
+              <span id="today-sunset">—</span>
             </div>
           </div>
         </div>
@@ -273,15 +157,18 @@
         </div>
       </div>
 
-      <!-- Moon + Nakshatra row -->
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="material-symbols-outlined text-primary text-xl">brightness_2</span>
-            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Moon Rasi</span>
+        <!-- Moon / Rasi -->
+        <div class="bg-white rounded-3xl p-4 border border-[#e6e0f0]">
+          <div class="flex items-center gap-1.5 mb-3">
+            <span class="material-symbols-outlined text-[#5e0081] text-lg">brightness_3</span>
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Moon</span>
           </div>
-          <div id="today-moon-rasi" class="font-headline font-bold text-on-surface text-lg">Simha</div>
-          <div id="today-moon-auspicious" class="text-xs text-secondary font-medium mt-1">Regular day</div>
+          <div id="today-moon-rasi" class="text-lg font-bold font-serif text-[#5e0081] leading-tight"></div>
+          <div id="today-nakshatra" class="text-xs text-gray-500 mt-1"></div>
+          <div class="mt-2 text-xs">
+            <span class="text-gray-400">Nakshatra: </span>
+            <span id="today-nak-name" class="font-medium text-gray-700">—</span>
+          </div>
         </div>
         <div class="bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
           <div class="flex items-center gap-2 mb-2">
@@ -292,118 +179,72 @@
         </div>
       </div>
 
-      <!-- Auspicious badge row -->
-      <div id="auspicious-badges" class="flex flex-wrap gap-2 mb-4"></div>
-
-      <!-- Muhurta grid (6 cards) -->
-      <div class="mb-4">
-        <h2 class="font-headline font-bold text-on-surface text-base mb-3">Muhurtas &amp; Timings</h2>
-        <div id="muhurta-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <!-- Filled by app.js renderResults() -->
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
-          <div class="bg-surface-container rounded-xl p-3 animate-pulse h-20"></div>
+        <!-- Tamil calendar -->
+        <div class="bg-[#fff8f0] rounded-3xl p-4 border border-orange-100">
+          <div class="flex items-center gap-1.5 mb-3">
+            <span class="material-symbols-outlined text-orange-600 text-lg">auto_stories</span>
+            <span class="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Tamil</span>
+          </div>
+          <div id="today-tamil-month" class="text-base font-bold font-serif text-orange-800 leading-tight"></div>
+          <div id="today-tamil-day" class="text-xs text-orange-700 mt-1"></div>
+          <div id="today-rasi" class="text-xs text-orange-500 mt-2 font-medium"></div>
         </div>
       </div>
+
+      <!-- Muhurta grid -->
+      <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Muhurta Times</h2>
+      <div id="results-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-5"></div>
 
       <!-- Quick actions -->
-      <div class="grid grid-cols-3 gap-3">
-        <button onclick="showView('calendar')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
-          <span class="material-symbols-outlined text-primary text-2xl">calendar_month</span>
-          <span class="text-xs font-medium text-on-surface-variant text-center">Calendar</span>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="showScreen('calendar')" class="flex items-center gap-1.5 bg-white border border-[#e6e0f0] text-sm font-medium px-4 py-2 rounded-xl hover:bg-gray-50 shadow-sm">
+          <span class="material-symbols-outlined text-sm text-[#5e0081]">calendar_month</span>Monthly View
         </button>
-        <button onclick="showView('news')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
-          <span class="material-symbols-outlined text-primary text-2xl">newspaper</span>
-          <span class="text-xs font-medium text-on-surface-variant text-center">Bhakti News</span>
+        <button id="notify-btn" class="flex items-center gap-1.5 bg-white border border-[#e6e0f0] text-sm font-medium px-4 py-2 rounded-xl hover:bg-gray-50 shadow-sm">
+          <span class="material-symbols-outlined text-sm text-amber-600">notifications</span>
+          <span id="nav-notify">Set Reminder</span>
         </button>
-        <button onclick="showView('festivals')" class="flex flex-col items-center gap-2 p-3 bg-surface-container-lowest rounded-2xl hover:bg-surface-container transition-all editorial-shadow">
-          <span class="material-symbols-outlined text-primary text-2xl">celebration</span>
-          <span class="text-xs font-medium text-on-surface-variant text-center">Festivals</span>
+        <button onclick="showScreen('festivals')" class="flex items-center gap-1.5 bg-white border border-[#e6e0f0] text-sm font-medium px-4 py-2 rounded-xl hover:bg-gray-50 shadow-sm">
+          <span class="material-symbols-outlined text-sm text-green-600">celebration</span>Festivals
         </button>
+        <button onclick="showScreen('chat')" class="flex items-center gap-1.5 bg-gradient-to-r from-[#5e0081] to-[#9c27b0] text-white text-sm font-medium px-4 py-2 rounded-xl shadow-sm">
+          <span class="material-symbols-outlined text-sm">auto_awesome</span>Ask AI
+        </button>
+      </div>
+
+      <!-- Hidden inputs required by app.js calculation engine -->
+      <div class="hidden" aria-hidden="true">
+        <input type="date" id="date-input" />
+        <input type="number" id="lat-input" step="0.0001" />
+        <input type="number" id="lon-input" step="0.0001" />
+        <button id="calc-btn">Calculate</button>
+        <button id="geo-btn-hidden">Geo</button>
+        <span id="calc-title"></span>
+        <span id="label-date"></span>
+        <span id="label-city"></span>
+        <span id="label-lat"></span>
+        <span id="label-lon"></span>
+        <span id="result-title"></span>
+        <span id="footer-note-hidden"></span>
+        <span id="month-title-text"></span>
+        <span id="news-title-hidden"></span>
       </div>
     </div>
 
-    <!-- ===== CALENDAR VIEW ===== -->
-    <div data-view="calendar" class="p-4 lg:p-6 max-w-6xl mx-auto">
-      <!-- Month navigation -->
-      <div class="flex items-center justify-between mb-4">
-        <button id="cal-prev-btn" class="p-2 rounded-xl hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-on-surface">chevron_left</span>
-        </button>
-        <h2 id="cal-month-title" class="font-headline font-bold text-on-surface text-lg">March 2026</h2>
-        <button id="cal-next-btn" class="p-2 rounded-xl hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-on-surface">chevron_right</span>
-        </button>
-      </div>
-
-      <div class="flex flex-col lg:flex-row gap-4">
-        <!-- Calendar grid -->
-        <div class="flex-1 bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow">
-          <!-- Weekday header row (static) -->
-          <div class="grid grid-cols-7 border-b border-outline-variant/50">
-            <div class="p-2 text-center text-xs font-bold text-error">Sun</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Mon</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Tue</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Wed</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Thu</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Fri</div>
-            <div class="p-2 text-center text-xs font-bold text-on-surface-variant">Sat</div>
-          </div>
-          <!-- Calendar body — filled by app.js -->
-          <div id="cal-grid-body" class="grid grid-cols-7 divide-x divide-y divide-outline-variant/30">
-            <!-- Loading skeleton -->
-            <div class="col-span-7 p-8 text-center text-on-surface-variant text-sm">Loading calendar…</div>
-          </div>
-        </div>
-
-        <!-- Desktop right panel: day detail -->
-        <div class="hidden lg:flex flex-col w-72 shrink-0 bg-surface-container-lowest rounded-2xl p-4 editorial-shadow">
-          <h3 id="cal-day-detail-title" class="font-headline font-bold text-on-surface text-base mb-4">Select a day</h3>
-          <div id="cal-day-detail-timings" class="flex flex-col gap-3 text-sm text-on-surface-variant">
-            <p class="text-xs">Click on any date to see full panchangam details here.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== FESTIVALS VIEW ===== -->
-    <div data-view="festivals" class="p-4 lg:p-6 max-w-3xl mx-auto">
-      <div class="bg-surface-container-lowest rounded-2xl p-8 editorial-shadow text-center">
-        <span class="material-symbols-outlined text-primary text-5xl mb-4 block">celebration</span>
-        <h2 class="font-headline font-bold text-on-surface text-2xl mb-2">Festivals</h2>
-        <p class="text-on-surface-variant text-sm mb-6">Festival dates are derived from the tithi (lunar day). Browse the calendar and click on any day to see festival information. Monthly festival listing coming soon.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left mt-6">
-          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
-            <span class="material-symbols-outlined text-primary text-lg">brightness_5</span>
-            <div>
-              <div class="text-sm font-bold text-on-surface">Shashti Vratam</div>
-              <div class="text-xs text-on-surface-variant">Tithi 6 &amp; 21 — Murugan</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
-            <span class="material-symbols-outlined text-primary text-lg">brightness_7</span>
-            <div>
-              <div class="text-sm font-bold text-on-surface">Pournami</div>
-              <div class="text-xs text-on-surface-variant">Tithi 15 — Full Moon</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
-            <span class="material-symbols-outlined text-primary text-lg">brightness_3</span>
-            <div>
-              <div class="text-sm font-bold text-on-surface">Amavasai</div>
-              <div class="text-xs text-on-surface-variant">Tithi 30 — New Moon</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
-            <span class="material-symbols-outlined text-primary text-lg">self_improvement</span>
-            <div>
-              <div class="text-sm font-bold text-on-surface">Soma Pradosh</div>
-              <div class="text-xs text-on-surface-variant">Monday Tithi 13/28 — Shiva</div>
-            </div>
-          </div>
+    <!-- ══════════════════════════════════════
+         SCREEN: CALENDAR
+    ══════════════════════════════════════ -->
+    <div id="screen-calendar" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="flex items-center justify-between mb-5">
+        <h2 id="month-title-text-label" class="text-lg font-bold font-serif text-[#5e0081]">Monthly Panchangam</h2>
+        <div class="flex items-center gap-2">
+          <button id="month-prev" class="p-2 rounded-xl bg-white border border-[#e6e0f0] hover:bg-gray-50">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
+          </button>
+          <span id="month-title" class="text-sm font-semibold min-w-[160px] text-center text-gray-700"></span>
+          <button id="month-next" class="p-2 rounded-xl bg-white border border-[#e6e0f0] hover:bg-gray-50">
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </button>
         </div>
       </div>
     </div>
@@ -482,87 +323,718 @@
       <div class="nav-icon w-12 h-7 flex items-center justify-center">
         <span class="material-symbols-outlined text-xl text-on-surface-variant">settings</span>
       </div>
-      <span class="nav-label text-[10px] font-medium text-on-surface-variant">Settings</span>
-    </button>
-  </nav>
-
-  <!-- ========== SETTINGS PANEL (slide-in from right) ========== -->
-  <div id="settings-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[80] hidden" onclick="toggleSettings()"></div>
-  <aside id="settings-panel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-surface-container-low z-[90] flex flex-col overflow-y-auto">
-    <!-- Header -->
-    <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant sticky top-0 bg-surface-container-low">
-      <h2 class="font-headline font-bold text-on-surface text-lg">Settings</h2>
-      <button onclick="toggleSettings()" class="p-1.5 rounded-xl hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
     </div>
 
-    <div class="flex-1 px-5 py-4 flex flex-col gap-6">
+    <!-- ══════════════════════════════════════
+         SCREEN: FESTIVALS
+    ══════════════════════════════════════ -->
+    <div id="screen-festivals" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <h2 class="text-xl font-bold font-serif text-[#5e0081] mb-4">Upcoming Festivals</h2>
 
-      <!-- Language -->
-      <section>
-        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Language</h3>
-        <div class="flex flex-wrap gap-2">
-          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-primary text-on-primary" data-lang="ta">தமிழ்</button>
-          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="te">తెలుగు</button>
-          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="kn">ಕನ್ನಡ</button>
-          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="ml">മലയാളം</button>
-          <button class="lang-btn px-4 py-2 rounded-full text-sm font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all" data-lang="en">English</button>
+      <!-- Filter chips -->
+      <div class="flex gap-2 flex-wrap overflow-x-auto pb-1 mb-5">
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-semibold bg-[#5e0081] text-white" data-filter="all">All</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="shiva">Shiva</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="vishnu">Vishnu</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="devi">Devi</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="murugan">Murugan</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="ganesha">Ganesha</button>
+        <button class="festival-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="tamil">Tamil</button>
+      </div>
+
+      <!-- Hero festival card -->
+      <div id="festivals-hero" class="bg-gradient-to-br from-[#5e0081] to-[#b027e3] rounded-3xl p-6 text-white mb-5 relative overflow-hidden shadow-lg">
+        <div class="absolute -top-8 -right-8 w-40 h-40 bg-white/5 rounded-full pointer-events-none"></div>
+        <span id="festivals-hero-badge" class="bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full mb-3 inline-block"></span>
+        <h3 id="festivals-hero-name" class="text-2xl font-bold font-serif mb-2"></h3>
+        <p id="festivals-hero-desc" class="text-sm text-white/85 mb-4 leading-relaxed"></p>
+        <div class="flex gap-3">
+          <button class="bg-white/20 backdrop-blur text-sm px-4 py-2 rounded-xl font-medium border border-white/20">Remind Me</button>
+          <button onclick="showScreen('temples')" class="bg-white text-[#5e0081] text-sm px-4 py-2 rounded-xl font-bold shadow">View Temples</button>
         </div>
-      </section>
+        <div class="mt-4 grid grid-cols-2 gap-3 text-sm opacity-90">
+          <div><span class="opacity-60">Tithi: </span><span id="festivals-hero-tithi"></span></div>
+          <div><span class="opacity-60">Days away: </span><span id="festivals-hero-days" class="font-bold"></span></div>
+        </div>
+      </div>
 
-      <!-- City -->
-      <section>
-        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Location</h3>
-        <select id="city-select" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 mb-3"></select>
-        <button id="geo-btn" type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">
-          <span class="material-symbols-outlined text-base text-primary">my_location</span>
-          Use My Location
+      <!-- Featured spotlight -->
+      <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4 mb-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-sm text-gray-500 uppercase tracking-wide">Featured Spotlight</h3>
+        </div>
+        <div class="bg-gradient-to-r from-[#f5f0ff] to-[#e8f5e9] rounded-2xl p-4 flex items-center justify-between gap-4">
+          <div>
+            <div class="text-xs font-bold text-[#5e0081] uppercase tracking-wide mb-1">Kapaleeshwarar Temple</div>
+            <h4 class="font-bold font-serif">Arubathimoovar Festival</h4>
+            <p class="text-xs text-gray-600 mt-1">63 Nayanmars procession — Panguni season</p>
+          </div>
+          <button onclick="showScreen('temple-detail')" class="bg-[#5e0081] text-white text-xs px-4 py-2 rounded-xl font-bold shrink-0">Explore</button>
+        </div>
+      </div>
+
+      <!-- Festival list -->
+      <div id="festivals-list" class="space-y-3"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: TEMPLES DIRECTORY
+    ══════════════════════════════════════ -->
+    <div id="screen-temples" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold font-serif text-[#5e0081]">Temple Finder</h2>
+        <button onclick="showScreen('temples-map')" class="flex items-center gap-1.5 bg-white border border-[#e6e0f0] text-xs font-medium px-3 py-2 rounded-xl hover:bg-gray-50">
+          <span class="material-symbols-outlined text-sm text-[#5e0081]">map</span>Map View
         </button>
-      </section>
+      </div>
 
-      <!-- Notifications -->
-      <section>
-        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">Notifications</h3>
-        <div class="flex flex-col gap-3">
-          <label class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl cursor-pointer">
-            <div>
-              <div class="text-sm font-medium text-on-surface">Rahu Kalam Alert</div>
-              <div class="text-xs text-on-surface-variant">30 min before Rahu Kalam</div>
-            </div>
-            <input type="checkbox" id="notif-rahu" class="w-4 h-4 accent-primary rounded" />
-          </label>
-          <label class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl cursor-pointer">
-            <div>
-              <div class="text-sm font-medium text-on-surface">Brahma Muhurta</div>
-              <div class="text-xs text-on-surface-variant">Early morning auspicious time</div>
-            </div>
-            <input type="checkbox" id="notif-brahma" class="w-4 h-4 accent-primary rounded" />
-          </label>
-        </div>
-      </section>
+      <div class="relative mb-4">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">search</span>
+        <input id="temple-search" type="search" placeholder="Search temples, deities, cities..."
+          class="w-full pl-10 pr-4 py-3 bg-white border border-[#e6e0f0] rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5e0081]/20" />
+      </div>
 
-      <!-- About -->
-      <section class="pb-6">
-        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">About</h3>
-        <div class="bg-surface-container-lowest rounded-xl p-4">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span class="material-symbols-outlined text-on-primary text-sm">brightness_5</span>
+      <div class="flex gap-2 overflow-x-auto pb-2 mb-5">
+        <button class="temple-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-semibold bg-[#5e0081] text-white" data-filter="all">All</button>
+        <button class="temple-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="shiva">Shiva</button>
+        <button class="temple-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="vishnu">Vishnu</button>
+        <button class="temple-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="devi">Devi</button>
+        <button class="temple-filter shrink-0 text-xs px-4 py-1.5 rounded-full font-medium border border-gray-200 text-gray-600 bg-white" data-filter="murugan">Murugan</button>
+      </div>
+
+      <div id="temples-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: TEMPLES MAP
+    ══════════════════════════════════════ -->
+    <div id="screen-temples-map" class="screen hidden">
+      <div class="flex" style="height:calc(100vh - 56px)">
+        <!-- List panel -->
+        <div class="w-full lg:w-[440px] flex flex-col border-r border-[#e6e0f0] overflow-hidden bg-white">
+          <div class="p-4 border-b border-[#e6e0f0] shrink-0">
+            <div class="flex items-center gap-2 mb-3">
+              <button onclick="showScreen('temples')" class="p-1.5 rounded-xl hover:bg-gray-100">
+                <span class="material-symbols-outlined text-xl">arrow_back</span>
+              </button>
+              <h2 class="font-bold font-serif text-[#5e0081]">Discover Temples</h2>
             </div>
-            <div>
-              <div class="text-sm font-bold text-on-surface">Dakshin Panchangam</div>
-              <div class="text-xs text-on-surface-variant">v2.0 · Offline PWA</div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">search</span>
+              <input type="search" placeholder="Search by name or deity..." class="w-full pl-10 pr-4 py-2.5 bg-[#f5f0ff] rounded-xl text-sm focus:outline-none" />
+            </div>
+            <div class="flex gap-2 mt-3">
+              <button class="shrink-0 text-xs px-3 py-1.5 bg-[#5e0081] text-white rounded-full font-semibold">All</button>
+              <button class="shrink-0 text-xs px-3 py-1.5 border border-gray-200 rounded-full text-gray-600">Shiva</button>
+              <button class="shrink-0 text-xs px-3 py-1.5 border border-gray-200 rounded-full text-gray-600">Vishnu</button>
+              <button class="shrink-0 text-xs px-3 py-1.5 border border-gray-200 rounded-full text-gray-600">Devi</button>
             </div>
           </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">South Indian panchangam calculator using Meeus astronomical algorithms. Calculations are performed locally — no internet required after first load.</p>
-          <p id="footer-note" class="text-xs text-on-surface-variant mt-2">Offline PWA · Client-side only</p>
+          <div id="map-temple-list" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
         </div>
-      </section>
-
+        <!-- Map panel (desktop) -->
+        <div class="hidden lg:flex flex-1 bg-[#e8e0f4] items-center justify-center relative">
+          <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 30% 40%, #5e0081 0%, transparent 50%), radial-gradient(circle at 70% 60%, #9c27b0 0%, transparent 50%)"></div>
+          <div class="text-center text-[#5e0081]/40 relative z-10">
+            <span class="material-symbols-outlined text-8xl">map</span>
+            <p class="font-medium mt-2">Interactive Map</p>
+            <p class="text-sm mt-1">GPS integration coming soon</p>
+          </div>
+          <div class="absolute top-1/4 left-1/3 bg-white rounded-xl shadow-lg px-3 py-2 text-xs font-semibold text-[#5e0081] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">temple_hindu</span>Kapaleeshwarar
+          </div>
+          <div class="absolute top-[60%] left-[55%] bg-white rounded-xl shadow-lg px-3 py-2 text-xs font-semibold text-[#5e0081] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">temple_hindu</span>Meenakshi Amman
+          </div>
+          <div class="absolute top-[40%] left-[65%] bg-white rounded-xl shadow-lg px-3 py-2 text-xs font-semibold text-[#5e0081] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">temple_hindu</span>Brihadeeswarar
+          </div>
+        </div>
+      </div>
     </div>
-  </aside>
 
+    <!-- ══════════════════════════════════════
+         SCREEN: TEMPLE DETAIL
+    ══════════════════════════════════════ -->
+    <div id="screen-temple-detail" class="screen hidden pb-36 lg:pb-20">
+      <!-- Hero -->
+      <div class="relative h-52 lg:h-72 bg-gradient-to-br from-[#2d0050] to-[#7b1fa2] flex items-end shrink-0">
+        <div class="relative z-10 p-5 w-full text-white">
+          <button onclick="showScreen('temples')" class="flex items-center gap-1 text-white/70 text-xs mb-2 hover:text-white">
+            <span class="material-symbols-outlined text-base">arrow_back</span>All Temples
+          </button>
+          <h2 id="temple-detail-name" class="text-2xl lg:text-3xl font-bold font-serif">Kapaleeshwarar Temple</h2>
+          <div class="flex items-center gap-1.5 mt-1 text-sm text-white/75">
+            <span class="material-symbols-outlined text-sm">location_on</span>
+            <span id="temple-detail-location">Mylapore, Chennai</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 p-4 lg:p-6">
+        <!-- Left content -->
+        <div class="lg:col-span-2 space-y-5">
+
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+            <h3 class="font-bold text-base font-serif text-[#5e0081] mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined text-xl">history_edu</span>Sacred History
+            </h3>
+            <p id="temple-detail-history" class="text-sm text-gray-700 leading-relaxed"></p>
+            <blockquote class="mt-4 border-l-4 border-[#5e0081]/30 pl-4 text-sm italic text-gray-500">
+              "கோபுரவாசல் கடந்து உள்ளே வருவோர்க்கு மோட்சம் கிட்டும்" — Shaiva tradition
+            </blockquote>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+            <h3 class="font-bold text-base font-serif text-[#5e0081] mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-xl">schedule</span>Daily Pooja Schedule
+            </h3>
+            <div id="temple-pooja-schedule" class="space-y-3"></div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+            <h3 class="font-bold text-base font-serif text-[#5e0081] mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-xl">celebration</span>Major Festivals
+            </h3>
+            <div id="temple-festivals-grid" class="grid grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+
+        <!-- Right sidebar -->
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4">
+            <h3 class="font-bold text-sm mb-3 text-gray-600 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">location_on</span>Location & Contact
+            </h3>
+            <div class="bg-[#e8e0f4] rounded-xl h-28 flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-4xl text-[#5e0081]/30">map</span>
+            </div>
+            <p id="temple-detail-address" class="text-xs text-gray-600 mb-1"></p>
+            <p id="temple-detail-phone" class="text-xs text-gray-600"></p>
+            <a href="https://maps.google.com" target="_blank" rel="noopener"
+              class="mt-3 w-full flex items-center justify-center gap-2 bg-[#5e0081] text-white text-sm font-medium py-2.5 rounded-xl">
+              <span class="material-symbols-outlined text-base">directions</span>Get Directions
+            </a>
+          </div>
+
+          <div class="bg-gradient-to-br from-[#5e0081] to-[#9c27b0] rounded-2xl p-4 text-white">
+            <h3 class="font-bold mb-1 text-sm">Book a Pooja</h3>
+            <p class="text-xs text-white/70 mb-3">Reserve your seva for upcoming dates</p>
+            <button onclick="showScreen('temple-booking')" class="w-full bg-white text-[#5e0081] text-sm font-bold py-2.5 rounded-xl">
+              View Available Sevas
+            </button>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4">
+            <h3 class="font-bold text-sm mb-2 text-gray-600">Virtual Darshan</h3>
+            <p class="text-xs text-gray-400 mb-3">Experience this temple from anywhere</p>
+            <button onclick="showScreen('temple-darshan')" class="w-full flex items-center justify-center gap-2 border border-[#5e0081] text-[#5e0081] text-sm font-medium py-2 rounded-xl hover:bg-[#f5f0ff]">
+              <span class="material-symbols-outlined text-base">play_circle</span>Enter Gallery
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: POOJA BOOKING
+    ══════════════════════════════════════ -->
+    <div id="screen-temple-booking" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showScreen('temple-detail')" class="p-2 rounded-xl bg-white border border-[#e6e0f0] hover:bg-gray-50">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div>
+          <h2 class="text-xl font-bold font-serif text-[#5e0081]">Book a Seva</h2>
+          <p class="text-xs text-gray-500">Kapaleeshwarar Temple</p>
+        </div>
+      </div>
+
+      <!-- Date selector -->
+      <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4 mb-5">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Select Date</h3>
+        <div id="booking-dates" class="flex gap-3 overflow-x-auto pb-1"></div>
+      </div>
+
+      <!-- Seva cards -->
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Available Sevas</h3>
+      <div class="space-y-4">
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4">
+          <div class="flex items-start gap-3">
+            <div class="w-14 h-14 rounded-xl bg-[#f5f0ff] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-2xl text-[#5e0081]">volunteer_activism</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <h4 class="font-bold text-sm">Sahasranama Archana</h4>
+                <span class="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full">Auspicious</span>
+              </div>
+              <p class="text-xs text-gray-500 mb-2">Chanting of 1000 names of the deity with flowers</p>
+              <div class="flex items-center justify-between gap-3 flex-wrap">
+                <div class="text-xs text-gray-500 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">schedule</span>06:00 AM – 08:30 PM
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="font-bold text-[#5e0081] text-sm">₹50</span>
+                  <button class="bg-[#5e0081] text-white text-xs font-bold px-4 py-2 rounded-xl">Book Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4">
+          <div class="flex items-start gap-3">
+            <div class="w-14 h-14 rounded-xl bg-[#fff0f0] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-2xl text-red-700">water_drop</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <h4 class="font-bold text-sm">Abhishekam</h4>
+                <span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Daily</span>
+              </div>
+              <p class="text-xs text-gray-500 mb-2">Sacred bathing of the deity with milk, honey & rose water</p>
+              <div class="flex items-center justify-between gap-3 flex-wrap">
+                <div class="text-xs text-gray-500 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">schedule</span>05:30 AM Daily
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="font-bold text-[#5e0081] text-sm">₹250</span>
+                  <button class="bg-[#5e0081] text-white text-xs font-bold px-4 py-2 rounded-xl">Book Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-4">
+          <div class="flex items-start gap-3">
+            <div class="w-14 h-14 rounded-xl bg-[#fff8e0] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-2xl text-amber-700">local_fire_department</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <h4 class="font-bold text-sm">Aradhana</h4>
+              </div>
+              <p class="text-xs text-gray-500 mb-2">Worship ceremony with lamps and incense offerings</p>
+              <div class="flex items-center justify-between gap-3 flex-wrap">
+                <div class="text-xs text-gray-500 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">schedule</span>06:45 PM Daily
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="font-bold text-[#5e0081] text-sm">₹100</span>
+                  <button class="bg-[#5e0081] text-white text-xs font-bold px-4 py-2 rounded-xl">Book Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guidelines -->
+      <div class="mt-5 bg-white rounded-2xl border border-[#e6e0f0] p-4">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Booking Guidelines</h3>
+        <div class="space-y-2">
+          <div class="flex items-start gap-2 text-xs text-gray-600">
+            <span class="material-symbols-outlined text-green-600 text-sm mt-0.5">check_circle</span>
+            Book at least 24 hours in advance for special sevas
+          </div>
+          <div class="flex items-start gap-2 text-xs text-gray-600">
+            <span class="material-symbols-outlined text-green-600 text-sm mt-0.5">check_circle</span>
+            Dress code: Traditional attire required for all pooja timings
+          </div>
+          <div class="flex items-start gap-2 text-xs text-gray-600">
+            <span class="material-symbols-outlined text-green-600 text-sm mt-0.5">check_circle</span>
+            Prasadam included with all archana bookings
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: VIRTUAL DARSHAN
+    ══════════════════════════════════════ -->
+    <div id="screen-temple-darshan" class="screen hidden pb-36 lg:pb-20">
+      <!-- Hero -->
+      <div class="relative h-52 lg:h-72 bg-gradient-to-br from-[#1a0030] to-[#5e0081] flex items-end shrink-0">
+        <div class="relative z-10 p-5 w-full text-white">
+          <button onclick="showScreen('temples')" class="flex items-center gap-1 text-white/60 text-xs mb-3 hover:text-white">
+            <span class="material-symbols-outlined text-base">arrow_back</span>Back
+          </button>
+          <span class="bg-green-400/20 border border-green-400/30 text-green-300 text-xs px-3 py-1 rounded-full mb-2 inline-flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>Darshan of the Day
+          </span>
+          <h2 class="text-2xl font-bold font-serif">Virtual Darshan Gallery</h2>
+          <p class="text-sm text-white/60 mt-1">Experience sacred temples from anywhere</p>
+        </div>
+      </div>
+
+      <!-- Category filters -->
+      <div class="flex gap-2 overflow-x-auto p-4 border-b border-[#e6e0f0] bg-white">
+        <button class="shrink-0 text-xs px-4 py-1.5 bg-[#5e0081] text-white rounded-full font-semibold">All Darshans</button>
+        <button class="shrink-0 text-xs px-4 py-1.5 border border-gray-200 rounded-full text-gray-600 flex items-center gap-1.5 bg-white">
+          <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Live Now
+        </button>
+        <button class="shrink-0 text-xs px-4 py-1.5 border border-gray-200 rounded-full text-gray-600 bg-white">Festivals</button>
+        <button class="shrink-0 text-xs px-4 py-1.5 border border-gray-200 rounded-full text-gray-600 bg-white">Architecture</button>
+        <button class="shrink-0 text-xs px-4 py-1.5 border border-gray-200 rounded-full text-gray-600 bg-white">Daily Rituals</button>
+      </div>
+
+      <!-- Bento gallery -->
+      <div class="p-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="col-span-2 row-span-2 bg-gradient-to-br from-[#2d0050] to-[#5e0081] rounded-2xl p-4 text-white relative overflow-hidden min-h-[200px] flex flex-col justify-between">
+          <div>
+            <span class="bg-red-500 text-white text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1 w-fit">
+              <span class="w-1.5 h-1.5 bg-white rounded-full"></span>LIVE
+            </span>
+          </div>
+          <div>
+            <h3 class="font-bold font-serif text-lg leading-tight">Madurai Meenakshi Amman</h3>
+            <p class="text-xs text-white/60 mt-1 mb-2">Live Darshan • 12.4K watching</p>
+            <button class="bg-white/20 border border-white/20 text-white text-xs px-3 py-1.5 rounded-lg font-medium">Watch Live</button>
+          </div>
+        </div>
+        <div class="bg-[#f5f0ff] rounded-2xl p-4 flex flex-col justify-between min-h-[90px]">
+          <span class="text-xs font-semibold text-[#5e0081] bg-white rounded-full px-2 py-0.5 self-start">Festival</span>
+          <div>
+            <h4 class="font-bold text-sm font-serif leading-tight">Panguni Uttiram</h4>
+            <p class="text-xs text-gray-500 mt-0.5">Grand procession</p>
+          </div>
+        </div>
+        <div class="bg-[#e8f5e9] rounded-2xl p-4 flex flex-col justify-between min-h-[90px]">
+          <span class="text-xs font-semibold text-green-700 bg-white rounded-full px-2 py-0.5 self-start">Architecture</span>
+          <div>
+            <h4 class="font-bold text-sm font-serif leading-tight">Brihadeeswarar</h4>
+            <p class="text-xs text-gray-500 mt-0.5">Stone gopuram details</p>
+          </div>
+        </div>
+        <div class="col-span-2 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-semibold text-orange-700 bg-white rounded-full px-2 py-0.5 mb-2 inline-block">Alankaram</span>
+            <h4 class="font-bold font-serif">Divine Alankarams</h4>
+            <p class="text-xs text-gray-500 mt-0.5">Sacred deity decorations</p>
+          </div>
+          <button class="bg-[#5e0081] text-white text-xs px-3 py-2 rounded-xl font-medium shrink-0">View All</button>
+        </div>
+      </div>
+
+      <!-- Featured temples -->
+      <div class="px-4 pb-4">
+        <h3 class="font-bold font-serif mb-3">Featured Temples</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] overflow-hidden cursor-pointer hover:shadow-md transition-shadow" onclick="showScreen('temple-detail')">
+            <div class="h-24 bg-gradient-to-br from-[#5e0081]/20 to-[#5e0081]/50 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-[#5e0081]">temple_hindu</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-xs font-serif leading-tight">Tirumala Venkateswara</h4>
+              <p class="text-[10px] text-gray-500 mt-0.5">Daily Alankaram Gallery</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+            <div class="h-24 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-orange-600">temple_hindu</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-xs font-serif leading-tight">Virupaksha Temple</h4>
+              <p class="text-[10px] text-gray-500 mt-0.5">Architecture Visual Walk</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+            <div class="h-24 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-indigo-600">temple_hindu</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-xs font-serif leading-tight">Ramanathaswamy</h4>
+              <p class="text-[10px] text-gray-500 mt-0.5">The Corridors of Infinity</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-[#e6e0f0] overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+            <div class="h-24 bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-emerald-600">temple_hindu</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-xs font-serif leading-tight">Thillai Natarajar</h4>
+              <p class="text-[10px] text-gray-500 mt-0.5">Ananda Tandava Visuals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: NEWS FEED
+    ══════════════════════════════════════ -->
+    <div id="screen-news" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="news-title" class="text-xl font-bold font-serif text-[#5e0081]">Bhakti News</h2>
+        <button id="rss-load-btn" class="p-2 rounded-xl bg-white border border-[#e6e0f0] hover:bg-gray-50 text-gray-600">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+      </div>
+
+      <div class="relative mb-4">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">search</span>
+        <input id="news-search" type="search" placeholder="Search articles..."
+          class="w-full pl-10 pr-4 py-3 bg-white border border-[#e6e0f0] rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5e0081]/20" />
+      </div>
+
+      <div id="news-chips" class="flex gap-2 overflow-x-auto pb-2 mb-5"></div>
+      <div id="news-feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: ARTICLE DETAIL
+    ══════════════════════════════════════ -->
+    <div id="screen-news-article" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <button onclick="showScreen('news')" class="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#5e0081] mb-5">
+        <span class="material-symbols-outlined text-base">arrow_back</span>Back to News
+      </button>
+      <article class="max-w-2xl mx-auto">
+        <div class="flex items-center gap-2 mb-3">
+          <span id="article-tag" class="bg-[#f5f0ff] text-[#5e0081] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide"></span>
+          <span id="article-date" class="text-xs text-gray-400"></span>
+        </div>
+        <h1 id="article-title" class="text-2xl lg:text-3xl font-bold font-serif text-[#1c1b1f] leading-tight mb-4"></h1>
+        <div class="flex items-center gap-3 mb-5 pb-5 border-b border-[#e6e0f0]">
+          <div class="w-8 h-8 rounded-full bg-[#f5f0ff] flex items-center justify-center text-[#5e0081]">
+            <span class="material-symbols-outlined text-sm">person</span>
+          </div>
+          <div>
+            <div id="article-source" class="text-sm font-semibold"></div>
+            <div class="text-xs text-gray-400">Spiritual Source</div>
+          </div>
+        </div>
+        <div class="bg-gradient-to-br from-[#f5f0ff] to-[#e8f5e9] rounded-2xl h-44 flex items-center justify-center mb-6">
+          <span class="material-symbols-outlined text-6xl text-[#5e0081]/20">auto_stories</span>
+        </div>
+        <div id="article-body" class="text-sm text-gray-700 leading-relaxed space-y-4"></div>
+        <div class="mt-8 pt-6 border-t border-[#e6e0f0]">
+          <h3 class="font-bold text-base font-serif mb-4">Related Stories</h3>
+          <div id="related-articles" class="grid grid-cols-2 gap-3"></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: AI CHAT
+    ══════════════════════════════════════ -->
+    <div id="screen-chat" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8 pt-4">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#5e0081] to-[#b027e3] flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+            <span class="material-symbols-outlined text-3xl">auto_awesome</span>
+          </div>
+          <h2 class="text-2xl font-bold font-serif text-[#5e0081]">Panchangam AI</h2>
+          <span class="bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mt-1 inline-block">Coming Soon</span>
+          <p class="text-sm text-gray-500 mt-3 max-w-sm mx-auto leading-relaxed">
+            Your intelligent guide to Vedic astrology, muhurta selection, festival significance, and spiritual wisdom.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5 mb-5">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Today's Overview</h3>
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="bg-[#f5f0ff] rounded-xl p-3">
+              <div id="chat-tithi" class="font-bold text-[#5e0081] text-sm">—</div>
+              <div class="text-[10px] text-gray-400 mt-0.5">Tithi</div>
+            </div>
+            <div class="bg-[#e8f5e9] rounded-xl p-3">
+              <div id="chat-nakshatra" class="font-bold text-green-700 text-sm">—</div>
+              <div class="text-[10px] text-gray-400 mt-0.5">Nakshatra</div>
+            </div>
+            <div class="bg-[#fff8e0] rounded-xl p-3">
+              <div id="chat-yoga" class="font-bold text-amber-700 text-sm">Shubha</div>
+              <div class="text-[10px] text-gray-400 mt-0.5">Yoga</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Ask me about...</h3>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button class="text-sm px-4 py-2 bg-white border border-[#e6e0f0] rounded-xl hover:bg-[#f5f0ff] hover:border-[#5e0081] transition-colors text-gray-700">What is today's Rahu Kalam?</button>
+          <button class="text-sm px-4 py-2 bg-white border border-[#e6e0f0] rounded-xl hover:bg-[#f5f0ff] hover:border-[#5e0081] transition-colors text-gray-700">Best muhurta for travel this week?</button>
+          <button class="text-sm px-4 py-2 bg-white border border-[#e6e0f0] rounded-xl hover:bg-[#f5f0ff] hover:border-[#5e0081] transition-colors text-gray-700">Significance of Panguni Uttiram?</button>
+          <button class="text-sm px-4 py-2 bg-white border border-[#e6e0f0] rounded-xl hover:bg-[#f5f0ff] hover:border-[#5e0081] transition-colors text-gray-700">Which temples to visit on Ekadashi?</button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] overflow-hidden">
+          <div class="p-10 flex flex-col items-center justify-center text-center">
+            <div class="text-5xl mb-3">🪔</div>
+            <p class="text-sm text-gray-500">Your conversations will appear here</p>
+            <p class="text-xs text-gray-400 mt-1">AI features will be enabled in a future update</p>
+          </div>
+          <div class="border-t border-[#e6e0f0] p-3 flex gap-2 items-center">
+            <div class="flex-1 bg-gray-50 rounded-xl px-4 py-2.5 text-sm text-gray-400">
+              Ask about muhurtas, festivals, vedic wisdom...
+            </div>
+            <button disabled class="p-2.5 rounded-xl bg-gray-100 text-gray-300 cursor-not-allowed">
+              <span class="material-symbols-outlined">send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN: SETTINGS
+    ══════════════════════════════════════ -->
+    <div id="screen-settings" class="screen hidden p-4 lg:p-6 pb-36 lg:pb-20">
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="goBack()" class="p-2 rounded-xl bg-white border border-[#e6e0f0] hover:bg-gray-50">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div>
+          <h2 class="text-xl font-bold font-serif text-[#5e0081]">Settings</h2>
+          <p class="text-xs text-gray-400">Customize your experience</p>
+        </div>
+      </div>
+
+      <div class="max-w-2xl space-y-4">
+        <!-- Location & Language -->
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+          <h3 class="font-bold text-sm mb-4 flex items-center gap-2 text-gray-800">
+            <span class="material-symbols-outlined text-[#5e0081]">location_on</span>Location & Language
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-semibold text-gray-500 block mb-1.5 uppercase tracking-wide">Primary Location</label>
+              <select id="city-select" class="w-full px-3 py-2.5 bg-[#f5f0ff] border border-[#e6e0f0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5e0081]/20"></select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-semibold text-gray-500 block mb-1.5 uppercase tracking-wide">Latitude</label>
+                <input type="number" id="lat-input" step="0.0001" class="w-full px-3 py-2.5 bg-[#f5f0ff] border border-[#e6e0f0] rounded-xl text-sm focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-gray-500 block mb-1.5 uppercase tracking-wide">Longitude</label>
+                <input type="number" id="lon-input" step="0.0001" class="w-full px-3 py-2.5 bg-[#f5f0ff] border border-[#e6e0f0] rounded-xl text-sm focus:outline-none" />
+              </div>
+            </div>
+            <button id="geo-btn" class="flex items-center gap-2 text-sm font-semibold text-[#5e0081] border border-[#5e0081]/30 px-4 py-2 rounded-xl hover:bg-[#f5f0ff] w-full justify-center">
+              <span class="material-symbols-outlined text-sm">my_location</span>Use My Location
+            </button>
+            <div>
+              <label class="text-xs font-semibold text-gray-500 block mb-1.5 uppercase tracking-wide">Calculate For Date</label>
+              <input type="date" id="date-input" class="w-full px-3 py-2.5 bg-[#f5f0ff] border border-[#e6e0f0] rounded-xl text-sm focus:outline-none" />
+            </div>
+            <button id="calc-btn" class="w-full bg-[#5e0081] text-white text-sm font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#4a0066] transition-colors">
+              <span class="material-symbols-outlined text-sm">calculate</span>
+              <span id="calc-title">Calculate Panchangam</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+          <h3 class="font-bold text-sm mb-4 flex items-center gap-2 text-gray-800">
+            <span class="material-symbols-outlined text-[#5e0081]">notifications</span>Notifications
+          </h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-700">Daily Panchang Reminder</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#5e0081] after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-700">Rahu Kalam Alert</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#5e0081] after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-700">Major Festival Alerts</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#5e0081] after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+            <button id="notify-btn" class="flex items-center gap-2 text-sm font-semibold text-[#5e0081] border border-[#5e0081]/30 px-4 py-2 rounded-xl hover:bg-[#f5f0ff] w-full justify-center">
+              <span class="material-symbols-outlined text-sm">notifications_active</span>
+              <span id="nav-notify">Enable Rahu Reminder</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Appearance -->
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+          <h3 class="font-bold text-sm mb-4 flex items-center gap-2 text-gray-800">
+            <span class="material-symbols-outlined text-[#5e0081]">palette</span>Appearance
+          </h3>
+          <div class="flex gap-2">
+            <button class="flex-1 py-2 bg-[#f5f0ff] border-2 border-[#5e0081] text-[#5e0081] rounded-xl text-sm font-bold">Light</button>
+            <button class="flex-1 py-2 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm">Dark</button>
+            <button class="flex-1 py-2 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm">System</button>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="bg-white rounded-2xl border border-[#e6e0f0] p-5">
+          <h3 class="font-bold text-sm mb-3 flex items-center gap-2 text-gray-800">
+            <span class="material-symbols-outlined text-[#5e0081]">info</span>About
+          </h3>
+          <p class="text-sm text-gray-500 mb-1" id="footer-note">Offline-ready PWA · Client-side only</p>
+          <p class="text-xs text-gray-400 mb-3">Vedic calculations powered by:</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-[#f5f0ff] text-[#5e0081] text-xs px-3 py-1 rounded-full font-medium">Surya Siddhanta</span>
+            <span class="bg-[#f5f0ff] text-[#5e0081] text-xs px-3 py-1 rounded-full font-medium">Drik Ganita</span>
+            <span class="bg-[#e8f5e9] text-green-700 text-xs px-3 py-1 rounded-full font-medium">Swiss Ephemeris</span>
+            <span class="bg-[#f5f0ff] text-[#5e0081] text-xs px-3 py-1 rounded-full font-medium">Aghora Paddhati</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main content wrapper -->
+
+  <!-- ═══════════════════════════════════════════
+       BOTTOM NAV (mobile only)
+  ═══════════════════════════════════════════ -->
+  <nav id="bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6e0f0]">
+    <div class="flex">
+      <button class="bottom-nav-btn flex-1 flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors" data-screen="today">
+        <span class="material-symbols-outlined text-xl">today</span>
+        <span class="text-[10px] font-medium">Today</span>
+      </button>
+      <button class="bottom-nav-btn flex-1 flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors" data-screen="calendar">
+        <span class="material-symbols-outlined text-xl">calendar_month</span>
+        <span class="text-[10px] font-medium">Calendar</span>
+      </button>
+      <button class="bottom-nav-btn flex-1 flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors" data-screen="festivals">
+        <span class="material-symbols-outlined text-xl">celebration</span>
+        <span class="text-[10px] font-medium">Festivals</span>
+      </button>
+      <button class="bottom-nav-btn flex-1 flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors" data-screen="temples">
+        <span class="material-symbols-outlined text-xl">temple_hindu</span>
+        <span class="text-[10px] font-medium">Temples</span>
+      </button>
+      <button class="bottom-nav-btn flex-1 flex flex-col items-center gap-0.5 py-2.5 text-gray-400 transition-colors" data-screen="news">
+        <span class="material-symbols-outlined text-xl">article</span>
+        <span class="text-[10px] font-medium">News</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       AI CHAT FOOTER (persistent, all screens)
+  ═══════════════════════════════════════════ -->
+  <div id="ai-chat-footer" class="fixed bottom-[56px] lg:bottom-0 left-0 lg:left-64 right-0 z-30 bg-white/95 backdrop-blur border-t border-[#e6e0f0] px-4 py-2.5">
+    <div class="flex items-center gap-3 max-w-3xl">
+      <div class="flex items-center gap-2 text-[#5e0081] shrink-0">
+        <span class="material-symbols-outlined text-lg">auto_awesome</span>
+        <span class="text-xs font-bold hidden sm:block">AI Guide</span>
+        <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden sm:block">Soon</span>
+      </div>
+      <button onclick="showScreen('chat')" class="flex-1 text-left bg-[#f5f0ff] hover:bg-[#ede5ff] rounded-xl px-4 py-2 text-xs text-gray-400 truncate transition-colors">
+        Ask about muhurtas, festivals, vedic wisdom...
+      </button>
+    </div>
+  </div>
+
+  <script src="assets/swisseph.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
