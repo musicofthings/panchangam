@@ -1,0 +1,9 @@
+# Service worker must never be cached — browser needs the latest version to detect updates.
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# index.html must also bypass cache so the browser re-evaluates the SW registration.
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+/
+  Cache-Control: no-cache, no-store, must-revalidate
