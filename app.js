@@ -1,3 +1,738 @@
+/* ════════════════════════════════════════════════════════════
+   ROUTER & SCREEN MANAGEMENT
+════════════════════════════════════════════════════════════ */
+
+const MAIN_SCREENS = ['today', 'calendar', 'festivals', 'temples', 'news'];
+let _prevScreen = 'today';
+let _currentScreen = 'today';
+
+function showScreen(id) {
+  _prevScreen = _currentScreen;
+  _currentScreen = id;
+
+  document.querySelectorAll('.screen').forEach((el) => el.classList.add('hidden'));
+  const target = document.getElementById(`screen-${id}`);
+  if (target) target.classList.remove('hidden');
+
+  // Update sidebar nav
+  document.querySelectorAll('.nav-link').forEach((el) => {
+    el.classList.toggle('active', el.dataset.screen === id);
+  });
+  // Update bottom nav (only for main 5 tabs)
+  document.querySelectorAll('.bottom-nav-btn').forEach((el) => {
+    el.classList.toggle('active', el.dataset.screen === id);
+  });
+
+  // Screen-specific initialisation
+  if (id === 'today') renderTodayScreen();
+  if (id === 'calendar') renderMonthViewFromInputs();
+  if (id === 'festivals') renderFestivals();
+  if (id === 'temples') renderTemplesGrid();
+  if (id === 'temples-map') renderMapTempleList();
+  if (id === 'temple-detail') renderTempleDetail();
+  if (id === 'temple-booking') renderBookingDates();
+  if (id === 'news') { /* news feed already loaded at startup */ }
+  if (id === 'chat') renderChatOverview();
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  history.replaceState(null, '', `#${id}`);
+}
+
+function goBack() {
+  showScreen(_prevScreen || 'today');
+}
+
+/* ════════════════════════════════════════════════════════════
+   STATIC DATA — TEMPLES
+════════════════════════════════════════════════════════════ */
+
+const TEMPLES_DATA = [
+  {
+    id: 'kapaleeshwarar',
+    name: 'Kapaleeshwarar Temple',
+    location: 'Mylapore, Chennai',
+    deity: 'shiva',
+    distance: '2 km',
+    hours: '5:00 AM – 9:00 PM',
+    desc: 'Ancient Dravidian temple dedicated to Lord Shiva and Goddess Karpagambal. Built by the Pallavas in the 7th century CE, the current structure dates to the 16th century after Vijayanagara rule.',
+    address: 'Thirumalai Pillai Rd, Mylapore, Chennai 600004',
+    phone: '+91 44 2464 1670',
+    color: '#5e0081',
+    bg: 'from-[#5e0081]/20 to-[#5e0081]/50',
+    iconColor: '#5e0081',
+    badgeBg: '#f5f0ff',
+    badgeText: '#5e0081',
+    badgeLabel: 'SHIVA',
+    festivals: [
+      { name: 'Panguni Peruvizha', season: 'Panguni (Mar–Apr)', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Maha Shivaratri', season: 'Maasi (Feb–Mar)', bg: '#fff0f5', color: '#9e0031' },
+      { name: 'Teppam Festival', season: 'Thai (Jan–Feb)', bg: '#f0fff5', color: '#00563e' },
+      { name: 'Navaratri', season: 'Purattasi (Sep–Oct)', bg: '#fffbf0', color: '#92400e' }
+    ],
+    pooja: [
+      { name: 'Thiruvanandal', sub: 'Morning Ko Pooja', time: '5:30 AM' },
+      { name: 'Uchikala Pooja', sub: 'Noon', time: '12:00 PM' },
+      { name: 'Sayarakshai', sub: 'Evening', time: '6:00 PM' },
+      { name: 'Ardhajama Pooja', sub: 'Night', time: '9:00 PM' }
+    ]
+  },
+  {
+    id: 'meenakshi',
+    name: 'Meenakshi Amman Temple',
+    location: 'Madurai',
+    deity: 'devi',
+    distance: '450 km',
+    hours: '5:00 AM – 12:30 PM, 4:00 PM – 10:00 PM',
+    desc: 'Historic temple dedicated to Goddess Meenakshi (Parvati) and Lord Sundareswarar (Shiva). One of the largest temples in India, with 14 towering gopurams.',
+    address: 'Madurai Meenakshi Amman Temple, Madurai, Tamil Nadu 625001',
+    phone: '+91 452 234 4360',
+    color: '#c62828',
+    iconColor: '#c62828',
+    badgeBg: '#fff0f0',
+    badgeText: '#c62828',
+    badgeLabel: 'DEVI',
+    festivals: [
+      { name: 'Chithirai Festival', season: 'Chithirai (Apr–May)', bg: '#fff0f0', color: '#c62828' },
+      { name: 'Navaratri', season: 'Purattasi (Sep–Oct)', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Panguni Uttiram', season: 'Panguni (Mar–Apr)', bg: '#f0fff5', color: '#00563e' },
+      { name: 'Maha Shivaratri', season: 'Maasi (Feb–Mar)', bg: '#fffbf0', color: '#92400e' }
+    ],
+    pooja: [
+      { name: 'Thiruvanandal', sub: 'Morning', time: '5:00 AM' },
+      { name: 'Noon Pooja', sub: 'Midday', time: '12:00 PM' },
+      { name: 'Evening Pooja', sub: 'Sayarakshai', time: '6:30 PM' },
+      { name: 'Night Pooja', sub: 'Ardhajama', time: '9:30 PM' }
+    ]
+  },
+  {
+    id: 'brihadeeswarar',
+    name: 'Brihadeeswarar Temple',
+    location: 'Thanjavur',
+    deity: 'shiva',
+    distance: '340 km',
+    hours: '6:00 AM – 12:30 PM, 4:00 PM – 8:30 PM',
+    desc: 'UNESCO World Heritage Site built by Raja Raja Chola I in 1010 CE. The 66-metre vimana is one of the tallest in India. A masterpiece of Dravidian architecture.',
+    address: 'Brihadeeswarar Temple, Thanjavur, Tamil Nadu 613001',
+    phone: '+91 4362 274 274',
+    color: '#1565c0',
+    iconColor: '#1565c0',
+    badgeBg: '#e3f2fd',
+    badgeText: '#1565c0',
+    badgeLabel: 'SHIVA',
+    festivals: [
+      { name: 'Maha Shivaratri', season: 'Maasi (Feb–Mar)', bg: '#e3f2fd', color: '#1565c0' },
+      { name: 'Raja Raja Chola Utsav', season: 'November', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Karthigai Deepam', season: 'Karthigai (Nov–Dec)', bg: '#fffbf0', color: '#92400e' },
+      { name: 'Navaratri', season: 'Purattasi (Sep–Oct)', bg: '#f0fff5', color: '#00563e' }
+    ],
+    pooja: [
+      { name: 'Thiruvanandal', sub: 'Morning', time: '6:00 AM' },
+      { name: 'Noon Pooja', sub: 'Midday', time: '12:00 PM' },
+      { name: 'Evening Pooja', sub: 'Sayarakshai', time: '5:00 PM' },
+      { name: 'Ardhajama', sub: 'Night', time: '8:30 PM' }
+    ]
+  },
+  {
+    id: 'tirumala',
+    name: 'Tirumala Venkateswara',
+    location: 'Tirupati, Andhra Pradesh',
+    deity: 'vishnu',
+    distance: '130 km',
+    hours: 'Open 24 hours (with breaks)',
+    desc: 'One of the most visited pilgrimage sites in the world. The temple is dedicated to Lord Venkateswara (Vishnu), situated on the Tirumala hills at 853m above sea level.',
+    address: 'Tirumala Hills, Tirupati, Andhra Pradesh 517504',
+    phone: '+91 877 222 7777',
+    color: '#00695c',
+    iconColor: '#00695c',
+    badgeBg: '#e8f5e9',
+    badgeText: '#00695c',
+    badgeLabel: 'VISHNU',
+    festivals: [
+      { name: 'Brahmotsavam', season: 'September', bg: '#e8f5e9', color: '#00695c' },
+      { name: 'Vaikunta Ekadashi', season: 'Margazhi (Dec–Jan)', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Rathasapthami', season: 'Maasi (Feb)', bg: '#fffbf0', color: '#92400e' },
+      { name: 'Ugadi', season: 'Ugadi (Mar–Apr)', bg: '#e3f2fd', color: '#1565c0' }
+    ],
+    pooja: [
+      { name: 'Thiruvanandal', sub: 'Early Morning', time: '3:00 AM' },
+      { name: 'Vishwaroopa', sub: 'Mid Morning', time: '10:00 AM' },
+      { name: 'Arjitha Seva', sub: 'Evening', time: '5:00 PM' },
+      { name: 'Ekanta Seva', sub: 'Night', time: '9:00 PM' }
+    ]
+  },
+  {
+    id: 'guruvayur',
+    name: 'Guruvayur Temple',
+    location: 'Guruvayur, Kerala',
+    deity: 'vishnu',
+    distance: '600 km',
+    hours: '3:00 AM – 1:00 PM, 5:00 PM – 9:45 PM',
+    desc: 'Known as the "Dwarka of South India." The presiding deity is Guruvayurappan (Krishna). One of the most important Vaishnavite pilgrimage centres in Kerala.',
+    address: 'Guruvayur Temple, Guruvayur, Kerala 680101',
+    phone: '+91 487 255 6696',
+    color: '#e65100',
+    iconColor: '#e65100',
+    badgeBg: '#fff3e0',
+    badgeText: '#e65100',
+    badgeLabel: 'VISHNU',
+    festivals: [
+      { name: 'Guruvayur Ekadashi', season: 'Vrischikam (Nov–Dec)', bg: '#fff3e0', color: '#e65100' },
+      { name: 'Utsavam', season: 'Kumbham (Feb–Mar)', bg: '#e8f5e9', color: '#00695c' },
+      { name: 'Janmashtami', season: 'Chingam (Aug–Sep)', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Vishu', season: 'Medam (Apr)', bg: '#e3f2fd', color: '#1565c0' }
+    ],
+    pooja: [
+      { name: 'Nirmalyam', sub: 'Early Morning', time: '3:00 AM' },
+      { name: 'Ucha Pooja', sub: 'Midday', time: '12:00 PM' },
+      { name: 'Evening Pooja', sub: 'Sayahna', time: '5:30 PM' },
+      { name: 'Athazha Pooja', sub: 'Night', time: '9:00 PM' }
+    ]
+  },
+  {
+    id: 'ramanathaswamy',
+    name: 'Ramanathaswamy Temple',
+    location: 'Rameswaram, Tamil Nadu',
+    deity: 'shiva',
+    distance: '560 km',
+    hours: '5:00 AM – 1:00 PM, 3:00 PM – 9:00 PM',
+    desc: 'One of the twelve Jyotirlinga shrines. Famous for its 1,200 metre outer corridor — the longest temple corridor in the world. Situated on Pamban Island.',
+    address: 'Ramanathaswamy Temple, Rameswaram, Tamil Nadu 623526',
+    phone: '+91 4573 221 223',
+    color: '#6a1b9a',
+    iconColor: '#6a1b9a',
+    badgeBg: '#f3e5f5',
+    badgeText: '#6a1b9a',
+    badgeLabel: 'SHIVA',
+    festivals: [
+      { name: 'Thirukalyanam', season: 'Panguni (Mar–Apr)', bg: '#f3e5f5', color: '#6a1b9a' },
+      { name: 'Maha Shivaratri', season: 'Maasi (Feb–Mar)', bg: '#f5f0ff', color: '#5e0081' },
+      { name: 'Karthigai Deepam', season: 'Karthigai (Nov–Dec)', bg: '#fffbf0', color: '#92400e' },
+      { name: 'Aadi Amavasai', season: 'Aadi (Jul–Aug)', bg: '#e8f5e9', color: '#00563e' }
+    ],
+    pooja: [
+      { name: 'Thiruvanandal', sub: 'Morning', time: '5:00 AM' },
+      { name: 'Noon Pooja', sub: 'Midday', time: '12:00 PM' },
+      { name: 'Evening Pooja', sub: 'Sayarakshai', time: '4:30 PM' },
+      { name: 'Ardhajama', sub: 'Night', time: '9:00 PM' }
+    ]
+  }
+];
+
+let _activeTemple = TEMPLES_DATA[0];
+let _activeTempleFilter = 'all';
+
+/* ════════════════════════════════════════════════════════════
+   STATIC DATA — FESTIVALS
+════════════════════════════════════════════════════════════ */
+
+const FESTIVALS_DATA = [
+  {
+    id: 'panguni-uttiram',
+    name: 'Panguni Uttiram',
+    date: '2026-04-01',
+    daysLeft: 1,
+    deity: 'murugan',
+    tithi: 'Purnima (Panguni 15)',
+    nakshatra: 'Uttara Phalguni',
+    icon: '🌕',
+    iconBg: '#f3e5f5',
+    desc: 'The sacred union of Lord Murugan and Goddess Devasena. Celebrated at all Murugan temples with grand processions and devotional singing.',
+    badgeLabel: 'Tomorrow!',
+    badgeBg: 'bg-amber-400',
+    badgeColor: 'text-amber-900'
+  },
+  {
+    id: 'tamil-new-year',
+    name: 'Tamil New Year',
+    date: '2026-04-14',
+    daysLeft: 14,
+    deity: 'tamil',
+    tithi: 'Mesha Sankranti',
+    nakshatra: 'Ashwini',
+    icon: '🌸',
+    iconBg: '#e8f5e9',
+    desc: 'Tamil New Year (Puthandu) marks the Sun\'s entry into Mesha rasi. Celebrated with kolam, new clothes, and traditional feast.',
+    badgeLabel: 'In 14 days',
+    badgeBg: 'bg-green-400',
+    badgeColor: 'text-green-900'
+  },
+  {
+    id: 'rama-navami',
+    name: 'Ram Navami',
+    date: '2026-03-28',
+    daysLeft: 22,
+    deity: 'vishnu',
+    tithi: 'Shukla Navami',
+    nakshatra: 'Punarvasu',
+    icon: '🏹',
+    iconBg: '#e3f2fd',
+    desc: 'Celebration of Lord Rama\'s birth on the ninth day of Chaitra month. Temples organise Akanda Ramayana parayana.',
+    badgeLabel: 'In 22 days',
+    badgeBg: 'bg-blue-400',
+    badgeColor: 'text-blue-900'
+  },
+  {
+    id: 'akshaya-tritiya',
+    name: 'Akshaya Tritiya',
+    date: '2026-04-20',
+    daysLeft: 20,
+    deity: 'vishnu',
+    tithi: 'Vaishakha Shukla 3',
+    nakshatra: 'Rohini',
+    icon: '✨',
+    iconBg: '#fffde7',
+    desc: 'One of the most auspicious days in the Hindu calendar. Beginning of any enterprise on this day is believed to bring eternal success.',
+    badgeLabel: 'In 20 days',
+    badgeBg: 'bg-yellow-400',
+    badgeColor: 'text-yellow-900'
+  },
+  {
+    id: 'ekadashi',
+    name: 'Shukla Ekadashi',
+    date: '2026-04-07',
+    daysLeft: 7,
+    deity: 'vishnu',
+    tithi: 'Shukla Ekadashi',
+    nakshatra: 'Pushya',
+    icon: '🪔',
+    iconBg: '#fff8e0',
+    desc: 'Ekadashi is observed twice a month. Devotees fast and observe vigil through the night. Especially significant at Vaishnavite temples.',
+    badgeLabel: 'In 7 days',
+    badgeBg: 'bg-amber-300',
+    badgeColor: 'text-amber-900'
+  },
+  {
+    id: 'vaikasi-visakham',
+    name: 'Vaikasi Visakham',
+    date: '2026-05-22',
+    daysLeft: 52,
+    deity: 'murugan',
+    tithi: 'Vaikasi Purnima',
+    nakshatra: 'Vishakha',
+    icon: '🦚',
+    iconBg: '#e8f5e9',
+    desc: 'Birthday of Lord Murugan celebrated in the Tamil month of Vaikasi when the moon is in Visakha nakshatra. Grand celebrations at Murugan temples.',
+    badgeLabel: 'In 52 days',
+    badgeBg: 'bg-emerald-400',
+    badgeColor: 'text-emerald-900'
+  },
+  {
+    id: 'maha-shivaratri',
+    name: 'Maha Shivaratri 2027',
+    date: '2027-02-17',
+    daysLeft: 323,
+    deity: 'shiva',
+    tithi: 'Krishna Chaturdashi',
+    nakshatra: 'Dhanishtha',
+    icon: '🔱',
+    iconBg: '#f5f0ff',
+    desc: 'The Great Night of Shiva. Devotees fast, stay awake all night and offer Abhishekam to Shivalingam. One of the most important Shaivite festivals.',
+    badgeLabel: 'In 323 days',
+    badgeBg: 'bg-purple-400',
+    badgeColor: 'text-purple-900'
+  }
+];
+
+let _activeFestivalFilter = 'all';
+
+/* ════════════════════════════════════════════════════════════
+   TODAY SCREEN RENDERER
+════════════════════════════════════════════════════════════ */
+
+function renderTodayScreen() {
+  const now = new Date();
+  const dateInput = document.getElementById('date-input');
+  const selectedDate = dateInput && dateInput.value
+    ? new Date(`${dateInput.value}T00:00:00`)
+    : now;
+
+  // Location pill
+  const citySelect = document.getElementById('city-select');
+  const cityIdx = citySelect ? citySelect.value : 0;
+  const city = CITY_PRESETS[cityIdx] || CITY_PRESETS[0];
+  const pill = document.getElementById('today-location-pill');
+  if (pill) pill.textContent = city.name;
+
+  // Date pill
+  const datePill = document.getElementById('today-date-pill');
+  if (datePill) {
+    datePill.textContent = selectedDate.toLocaleDateString('en-IN', {
+      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+    });
+  }
+
+  // Big date
+  const bigDate = document.getElementById('today-big-date');
+  if (bigDate) bigDate.textContent = selectedDate.getDate();
+
+  const weekdayEl = document.getElementById('today-weekday');
+  if (weekdayEl) weekdayEl.textContent = selectedDate.toLocaleDateString('en-IN', { weekday: 'long' });
+
+  // Compute panchangam
+  const lat = parseFloat(document.getElementById('lat-input')?.value || city.lat);
+  const lon = parseFloat(document.getElementById('lon-input')?.value || city.lon);
+  const tithi = calcTithi(selectedDate);
+  const nak = calcNakshatra(selectedDate);
+  const moonRasi = calcMoonRasi(selectedDate);
+  const tamilDay = calcTamilDay(selectedDate);
+  const paksha = tithi <= 15 ? 'Shukla Paksha' : 'Krishna Paksha';
+  const lunarDay = tithi <= 15 ? tithi : tithi - 15;
+
+  const langTithi = (TITHI_NAMES[currentLang] || TITHI_NAMES.en)[tithi - 1];
+  const langNak = (NAKSHATRA[currentLang] || NAKSHATRA.en)[nak - 1];
+
+  // Lunar info
+  const lunarMonthEl = document.getElementById('today-lunar-month');
+  if (lunarMonthEl) lunarMonthEl.textContent = paksha.toUpperCase();
+  const lunarDayEl = document.getElementById('today-lunar-day');
+  if (lunarDayEl) lunarDayEl.textContent = lunarDay;
+
+  const tithiBadge = document.getElementById('today-tithi-badge');
+  if (tithiBadge) tithiBadge.textContent = langTithi;
+  const pakshaBadge = document.getElementById('today-paksha-badge');
+  if (pakshaBadge) pakshaBadge.textContent = paksha;
+
+  // Sunrise / sunset
+  const ss = calcSunriseSunset(selectedDate, lat, lon);
+  const srEl = document.getElementById('today-sunrise');
+  const ssEl = document.getElementById('today-sunset');
+  if (srEl) srEl.textContent = fmtTime(ss.sunrise);
+  if (ssEl) ssEl.textContent = fmtTime(ss.sunset);
+
+  // Moon card
+  const moonRasiEl = document.getElementById('today-moon-rasi');
+  if (moonRasiEl) moonRasiEl.textContent = moonRasi;
+  const nakEl = document.getElementById('today-nakshatra');
+  if (nakEl) nakEl.textContent = langNak;
+  const nakNameEl = document.getElementById('today-nak-name');
+  if (nakNameEl) nakNameEl.textContent = langNak;
+
+  // Tamil card
+  const TAMIL_MONTHS = ['சித்திரை','வைகாசி','ஆனி','ஆடி','ஆவணி','புரட்டாசி','ஐப்பசி','கார்த்திகை','மார்கழி','தை','மாசி','பங்குனி'];
+  const tamilMonthIdx = Math.floor((selectedDate.getMonth() + selectedDate.getDate() / 30 + 9) % 12);
+  const tamilMonthEl = document.getElementById('today-tamil-month');
+  if (tamilMonthEl) tamilMonthEl.textContent = TAMIL_MONTHS[tamilMonthIdx] || '';
+  const tamilDayEl = document.getElementById('today-tamil-day');
+  if (tamilDayEl) tamilDayEl.textContent = `Day ${tamilDay}`;
+  const rasiEl = document.getElementById('today-rasi');
+  if (rasiEl) rasiEl.textContent = moonRasi;
+
+  // Shashti alert
+  const alertEl = document.getElementById('today-alert');
+  const alertText = document.getElementById('today-alert-text');
+  const shashtiStr = getShashti(tithi);
+  if (shashtiStr !== t('noShashti') && alertEl && alertText) {
+    alertEl.classList.remove('hidden');
+    alertText.textContent = shashtiStr;
+  } else if (alertEl) {
+    alertEl.classList.add('hidden');
+  }
+
+  // Render muhurta cards (reuse existing logic)
+  const sunrise = ss.sunrise;
+  const data = calculatePanchangam(selectedDate, lat, lon, null);
+  renderResults(data);
+
+  // Sync chat overview
+  const chatTithi = document.getElementById('chat-tithi');
+  const chatNak = document.getElementById('chat-nakshatra');
+  if (chatTithi) chatTithi.textContent = langTithi;
+  if (chatNak) chatNak.textContent = langNak;
+}
+
+/* ════════════════════════════════════════════════════════════
+   TEMPLES SCREEN RENDERERS
+════════════════════════════════════════════════════════════ */
+
+function renderTemplesGrid(filter) {
+  filter = filter || _activeTempleFilter;
+  _activeTempleFilter = filter;
+
+  // Update filter buttons
+  document.querySelectorAll('.temple-filter').forEach((btn) => {
+    const isActive = btn.dataset.filter === filter;
+    btn.classList.toggle('bg-[#5e0081]', isActive);
+    btn.classList.toggle('text-white', isActive);
+    btn.classList.toggle('border-gray-200', !isActive);
+    btn.classList.toggle('text-gray-600', !isActive);
+    btn.classList.toggle('bg-white', !isActive);
+  });
+
+  const searchVal = (document.getElementById('temple-search')?.value || '').toLowerCase();
+  const grid = document.getElementById('temples-grid');
+  if (!grid) return;
+
+  const visible = TEMPLES_DATA.filter((t) => {
+    const filterOk = filter === 'all' || t.deity === filter;
+    const searchOk = !searchVal || t.name.toLowerCase().includes(searchVal) || t.location.toLowerCase().includes(searchVal);
+    return filterOk && searchOk;
+  });
+
+  if (!visible.length) {
+    grid.innerHTML = '<p class="text-sm text-gray-400 col-span-3 py-8 text-center">No temples found.</p>';
+    return;
+  }
+
+  grid.innerHTML = visible.map((temple) => `
+    <div class="temple-card" onclick="openTempleDetail('${temple.id}')">
+      <div class="temple-card-header" style="background: linear-gradient(135deg, ${temple.badgeBg}, ${temple.badgeBg}cc)">
+        <span class="material-symbols-outlined text-5xl" style="color:${temple.iconColor}">temple_hindu</span>
+        <span class="temple-card-badge" style="background:${temple.badgeBg};color:${temple.iconColor}">${temple.badgeLabel}</span>
+      </div>
+      <div class="temple-card-body">
+        <h3 class="temple-card-name">${temple.name}</h3>
+        <p class="temple-card-loc">
+          <span class="material-symbols-outlined" style="font-size:0.8rem">location_on</span>${temple.location}
+        </p>
+        <p class="text-xs text-gray-400 mt-1 line-clamp-2">${temple.desc}</p>
+      </div>
+      <div class="temple-card-footer">
+        <span class="text-xs text-gray-400 flex items-center gap-1">
+          <span class="material-symbols-outlined" style="font-size:0.8rem">schedule</span>${temple.distance}
+        </span>
+        <div class="flex gap-2">
+          <button class="text-xs font-semibold text-[#5e0081] border border-[#5e0081]/30 px-3 py-1.5 rounded-lg hover:bg-[#f5f0ff]" onclick="event.stopPropagation();openTempleDetail('${temple.id}')">Details</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTempleDetail(id) {
+  _activeTemple = TEMPLES_DATA.find((t) => t.id === id) || TEMPLES_DATA[0];
+  renderTempleDetail();
+  showScreen('temple-detail');
+}
+
+function renderTempleDetail() {
+  const t = _activeTemple;
+  if (!t) return;
+
+  const nameEl = document.getElementById('temple-detail-name');
+  if (nameEl) nameEl.textContent = t.name;
+  const locEl = document.getElementById('temple-detail-location');
+  if (locEl) locEl.textContent = t.location;
+  const histEl = document.getElementById('temple-detail-history');
+  if (histEl) histEl.textContent = t.desc;
+  const addrEl = document.getElementById('temple-detail-address');
+  if (addrEl) addrEl.textContent = t.address;
+  const phoneEl = document.getElementById('temple-detail-phone');
+  if (phoneEl) phoneEl.textContent = t.phone ? `📞 ${t.phone}` : '';
+
+  // Pooja schedule
+  const schedEl = document.getElementById('temple-pooja-schedule');
+  if (schedEl) {
+    schedEl.innerHTML = t.pooja.map((p, i) => `
+      <div class="flex items-center justify-between py-2 ${i < t.pooja.length - 1 ? 'border-b border-gray-100' : ''}">
+        <div>
+          <div class="font-semibold text-sm">${p.name}</div>
+          <div class="text-xs text-gray-400">${p.sub}</div>
+        </div>
+        <span class="text-sm font-bold" style="color:${t.iconColor}">${p.time}</span>
+      </div>
+    `).join('');
+  }
+
+  // Festivals grid
+  const festEl = document.getElementById('temple-festivals-grid');
+  if (festEl) {
+    festEl.innerHTML = t.festivals.map((f) => `
+      <div class="rounded-xl p-3" style="background:${f.bg}">
+        <div class="font-semibold text-sm" style="color:${f.color}">${f.name}</div>
+        <div class="text-xs text-gray-500 mt-1">${f.season}</div>
+      </div>
+    `).join('');
+  }
+}
+
+function renderMapTempleList() {
+  const list = document.getElementById('map-temple-list');
+  if (!list) return;
+  list.innerHTML = TEMPLES_DATA.map((temple) => `
+    <div class="map-temple-card" onclick="openTempleDetail('${temple.id}')">
+      <div class="map-temple-thumb" style="background:${temple.badgeBg}">
+        <span class="material-symbols-outlined text-2xl" style="color:${temple.iconColor}">temple_hindu</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-sm leading-tight">${temple.name}</div>
+        <div class="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+          <span class="material-symbols-outlined" style="font-size:0.75rem">location_on</span>${temple.location}
+        </div>
+        <div class="text-xs text-gray-400 mt-0.5">${temple.distance}</div>
+      </div>
+      <button class="text-xs font-semibold text-[#5e0081] border border-[#5e0081]/30 px-3 py-1.5 rounded-lg hover:bg-[#f5f0ff] shrink-0">Map</button>
+    </div>
+  `).join('');
+}
+
+/* ════════════════════════════════════════════════════════════
+   FESTIVALS SCREEN RENDERER
+════════════════════════════════════════════════════════════ */
+
+function renderFestivals(filter) {
+  filter = filter || _activeFestivalFilter;
+  _activeFestivalFilter = filter;
+
+  document.querySelectorAll('.festival-filter').forEach((btn) => {
+    const isActive = btn.dataset.filter === filter;
+    btn.classList.toggle('bg-[#5e0081]', isActive);
+    btn.classList.toggle('text-white', isActive);
+    btn.classList.toggle('border-gray-200', !isActive);
+    btn.classList.toggle('text-gray-600', !isActive);
+    btn.classList.toggle('bg-white', !isActive);
+  });
+
+  const filtered = filter === 'all'
+    ? FESTIVALS_DATA
+    : FESTIVALS_DATA.filter((f) => f.deity === filter);
+
+  // Hero (first upcoming)
+  const hero = filtered[0];
+  if (hero) {
+    const heroEl = document.getElementById('festivals-hero');
+    const badgeEl = document.getElementById('festivals-hero-badge');
+    const nameEl = document.getElementById('festivals-hero-name');
+    const descEl = document.getElementById('festivals-hero-desc');
+    const tithiEl = document.getElementById('festivals-hero-tithi');
+    const daysEl = document.getElementById('festivals-hero-days');
+    if (badgeEl) badgeEl.textContent = hero.badgeLabel;
+    if (nameEl) nameEl.textContent = hero.name;
+    if (descEl) descEl.textContent = hero.desc;
+    if (tithiEl) tithiEl.textContent = hero.tithi;
+    if (daysEl) daysEl.textContent = hero.daysLeft === 0 ? 'Today!' : hero.daysLeft === 1 ? 'Tomorrow' : `${hero.daysLeft} days`;
+  }
+
+  // Festival list (remaining)
+  const listEl = document.getElementById('festivals-list');
+  if (!listEl) return;
+
+  listEl.innerHTML = filtered.slice(1).map((f) => `
+    <div class="festival-card">
+      <div class="festival-card-icon" style="background:${f.iconBg}">${f.icon}</div>
+      <div class="flex-1 min-w-0">
+        <h3 class="festival-card-name">${f.name}</h3>
+        <p class="festival-card-meta">${f.tithi} · ${f.nakshatra}</p>
+        <p class="text-xs text-gray-400 mt-1 line-clamp-2">${f.desc}</p>
+      </div>
+      <div class="flex flex-col items-end gap-2">
+        <span class="festival-days-badge bg-gray-100 text-gray-600">${f.daysLeft}d</span>
+        <span class="text-xs text-gray-400">${new Date(f.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ════════════════════════════════════════════════════════════
+   BOOKING DATES
+════════════════════════════════════════════════════════════ */
+
+function renderBookingDates() {
+  const container = document.getElementById('booking-dates');
+  if (!container) return;
+  const today = new Date();
+  const chips = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    chips.push(`
+      <button class="booking-date-chip ${i === 0 ? 'active' : ''}" onclick="selectBookingDate(this)">
+        <span class="day-name">${d.toLocaleDateString('en-IN', { weekday: 'short' })}</span>
+        <span class="day-num">${d.getDate()}</span>
+        <span style="font-size:0.6rem;opacity:0.7">${d.toLocaleDateString('en-IN', { month: 'short' })}</span>
+      </button>
+    `);
+  }
+  container.innerHTML = chips.join('');
+}
+
+function selectBookingDate(el) {
+  document.querySelectorAll('.booking-date-chip').forEach((c) => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ════════════════════════════════════════════════════════════
+   CHAT OVERVIEW
+════════════════════════════════════════════════════════════ */
+
+function renderChatOverview() {
+  const now = new Date();
+  const tithi = calcTithi(now);
+  const nak = calcNakshatra(now);
+  const langTithi = (TITHI_NAMES[currentLang] || TITHI_NAMES.en)[tithi - 1];
+  const langNak = (NAKSHATRA[currentLang] || NAKSHATRA.en)[nak - 1];
+  const el1 = document.getElementById('chat-tithi');
+  const el2 = document.getElementById('chat-nakshatra');
+  if (el1) el1.textContent = langTithi;
+  if (el2) el2.textContent = langNak;
+}
+
+/* ════════════════════════════════════════════════════════════
+   NEWS — override renderNewsCards to support article detail
+════════════════════════════════════════════════════════════ */
+
+let _currentArticle = null;
+
+function openArticle(article) {
+  _currentArticle = article;
+  document.getElementById('article-tag').textContent = article.tag || 'Spiritual';
+  document.getElementById('article-date').textContent = article.dateText || article.source;
+  document.getElementById('article-title').textContent = article.title;
+  document.getElementById('article-source').textContent = article.source;
+  const bodyEl = document.getElementById('article-body');
+  if (bodyEl) {
+    bodyEl.innerHTML = `<p class="first-letter:text-4xl first-letter:font-serif first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#5e0081]">${article.summary || 'Read more on the original source.'}</p>
+    <p class="text-gray-500 text-xs">For the full article, visit the original source.</p>`;
+  }
+  // Related articles from newsArticles
+  const relatedEl = document.getElementById('related-articles');
+  if (relatedEl && newsArticles.length > 1) {
+    const others = newsArticles.filter((a) => a.title !== article.title).slice(0, 4);
+    relatedEl.innerHTML = others.map((a) => `
+      <div class="news-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+        <div class="news-card-img-placeholder"><span class="material-symbols-outlined">article</span></div>
+        <div class="news-card-body">
+          <div class="news-card-tag">${a.tag}</div>
+          <h3 class="news-card-title">${a.title}</h3>
+        </div>
+      </div>
+    `).join('');
+  }
+  showScreen('news-article');
+}
+
+/* ════════════════════════════════════════════════════════════
+   ROUTER INIT
+════════════════════════════════════════════════════════════ */
+
+function initRouter() {
+  // Nav link clicks
+  document.querySelectorAll('.nav-link, .bottom-nav-btn').forEach((el) => {
+    el.addEventListener('click', () => {
+      const screen = el.dataset.screen;
+      if (screen) showScreen(screen);
+    });
+  });
+
+  // Festival filters
+  document.querySelectorAll('.festival-filter').forEach((btn) => {
+    btn.addEventListener('click', () => renderFestivals(btn.dataset.filter));
+  });
+
+  // Temple filters
+  document.querySelectorAll('.temple-filter').forEach((btn) => {
+    btn.addEventListener('click', () => renderTemplesGrid(btn.dataset.filter));
+  });
+
+  // Temple search
+  const templeSearch = document.getElementById('temple-search');
+  if (templeSearch) templeSearch.addEventListener('input', () => renderTemplesGrid());
+
+  // Load from hash
+  const hash = window.location.hash.replace('#', '');
+  const validScreens = ['today','calendar','festivals','temples','temples-map','temple-detail','temple-booking','temple-darshan','news','news-article','chat','settings'];
+  showScreen(validScreens.includes(hash) ? hash : 'today');
+}
+
 const CITY_PRESETS = [
   // Tamil Nadu
   { name: 'Chennai',           region: 'Tamil Nadu',        lat: 13.0827,  lon: 80.2707  },
@@ -145,52 +880,80 @@ const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', 
 
 function initUI() {
   const dateInput = document.getElementById('date-input');
-  dateInput.valueAsDate = new Date();
+  if (dateInput) dateInput.valueAsDate = new Date();
 
   const citySelect = document.getElementById('city-select');
-  CITY_PRESETS.forEach((c, idx) => {
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = `${c.region} — ${c.name}`;
-    citySelect.appendChild(opt);
-  });
-  citySelect.addEventListener('change', () => {
-    applyCity(CITY_PRESETS[citySelect.value]);
-    renderMonthViewFromInputs();
-  });
-  applyCity(CITY_PRESETS[0]);
+  if (citySelect) {
+    CITY_PRESETS.forEach((c, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${c.region} — ${c.name}`;
+      citySelect.appendChild(opt);
+    });
+    citySelect.addEventListener('change', () => {
+      applyCity(CITY_PRESETS[citySelect.value]);
+      renderTodayScreen();
+      renderMonthViewFromInputs();
+    });
+    applyCity(CITY_PRESETS[0]);
+  }
 
-  renderNewsChips();
-  document.getElementById('news-search').addEventListener('input', renderNewsCards);
+  const newsSearch = document.getElementById('news-search');
+  if (newsSearch) newsSearch.addEventListener('input', renderNewsCards);
 
-  document.getElementById('lang-toggle').addEventListener('change', (e) => {
+  const langToggle = document.getElementById('lang-toggle');
+  if (langToggle) langToggle.addEventListener('change', (e) => {
     currentLang = e.target.value;
     hydrateLabels();
+    renderTodayScreen();
     renderFromCache();
-    renderMonthViewFromInputs();
+    if (_currentScreen === 'calendar') renderMonthViewFromInputs();
   });
-  document.getElementById('calc-btn').addEventListener('click', calculateAndRender);
-  document.getElementById('geo-btn').addEventListener('click', useGeolocation);
-  document.getElementById('notify-btn').addEventListener('click', scheduleReminder);
-  document.getElementById('rss-load-btn').addEventListener('click', loadAllFeeds);
-  document.getElementById('month-prev').addEventListener('click', () => moveMonth(-1));
-  document.getElementById('month-next').addEventListener('click', () => moveMonth(1));
+
+  const calcBtn = document.getElementById('calc-btn');
+  if (calcBtn) calcBtn.addEventListener('click', () => { calculateAndRender(); showScreen('today'); });
+
+  const geoBtn = document.getElementById('geo-btn');
+  if (geoBtn) geoBtn.addEventListener('click', useGeolocation);
+
+  // There may be multiple notify-btn elements across screens — attach to all
+  document.querySelectorAll('#notify-btn').forEach((btn) => btn.addEventListener('click', scheduleReminder));
+
+  const rssBtn = document.getElementById('rss-load-btn');
+  if (rssBtn) rssBtn.addEventListener('click', loadAllFeeds);
+
+  const monthPrev = document.getElementById('month-prev');
+  const monthNext = document.getElementById('month-next');
+  if (monthPrev) monthPrev.addEventListener('click', () => moveMonth(-1));
+  if (monthNext) monthNext.addEventListener('click', () => moveMonth(1));
 
   hydrateLabels();
   renderFromCache();
-  renderMonthViewFromInputs();
+
+  // Boot router
+  initRouter();
+
+  // Async: load news feeds
   loadAllFeeds();
 }
 
 function hydrateLabels() {
   const map = {
-    'app-title': 'appTitle', 'calc-title': 'calc', 'label-date': 'date', 'label-city': 'city', 'label-lat': 'lat', 'label-lon': 'lon',
-    'geo-btn': 'useLoc', 'calc-btn': 'calculate', 'notify-btn': 'reminders', 'result-title': 'results', 'news-title': 'news',
-    'rss-load-btn': 'rssLoad', 'footer-note': 'footer', 'month-title-text': 'monthTitle'
+    'app-title': 'appTitle', 'calc-title': 'calc', 'label-date': 'date', 'label-city': 'city',
+    'label-lat': 'lat', 'label-lon': 'lon',
+    'nav-notify': 'reminders', 'result-title': 'results', 'news-title': 'news',
+    'footer-note': 'footer', 'month-title-text': 'monthTitle'
   };
-  Object.entries(map).forEach(([id, key]) => { document.getElementById(id).textContent = t(key); });
-  document.getElementById('news-search').placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search your articles';
-  renderWeekdayRail();
+  Object.entries(map).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(key);
+  });
+  const newsSearch = document.getElementById('news-search');
+  if (newsSearch) newsSearch.placeholder = currentLang === 'ta' ? 'கட்டுரை தேடல்' : 'Search articles...';
+  // Update app title in top bar
+  const brand = document.getElementById('top-bar-brand');
+  if (brand) brand.textContent = t('appTitle');
+  if (_currentScreen === 'calendar') renderWeekdayRail();
 }
 
 function applyCity(city) {
@@ -397,8 +1160,22 @@ function calculatePanchangam(date, lat, lon, precomputed) {
 }
 
 function renderResults(data) {
-  const cards = [[t('rahu'), `${fmtTime(new Date(data.rahu.start))} - ${fmtTime(new Date(data.rahu.end))}`], [t('yama'), `${fmtTime(new Date(data.yama.start))} - ${fmtTime(new Date(data.yama.end))}`], [t('abhijit'), `${fmtTime(new Date(data.abhijit.start))} - ${fmtTime(new Date(data.abhijit.end))}`], [t('amrita'), `${fmtTime(new Date(data.amrita.start))} - ${fmtTime(new Date(data.amrita.end))}`], [t('brahma'), `${fmtTime(new Date(data.brahma.start))} - ${fmtTime(new Date(data.brahma.end))}`], [t('shashti'), data.shashti], [t('tivaraatri'), data.tivaraatri ? t('mondayTuesday') : t('no')], [t('ausp'), data.auspicious]];
-  document.getElementById('results-grid').innerHTML = cards.map(([ttl, txt]) => `<article class="card"><h3>${ttl}</h3><p>${txt}</p></article>`).join('');
+  const cards = [
+    { key: 'rahu',    cls: 'rahu',    label: t('rahu'),    val: `${fmtTime(new Date(data.rahu.start))} – ${fmtTime(new Date(data.rahu.end))}`,    icon: 'do_not_disturb_on' },
+    { key: 'yama',    cls: 'yama',    label: t('yama'),    val: `${fmtTime(new Date(data.yama.start))} – ${fmtTime(new Date(data.yama.end))}`,    icon: 'warning' },
+    { key: 'abhijit', cls: 'abhijit', label: t('abhijit'), val: `${fmtTime(new Date(data.abhijit.start))} – ${fmtTime(new Date(data.abhijit.end))}`, icon: 'star' },
+    { key: 'amrita',  cls: 'amrita',  label: t('amrita'),  val: `${fmtTime(new Date(data.amrita.start))} – ${fmtTime(new Date(data.amrita.end))}`,  icon: 'water_drop' },
+    { key: 'brahma',  cls: 'brahma',  label: t('brahma'),  val: `${fmtTime(new Date(data.brahma.start))} – ${fmtTime(new Date(data.brahma.end))}`,  icon: 'brightness_2' },
+    { key: 'shashti', cls: '',        label: t('shashti'), val: data.shashti, icon: 'event' },
+  ];
+  const grid = document.getElementById('results-grid');
+  if (!grid) return;
+  grid.innerHTML = cards.map(({ cls, label, val, icon }) =>
+    `<article class="muhurta-card ${cls}">
+       <h3><span class="material-symbols-outlined" style="font-size:0.85rem;vertical-align:middle;margin-right:3px">${icon}</span>${label}</h3>
+       <p>${val}</p>
+     </article>`
+  ).join('');
 }
 
 /**
@@ -561,7 +1338,19 @@ function renderNewsCards() {
     output.innerHTML = '<p>No articles found.</p>';
     return;
   }
-  output.innerHTML = filtered.map((a) => `<article class="news-card"><img src="${a.image || 'assets/icon-512.svg'}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer"><div class="news-card-body"><div class="news-date">${a.dateText || a.source}</div><a class="news-title-link" href="${a.link}" target="_blank" rel="noopener">${a.title}</a></div></article>`).join('');
+  output.innerHTML = filtered.map((a) => `
+    <article class="news-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+      ${a.image
+        ? `<img class="news-card-img" src="${a.image}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div class="news-card-img-placeholder" ${a.image ? 'style="display:none"' : ''}><span class="material-symbols-outlined">article</span></div>
+      <div class="news-card-body">
+        <div class="news-card-tag">${a.tag}</div>
+        <h3 class="news-card-title">${a.title}</h3>
+        <p class="news-card-meta">${a.dateText || a.source}</p>
+      </div>
+    </article>
+  `).join('');
 }
 
 
@@ -599,7 +1388,9 @@ function getMonthCellData(date, lat, lon, apiDay) {
 }
 
 function renderWeekdayRail() {
-  document.getElementById('weekday-rail').innerHTML = t('weekdays').map((w) => `<div class="dpVGridWeekdayCell dpFlexEqual"><span>${w}</span></div>`).join('');
+  const rail = document.getElementById('weekday-rail');
+  if (!rail) return;
+  rail.innerHTML = t('weekdays').map((w) => `<div class="dpVGridWeekdayCell dpFlexEqual"><span>${w}</span></div>`).join('');
 }
 
 function moveMonth(step) {
@@ -608,9 +1399,12 @@ function moveMonth(step) {
 }
 
 function renderMonthViewFromInputs() {
-  const lat = Number.parseFloat(document.getElementById('lat-input').value);
-  const lon = Number.parseFloat(document.getElementById('lon-input').value);
+  const latEl = document.getElementById('lat-input');
+  const lonEl = document.getElementById('lon-input');
+  const lat = latEl ? Number.parseFloat(latEl.value) : CITY_PRESETS[0].lat;
+  const lon = lonEl ? Number.parseFloat(lonEl.value) : CITY_PRESETS[0].lon;
   if (Number.isNaN(lat) || Number.isNaN(lon)) return;
+  renderWeekdayRail();
   renderMonthGrid(currentMonthDate, lat, lon);
 }
 
