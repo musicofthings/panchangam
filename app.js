@@ -34,7 +34,7 @@ function showScreen(id) {
   if (id === 'news') { /* news feed already loaded at startup */ }
   if (id === 'chat') renderChatOverview();
 
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  window.scrollTo({ top: 0, behavior: 'auto' });
   history.replaceState(null, '', `#${id}`);
 }
 
@@ -672,6 +672,64 @@ function renderChatOverview() {
 
 let _currentArticle = null;
 
+function createNewsCard(article, { compact = false } = {}) {
+  const card = document.createElement('article');
+  card.className = 'news-card';
+  card.addEventListener('click', () => openArticle(article));
+
+  if (!compact) {
+    const img = document.createElement('img');
+    img.className = 'news-card-img';
+    img.alt = article.title || 'Article image';
+    img.loading = 'lazy';
+    img.referrerPolicy = 'no-referrer';
+
+    const fallback = document.createElement('div');
+    fallback.className = 'news-card-img-placeholder';
+    fallback.innerHTML = '<span class="material-symbols-outlined">article</span>';
+
+    if (article.image) {
+      img.src = article.image;
+      img.addEventListener('error', () => {
+        img.style.display = 'none';
+        fallback.style.display = 'flex';
+      });
+      fallback.style.display = 'none';
+      card.append(img, fallback);
+    } else {
+      card.append(fallback);
+    }
+  } else {
+    const fallback = document.createElement('div');
+    fallback.className = 'news-card-img-placeholder';
+    fallback.innerHTML = '<span class="material-symbols-outlined">article</span>';
+    card.append(fallback);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'news-card-body';
+
+  const tag = document.createElement('div');
+  tag.className = 'news-card-tag';
+  tag.textContent = article.tag || 'Spiritual';
+
+  const title = document.createElement('h3');
+  title.className = 'news-card-title';
+  title.textContent = article.title || 'Untitled';
+
+  body.append(tag, title);
+
+  if (!compact) {
+    const meta = document.createElement('p');
+    meta.className = 'news-card-meta';
+    meta.textContent = article.dateText || article.source || '';
+    body.append(meta);
+  }
+
+  card.append(body);
+  return card;
+}
+
 function openArticle(article) {
   _currentArticle = article;
   document.getElementById('article-tag').textContent = article.tag || 'Spiritual';
@@ -680,22 +738,21 @@ function openArticle(article) {
   document.getElementById('article-source').textContent = article.source;
   const bodyEl = document.getElementById('article-body');
   if (bodyEl) {
-    bodyEl.innerHTML = `<p class="first-letter:text-4xl first-letter:font-serif first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#5e0081]">${article.summary || 'Read more on the original source.'}</p>
-    <p class="text-gray-500 text-xs">For the full article, visit the original source.</p>`;
+    bodyEl.innerHTML = '';
+    const summary = document.createElement('p');
+    summary.className = 'first-letter:text-4xl first-letter:font-serif first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#5e0081]';
+    summary.textContent = article.summary || 'Read more on the original source.';
+    const footnote = document.createElement('p');
+    footnote.className = 'text-gray-500 text-xs';
+    footnote.textContent = 'For the full article, visit the original source.';
+    bodyEl.append(summary, footnote);
   }
   // Related articles from newsArticles
   const relatedEl = document.getElementById('related-articles');
   if (relatedEl && newsArticles.length > 1) {
     const others = newsArticles.filter((a) => a.title !== article.title).slice(0, 4);
-    relatedEl.innerHTML = others.map((a) => `
-      <div class="news-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
-        <div class="news-card-img-placeholder"><span class="material-symbols-outlined">article</span></div>
-        <div class="news-card-body">
-          <div class="news-card-tag">${a.tag}</div>
-          <h3 class="news-card-title">${a.title}</h3>
-        </div>
-      </div>
-    `).join('');
+    relatedEl.innerHTML = '';
+    others.forEach((a) => relatedEl.append(createNewsCard(a, { compact: true })));
   }
   showScreen('news-article');
 }
@@ -1349,20 +1406,31 @@ function extractImageFromItem(item, description) {
   return match ? match[1] : '';
 }
 
+function sanitizeHttpUrl(rawUrl) {
+  if (!rawUrl) return '';
+  try {
+    const parsed = new URL(rawUrl, window.location.origin);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+  } catch {
+    return '';
+  }
+}
+
 function parseRSSItems(xmlDoc, sourceMeta) {
   if (!xmlDoc) return [];
   return Array.from(xmlDoc.querySelectorAll('item')).slice(0, 12).map((item) => {
     const title = item.querySelector('title')?.textContent?.trim() || 'Untitled';
-    const link = item.querySelector('link')?.textContent?.trim() || '#';
+    const link = sanitizeHttpUrl(item.querySelector('link')?.textContent?.trim());
     const description = item.querySelector('description')?.textContent || '';
     const clean = description.replace(/<[^>]+>/g, '').trim();
     const pub = item.querySelector('pubDate')?.textContent || '';
+    const parsedPub = pub ? new Date(pub).getTime() : 0;
     return {
       title, link,
       summary: clean.slice(0, 120),
-      pubMs: pub ? new Date(pub).getTime() : 0,
+      pubMs: Number.isFinite(parsedPub) ? parsedPub : 0,
       dateText: pub ? new Date(pub).toLocaleDateString(currentLang === 'en' ? 'en-US' : (LOCALE_MAP[currentLang] || 'en-IN'), { month: 'long', day: 'numeric', year: 'numeric' }) : '',
-      image: extractImageFromItem(item, description),
+      image: sanitizeHttpUrl(extractImageFromItem(item, description)),
       tag: sourceMeta.tag,
       source: sourceMeta.name
     };
@@ -1427,19 +1495,8 @@ function renderNewsCards() {
     </div>`;
     return;
   }
-  output.innerHTML = filtered.map((a) => `
-    <article class="news-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
-      ${a.image
-        ? `<img class="news-card-img" src="${a.image}" alt="${a.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : ''}
-      <div class="news-card-img-placeholder" ${a.image ? 'style="display:none"' : ''}><span class="material-symbols-outlined">article</span></div>
-      <div class="news-card-body">
-        <div class="news-card-tag">${a.tag}</div>
-        <h3 class="news-card-title">${a.title}</h3>
-        <p class="news-card-meta">${a.dateText || a.source}</p>
-      </div>
-    </article>
-  `).join('');
+  output.innerHTML = '';
+  filtered.forEach((a) => output.append(createNewsCard(a)));
 }
 
 
