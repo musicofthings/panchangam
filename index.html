@@ -1,101 +1,418 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#7b1fa2" />
-    <title>Dakshin Panchangam — Tamil · Telugu · Kannada · Malayalam</title>
-    <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1 id="app-title">தக்ஷிண பஞ்சாங்கம்</h1>
-      <select id="lang-toggle">
-        <option value="ta">தமிழ்</option>
-        <option value="te">తెలుగు</option>
-        <option value="kn">ಕನ್ನಡ</option>
-        <option value="ml">മലയാളം</option>
-        <option value="en">English</option>
-      </select>
-    </header>
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="theme-color" content="#7b1fa2"/>
+<title>Dakshin Panchangam | Today</title>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary-container":"#562100","on-error-container":"#93000a","on-error":"#ffffff",
+          "primary-fixed-dim":"#ebb2ff","inverse-surface":"#2f3037","on-tertiary-container":"#83d57e",
+          "tertiary":"#00430c","primary-fixed":"#f8d8ff","surface-variant":"#e3e1ea",
+          "background":"#fbf8ff","secondary":"#9e4200","on-surface":"#1a1b21","on-tertiary":"#ffffff",
+          "tertiary-fixed-dim":"#88d982","surface-tint":"#8c33b3","on-primary-container":"#e8aaff",
+          "secondary-fixed-dim":"#ffb691","secondary-fixed":"#ffdbcb","surface-container-low":"#f4f2fb",
+          "on-secondary":"#ffffff","on-surface-variant":"#4e4351","on-primary-fixed-variant":"#721199",
+          "surface-container-highest":"#e3e1ea","surface-container-high":"#e9e7f0",
+          "on-tertiary-fixed-variant":"#005312","error":"#ba1a1a","error-container":"#ffdad6",
+          "surface":"#fbf8ff","primary-container":"#7b1fa2","outline-variant":"#d2c1d3",
+          "on-primary-fixed":"#320047","on-primary":"#ffffff","primary":"#5e0081",
+          "on-secondary-fixed-variant":"#793100","inverse-on-surface":"#f1f0f8",
+          "tertiary-fixed":"#a3f69c","surface-container-lowest":"#ffffff",
+          "tertiary-container":"#015d16","on-background":"#1a1b21","secondary-container":"#fb6d00",
+          "surface-bright":"#fbf8ff","on-secondary-fixed":"#341100","surface-dim":"#dad9e2",
+          "surface-container":"#efedf6","on-tertiary-fixed":"#002204","inverse-primary":"#ebb2ff",
+          "outline":"#807382","on-primary-fixed-variant":"#721199",
+        },
+        fontFamily: { "headline":["Noto Serif"], "body":["Plus Jakarta Sans"], "label":["Plus Jakarta Sans"] },
+        borderRadius: {"DEFAULT":"0.25rem","lg":"1rem","xl":"1.25rem","full":"9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+  .editorial-shadow { box-shadow: 0 24px 48px -12px rgba(26,27,33,0.08); }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  h1, h2, h3, .font-serif { font-family: 'Noto Serif', serif; }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+</style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
 
-    <main class="layout">
-      <section class="panel inputs">
-        <h2 id="calc-title">கணக்கிடு</h2>
-        <div class="field">
-          <label for="date-input" id="label-date">தேதி</label>
-          <input type="date" id="date-input" />
-        </div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 bg-[#fbf8ff] dark:bg-slate-950 transition-colors">
+  <div class="flex items-center gap-4">
+    <span class="text-2xl font-bold text-purple-900 dark:text-purple-200 font-headline">Dakshin Panchangam</span>
+  </div>
+  <div class="hidden md:flex items-center gap-4 bg-surface-container px-6 py-2 rounded-full">
+    <span id="header-date-text" class="text-on-surface-variant font-serif font-bold">Loading…</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <button id="lang-btn" class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low hover:bg-purple-50 transition-colors">
+      <span class="material-symbols-outlined text-primary text-sm">language</span>
+      <span id="lang-btn-text" class="text-sm font-medium">Tamil</span>
+    </button>
+    <button id="city-btn" class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low hover:bg-purple-50 transition-colors">
+      <span class="material-symbols-outlined text-primary text-sm">location_on</span>
+      <span id="city-btn-text" class="text-sm font-medium">Chennai</span>
+    </button>
+  </div>
+</header>
 
-        <div class="field">
-          <label for="city-select" id="label-city">நகரம்</label>
-          <select id="city-select"></select>
-        </div>
+<!-- SideNavBar (Desktop Only) -->
+<nav class="hidden lg:flex flex-col fixed left-0 top-0 h-full p-6 w-64 bg-[#fbf8ff] border-r border-transparent z-40">
+  <div class="mb-12 pt-20">
+    <h2 class="text-xl font-bold text-purple-900 mb-1 font-headline">Dakshin Panchangam</h2>
+    <p class="text-xs text-on-surface-variant tracking-widest uppercase">Digital Temple Sanctuary</p>
+  </div>
+  <ul class="space-y-4">
+    <li><a data-nav="today" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ods</span><span>Today</span></a></li>
+    <li><a data-nav="calendar" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/calendar/"><span class="material-symbols-outlined">calendar_month</span><span>Calendar</span></a></li>
+    <li><a data-nav="festivals" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/festivals/"><span class="material-symbols-outlined">auto_stories</span><span>Festivals</span></a></li>
+    <li><a data-nav="temples" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/temples/"><span class="material-symbols-outlined">temple_hindu</span><span>Temples</span></a></li>
+    <li><a data-nav="news" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/news/"><span class="material-symbols-outlined">newspaper</span><span>News</span></a></li>
+  </ul>
+</nav>
 
-        <div class="coords">
-          <div class="field">
-            <label for="lat-input" id="label-lat">அகலாங்கம் (Lat)</label>
-            <input type="number" id="lat-input" step="0.0001" />
-          </div>
-          <div class="field">
-            <label for="lon-input" id="label-lon">நெட்டாங்கம் (Lon)</label>
-            <input type="number" id="lon-input" step="0.0001" />
-          </div>
-        </div>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-28 px-4 md:px-8 max-w-5xl mx-auto pb-48">
 
-        <div class="actions">
-          <button id="geo-btn" type="button">Use My Location</button>
-          <button id="calc-btn" type="button">Calculate</button>
-        </div>
+  <!-- Location Pill -->
+  <div class="flex justify-center mb-8">
+    <div class="inline-flex items-center gap-3 px-6 py-2 bg-surface-container-high rounded-full">
+      <span class="material-symbols-outlined text-secondary scale-75">location_on</span>
+      <span id="location-pill-text" class="text-sm font-semibold tracking-wide text-on-surface-variant uppercase">Loading…</span>
+    </div>
+  </div>
 
-        <div class="actions">
-          <button id="notify-btn" type="button">Enable Reminder</button>
-        </div>
-      </section>
+  <!-- Alert Banner (hidden by default) -->
+  <div id="shashti-alert" class="hidden mb-8 p-4 bg-secondary-container/10 rounded-xl flex items-center gap-4 border-l-4 border-secondary transition-all">
+    <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1;">lightbulb</span>
+    <p id="shashti-alert-text" class="text-on-secondary-fixed-variant font-medium"></p>
+  </div>
 
-      <section class="panel results">
-        <h2 id="result-title">இன்றைய பலன்கள்</h2>
-        <div id="results-grid" class="results-grid"></div>
-      </section>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-      <aside class="panel news">
-        <div class="news-head">
-          <h2 id="news-title">Bhakti News</h2>
-          <input id="news-search" type="search" placeholder="Search articles" />
-        </div>
-        <div id="news-chips" class="news-chips"></div>
-        <button id="rss-load-btn" type="button">Refresh</button>
-        <div id="news-feed" class="news-grid"></div>
-      </aside>
-    </main>
-
-    <section class="panel month-panel">
-      <div class="month-header">
-        <h2 id="month-title-text">மாத பஞ்சாங்கம்</h2>
-        <div class="month-nav">
-          <button id="month-prev" type="button">◀</button>
-          <strong id="month-title"></strong>
-          <button id="month-next" type="button">▶</button>
-        </div>
+    <!-- Hero Panchanga Card -->
+    <section class="lg:col-span-8 bg-gradient-to-br from-primary-container to-primary text-on-primary p-8 rounded-xl editorial-shadow relative overflow-hidden group">
+      <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+        <span class="material-symbols-outlined text-[160px]">ods</span>
       </div>
-      <div class="dpMonthGrid dpFlex">
-        <div id="weekday-rail" class="dpGridWeekday dpFlex dpFlexColumn"></div>
-        <div id="month-grid-body" class="dpMonthGridBody"></div>
+      <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div>
+          <h1 id="day-number" class="text-8xl md:text-9xl font-bold font-serif leading-none tracking-tighter mb-2">…</h1>
+          <p id="solar-day-label" class="text-2xl font-serif opacity-90">Loading…</p>
+        </div>
+        <div class="space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <span id="paksha-pill" class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium">…</span>
+            <span id="tithi-pill" class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium">…</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span id="nakshatra-pill" class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium">…</span>
+          </div>
+          <div class="flex gap-4 pt-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary-fixed">sunny</span>
+              <div class="text-xs uppercase tracking-tighter">
+                <div class="opacity-70">Sunrise</div>
+                <div id="sunrise-time" class="font-bold">…</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary-fixed-dim">bedtime</span>
+              <div class="text-xs uppercase tracking-tighter">
+                <div class="opacity-70">Sunset</div>
+                <div id="sunset-time" class="font-bold">…</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <footer>
-      <small id="footer-note">Offline-ready PWA • Client-side only</small>
-    </footer>
+    <!-- Moon + Rasi Card -->
+    <section class="lg:col-span-4 bg-surface-container-lowest p-8 rounded-xl editorial-shadow flex flex-col items-center justify-center text-center">
+      <div class="mb-6 relative h-32 w-32 bg-surface-container-low rounded-full flex items-center justify-center">
+        <span id="moon-phase-emoji" class="text-7xl">🌙</span>
+      </div>
+      <h3 id="moon-rasi" class="text-xl font-bold font-serif text-primary mb-1">…</h3>
+      <p class="text-on-surface-variant text-sm mb-4">Moon Sign</p>
+      <div class="w-full h-[1px] bg-surface-container mb-4"></div>
+      <div class="grid grid-cols-2 w-full gap-2">
+        <div class="p-2 bg-surface-container rounded-lg">
+          <div class="text-[10px] uppercase text-on-surface-variant font-bold">Nakshatra</div>
+          <div id="nakshatra-card" class="text-sm font-bold">…</div>
+        </div>
+        <div class="p-2 bg-surface-container rounded-lg">
+          <div class="text-[10px] uppercase text-on-surface-variant font-bold">Tithi</div>
+          <div id="tithi-card" class="text-sm font-bold">…</div>
+        </div>
+      </div>
+    </section>
 
-    <script src="assets/swisseph.js"></script>
-    <script src="app.js"></script>
-  </body>
+    <!-- Muhurta Times Grid -->
+    <section class="lg:col-span-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold font-serif text-on-surface">Muhurtam &amp; Kaalam</h2>
+        <span id="city-label-muhurta" class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Local Time</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rahu Kaalam -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-error transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-error-container/30 flex items-center justify-center text-error">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dangerous</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-error uppercase">Rahu Kaalam</p>
+            <p id="rahu-time" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Inauspicious Period</p>
+          </div>
+        </div>
+        <!-- Yamagandam -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-inverse-surface transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-surface-container flex items-center justify-center text-inverse-surface">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">timer_off</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-inverse-surface uppercase">Yamagandam</p>
+            <p id="yama-time" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Avoid New Ventures</p>
+          </div>
+        </div>
+        <!-- Amrita Kaalam -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-tertiary-container transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-tertiary-fixed-dim/30 flex items-center justify-center text-tertiary-container">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">relax</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-tertiary-container uppercase">Amrita Kaalam</p>
+            <p id="amrita-time" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Golden Auspicious</p>
+          </div>
+        </div>
+        <!-- Abhijit Muhurta -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-primary transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-primary-fixed-dim/30 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-primary uppercase">Abhijit Muhurta</p>
+            <p id="abhijit-time" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Victory Muhurta</p>
+          </div>
+        </div>
+        <!-- Brahma Muhurta -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-secondary transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-secondary-fixed/30 flex items-center justify-center text-secondary">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">mindfulness</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-secondary uppercase">Brahma Muhurta</p>
+            <p id="brahma-time" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Ideal for Prayer</p>
+          </div>
+        </div>
+        <!-- Shashti Status -->
+        <div class="p-5 bg-surface-container-lowest rounded-xl flex items-center gap-5 border-l-[6px] border-primary-container transition-transform hover:-translate-y-1">
+          <div class="h-12 w-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">festival</span>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold text-primary-container uppercase">Shashti Status</p>
+            <p id="shashti-status" class="text-lg font-bold">…</p>
+            <p class="text-xs text-on-surface-variant">Murugan Festival</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Festival Badges -->
+    <section class="lg:col-span-12">
+      <div id="festival-badges" class="flex flex-wrap gap-3 items-center">
+        <span class="text-xs font-bold text-on-surface-variant uppercase mr-2">Featured:</span>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="lg:col-span-12">
+      <div class="flex overflow-x-auto gap-4 pb-4 no-scrollbar">
+        <a href="/calendar/" class="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl border border-transparent">
+          <span class="material-symbols-outlined text-primary">calendar_month</span>
+          <span class="font-bold text-sm">View Calendar</span>
+        </a>
+        <a href="/festivals/" class="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl border border-transparent">
+          <span class="material-symbols-outlined text-primary">auto_stories</span>
+          <span class="font-bold text-sm">Festivals</span>
+        </a>
+        <a href="/temples/" class="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl border border-transparent">
+          <span class="material-symbols-outlined text-primary">temple_hindu</span>
+          <span class="font-bold text-sm">Temples</span>
+        </a>
+        <a href="/news/" class="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl border border-transparent">
+          <span class="material-symbols-outlined text-primary">newspaper</span>
+          <span class="font-bold text-sm">Bhakti News</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-20 left-4 right-4 z-40 flex justify-around items-center px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-surface-variant/50">
+  <a data-nav="today"     href="/"           class="flex flex-col items-center justify-center text-slate-500 rounded-xl px-3 py-1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ods</span><span class="text-[11px] font-medium">Today</span></a>
+  <a data-nav="calendar"  href="/calendar/"  class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">calendar_month</span><span class="text-[11px] font-medium">Calendar</span></a>
+  <a data-nav="festivals" href="/festivals/" class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">auto_stories</span><span class="text-[11px] font-medium">Festivals</span></a>
+  <a data-nav="temples"   href="/temples/"   class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">temple_hindu</span><span class="text-[11px] font-medium">Temples</span></a>
+  <a data-nav="news"      href="/news/"      class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">newspaper</span><span class="text-[11px] font-medium">News</span></a>
+</nav>
+
+<!-- AI Chat Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-[100] bg-surface/90 backdrop-blur-xl border-t border-primary/10 py-4 px-6 shadow-[0_-8px_32px_-12px_rgba(0,0,0,0.1)] flex justify-center">
+  <div class="w-full max-w-2xl bg-surface/95 backdrop-blur-md rounded-full border border-primary/20 px-6 py-3 shadow-2xl flex items-center gap-4 cursor-pointer group hover:border-primary/40 transition-all">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-white shrink-0 shadow-lg">
+      <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+    </div>
+    <div class="flex-1 text-on-surface-variant font-medium text-sm">Ask Panchangam AI about muhurtas…</div>
+    <div class="flex items-center gap-3">
+      <span class="text-[10px] font-bold text-primary-container uppercase tracking-widest bg-primary-container/10 px-3 py-1 rounded-full border border-primary-container/20 shadow-sm">coming soon</span>
+      <span class="material-symbols-outlined text-primary/40 group-hover:text-primary transition-colors">send</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Lang/City picker modal (simple) -->
+<div id="lang-modal" class="hidden fixed inset-0 z-[200] bg-black/40 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-xs shadow-2xl">
+    <h3 class="font-bold text-lg mb-4">Language & City</h3>
+    <label class="block text-sm font-medium mb-1">Language</label>
+    <select id="modal-lang" class="w-full border border-slate-200 rounded-lg px-3 py-2 mb-4 text-sm">
+      <option value="ta">தமிழ் (Tamil)</option>
+      <option value="te">తెలుగు (Telugu)</option>
+      <option value="kn">ಕನ್ನಡ (Kannada)</option>
+      <option value="ml">മലയാളം (Malayalam)</option>
+      <option value="en">English</option>
+    </select>
+    <label class="block text-sm font-medium mb-1">City</label>
+    <select id="modal-city" class="w-full border border-slate-200 rounded-lg px-3 py-2 mb-6 text-sm"></select>
+    <div class="flex gap-3">
+      <button id="modal-cancel" class="flex-1 py-2 rounded-lg border border-slate-200 text-sm font-medium">Cancel</button>
+      <button id="modal-save" class="flex-1 py-2 rounded-lg bg-purple-700 text-white text-sm font-medium">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import {
+  CITY_PRESETS, currentCity, currentCityIdx, currentLang, setCity, setLang,
+  fetchDayData, getRahuKalam, getYamagandam, getAbhijit, getAmrita, getBrahma,
+  tithiName, nakshatraName, rasiName, paksha, solarDayLabel,
+  getShashti, getFestivalTags, moonPhaseEmoji, fmtTime, toLocalDateStr, wireNav
+} from '/js/shared.js';
+
+async function init() {
+  wireNav('today');
+
+  // Mark active nav
+  document.querySelector('[data-nav="today"]')?.classList.add('!text-purple-900','!font-bold','!bg-purple-50');
+
+  const today = new Date();
+  const dateStr = toLocalDateStr(today);
+  const locale = { ta:'ta-IN', te:'te-IN', kn:'kn-IN', ml:'ml-IN', en:'en-IN' }[currentLang] || 'en-IN';
+
+  // Header date
+  const dateFmt = today.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('header-date-text').textContent = dateFmt;
+  document.getElementById('location-pill-text').textContent = `${currentCity.name} · ${dateFmt}`;
+  document.getElementById('city-btn-text').textContent = currentCity.name;
+  document.getElementById('city-label-muhurta').textContent = `${currentCity.name} Local Time`;
+
+  // Fetch API data
+  const api = await fetchDayData(dateStr, currentCity.lat, currentCity.lon);
+  if (!api) { document.getElementById('day-number').textContent = today.getDate(); return; }
+
+  const sunrise = new Date(api.sunriseMs);
+  const sunset  = new Date(api.sunsetMs);
+  const rahu    = getRahuKalam(sunrise);
+  const yama    = getYamagandam(sunrise);
+  const abhijit = getAbhijit(sunrise);
+  const amrita  = getAmrita(sunrise);
+  const brahma  = getBrahma(sunrise);
+
+  // Hero card
+  document.getElementById('day-number').textContent = today.getDate();
+  document.getElementById('solar-day-label').textContent = solarDayLabel(today, api.tamilDay);
+  document.getElementById('paksha-pill').textContent = paksha(api.tithi) + ' Paksha';
+  document.getElementById('tithi-pill').textContent = tithiName(api.tithi, currentLang) + ' Tithi';
+  document.getElementById('nakshatra-pill').textContent = nakshatraName(api.nakshatra, currentLang) + ' Nakshatram';
+  document.getElementById('sunrise-time').textContent = fmtTime(sunrise);
+  document.getElementById('sunset-time').textContent  = fmtTime(sunset);
+
+  // Moon card
+  document.getElementById('moon-phase-emoji').textContent = moonPhaseEmoji(api.tithi);
+  document.getElementById('moon-rasi').textContent = rasiName(api.moonRasi, currentLang);
+  document.getElementById('nakshatra-card').textContent = nakshatraName(api.nakshatra, currentLang);
+  document.getElementById('tithi-card').textContent = tithiName(api.tithi, currentLang);
+
+  // Muhurta times
+  document.getElementById('rahu-time').textContent    = `${fmtTime(rahu.start)} — ${fmtTime(rahu.end)}`;
+  document.getElementById('yama-time').textContent    = `${fmtTime(yama.start)} — ${fmtTime(yama.end)}`;
+  document.getElementById('amrita-time').textContent  = `${fmtTime(amrita.start)} — ${fmtTime(amrita.end)}`;
+  document.getElementById('abhijit-time').textContent = `${fmtTime(abhijit.start)} — ${fmtTime(abhijit.end)}`;
+  document.getElementById('brahma-time').textContent  = `${fmtTime(brahma.start)} — ${fmtTime(brahma.end)}`;
+
+  // Shashti
+  const shashtiMsg = getShashti(api.tithi, currentLang);
+  const isShashti  = [6, 21].includes(api.tithi);
+  document.getElementById('shashti-status').textContent = isShashti ? shashtiMsg : 'No Shashti today';
+  if (isShashti) {
+    document.getElementById('shashti-alert').classList.remove('hidden');
+    document.getElementById('shashti-alert-text').innerHTML = `🪔 ${shashtiMsg}`;
+  }
+
+  // Festival badges
+  const festivals = getFestivalTags(today, api.tithi, currentLang);
+  const badgeEl = document.getElementById('festival-badges');
+  if (festivals.length) {
+    const colors = ['text-primary bg-primary/5','text-secondary bg-secondary/5','text-tertiary-container bg-tertiary-container/5'];
+    badgeEl.innerHTML = '<span class="text-xs font-bold text-on-surface-variant uppercase mr-2">Featured:</span>' +
+      festivals.map((f,i) => `<span class="px-4 py-2 ${colors[i%3]} rounded-full text-sm font-bold flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-current"></span>${f}</span>`).join('');
+  } else {
+    badgeEl.style.display = 'none';
+  }
+}
+
+// Lang/City modal
+function openModal() {
+  const modal = document.getElementById('lang-modal');
+  const langSel = document.getElementById('modal-lang');
+  const citySel = document.getElementById('modal-city');
+  langSel.value = currentLang;
+  citySel.innerHTML = CITY_PRESETS.map((c,i) => `<option value="${i}" ${i===currentCityIdx?'selected':''}>${c.region} — ${c.name}</option>`).join('');
+  modal.classList.remove('hidden');
+}
+document.getElementById('lang-btn').addEventListener('click', openModal);
+document.getElementById('city-btn').addEventListener('click', openModal);
+document.getElementById('modal-cancel').addEventListener('click', () => document.getElementById('lang-modal').classList.add('hidden'));
+document.getElementById('modal-save').addEventListener('click', () => {
+  setLang(document.getElementById('modal-lang').value);
+  setCity(parseInt(document.getElementById('modal-city').value, 10));
+  document.getElementById('lang-modal').classList.add('hidden');
+  init();
+});
+
+init();
+</script>
+</body>
 </html>

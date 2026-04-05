@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dakshin Panchangam - Temples</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{colors:{"on-secondary-container":"#562100","on-error-container":"#93000a","on-error":"#ffffff","primary-fixed-dim":"#ebb2ff","inverse-surface":"#2f3037","on-tertiary-container":"#83d57e","tertiary":"#00430c","primary-fixed":"#f8d8ff","surface-variant":"#e3e1ea","background":"#fbf8ff","secondary":"#9e4200","on-surface":"#1a1b21","on-tertiary":"#ffffff","tertiary-fixed-dim":"#88d982","surface-tint":"#8c33b3","on-primary-container":"#e8aaff","secondary-fixed-dim":"#ffb691","secondary-fixed":"#ffdbcb","surface-container-low":"#f4f2fb","on-secondary":"#ffffff","on-surface-variant":"#4e4351","on-primary-fixed-variant":"#721199","surface-container-highest":"#e3e1ea","surface-container-high":"#e9e7f0","on-tertiary-fixed-variant":"#005312","error":"#ba1a1a","error-container":"#ffdad6","surface":"#fbf8ff","primary-container":"#7b1fa2","outline-variant":"#d2c1d3","on-primary-fixed":"#320047","on-primary":"#ffffff","primary":"#5e0081","on-secondary-fixed-variant":"#793100","inverse-on-surface":"#f1f0f8","tertiary-fixed":"#a3f69c","surface-container-lowest":"#ffffff","tertiary-container":"#015d16","on-background":"#1a1b21","secondary-container":"#fb6d00","surface-bright":"#fbf8ff","on-secondary-fixed":"#341100","surface-dim":"#dad9e2","surface-container":"#efedf6","on-tertiary-fixed":"#002204","inverse-primary":"#ebb2ff","outline":"#807382"},fontFamily:{"headline":["Noto Serif"],"body":["Plus Jakarta Sans"],"label":["Plus Jakarta Sans"]},borderRadius:{"DEFAULT":"0.25rem","lg":"1rem","xl":"1.25rem","full":"9999px"}}},
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background-color:#fbf8ff; }
+</style>
+</head>
+<body class="bg-surface text-on-surface">
+
+<!-- Sidebar -->
+<nav class="hidden lg:flex flex-col fixed left-0 top-0 h-full p-6 w-64 border-r border-slate-100 bg-[#fbf8ff] z-50">
+  <div class="text-xl font-bold text-purple-900 mb-2 font-headline">Dakshin Panchangam</div>
+  <div class="text-xs text-on-surface-variant mb-8 font-label tracking-wider uppercase">Digital Temple Sanctuary</div>
+  <div class="flex flex-col gap-2">
+    <a data-nav="today" href="/" class="text-slate-600 px-4 py-3 hover:bg-purple-50 transition-all flex items-center gap-3 rounded-lg"><span class="material-symbols-outlined">light_mode</span><span class="font-medium">Today</span></a>
+    <a data-nav="calendar" href="/calendar/" class="text-slate-600 px-4 py-3 hover:bg-purple-50 transition-all flex items-center gap-3 rounded-lg"><span class="material-symbols-outlined">calendar_month</span><span class="font-medium">Calendar</span></a>
+    <a data-nav="festivals" href="/festivals/" class="text-slate-600 px-4 py-3 hover:bg-purple-50 transition-all flex items-center gap-3 rounded-lg"><span class="material-symbols-outlined">auto_stories</span><span class="font-medium">Festivals</span></a>
+    <a data-nav="temples" href="/temples/" class="text-purple-900 font-bold bg-purple-50 rounded-lg px-4 py-3 flex items-center gap-3"><span class="material-symbols-outlined">temple_hindu</span><span class="font-medium">Temples</span></a>
+    <a data-nav="news" href="/news/" class="text-slate-600 px-4 py-3 hover:bg-purple-50 transition-all flex items-center gap-3 rounded-lg"><span class="material-symbols-outlined">newspaper</span><span class="font-medium">News</span></a>
+  </div>
+  <div class="mt-auto p-4 rounded-xl bg-surface-container-low">
+    <div class="text-xs text-on-surface-variant mb-1">Current Location</div>
+    <div class="flex items-center gap-2 text-primary font-semibold">
+      <span class="material-symbols-outlined text-sm">location_on</span>
+      <span id="city-sidebar-text">Chennai, TN</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 lg:left-64 z-40 flex justify-between items-center px-6 py-4 bg-[#fbf8ff] border-b border-slate-100/60">
+  <div class="lg:hidden text-xl font-bold text-purple-900 font-headline">Dakshin Panchangam</div>
+  <div class="hidden lg:block text-xl font-bold text-purple-900 font-headline">Temple Directory</div>
+  <div class="flex items-center gap-3">
+    <div class="relative">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+      <input id="search-input" type="text" placeholder="Search temples…" class="bg-surface-container-low border-none rounded-full pl-9 pr-4 py-1.5 text-sm focus:ring-2 focus:ring-primary/30 w-48"/>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="pt-20 pb-40 lg:pb-12 lg:ml-64 min-h-screen">
+  <div class="px-4 lg:px-8 max-w-5xl mx-auto">
+
+    <!-- Region filter -->
+    <div class="flex gap-2 overflow-x-auto py-4" id="region-chips" style="-ms-overflow-style:none;scrollbar-width:none">
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-primary text-on-primary" data-region="all">All Regions</button>
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-region="Tamil Nadu">Tamil Nadu</button>
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-region="Andhra Pradesh">Andhra Pradesh</button>
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-region="Karnataka">Karnataka</button>
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-region="Kerala">Kerala</button>
+      <button class="region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-region="Telangana">Telangana</button>
+    </div>
+
+    <!-- Temple grid -->
+    <div id="temples-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-4"></div>
+  </div>
+</main>
+
+<!-- Bottom Nav (Mobile) -->
+<nav class="fixed bottom-16 left-0 w-full z-40 flex justify-around items-center px-4 pb-4 pt-2 bg-white/85 backdrop-blur-md lg:hidden shadow-[0_-4px_24px_-4px_rgba(26,27,33,0.08)] rounded-t-2xl">
+  <a data-nav="today" href="/" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">light_mode</span><span class="text-[11px]">Today</span></a>
+  <a data-nav="calendar" href="/calendar/" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">calendar_month</span><span class="text-[11px]">Calendar</span></a>
+  <a data-nav="festivals" href="/festivals/" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">auto_stories</span><span class="text-[11px]">Festivals</span></a>
+  <a data-nav="temples" href="/temples/" class="flex flex-col items-center bg-purple-100 text-purple-900 rounded-xl px-3 py-1"><span class="material-symbols-outlined">temple_hindu</span><span class="text-[11px]">Temples</span></a>
+  <a data-nav="news" href="/news/" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">newspaper</span><span class="text-[11px]">News</span></a>
+</nav>
+
+<!-- AI Chat Footer -->
+<footer class="fixed bottom-0 left-0 right-0 z-[100] bg-surface/95 backdrop-blur-xl border-t border-primary/10 py-3">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4 flex-1">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center text-white shadow-sm"><span class="material-symbols-outlined text-[18px]">bolt</span></div>
+        <div class="flex flex-col md:flex-row md:items-center gap-0 md:gap-2">
+          <span class="font-headline font-bold text-primary text-sm whitespace-nowrap">Panchangam AI</span>
+          <span class="bg-secondary/10 text-secondary text-[9px] font-bold px-1.5 py-0.5 rounded uppercase w-fit">Coming Soon</span>
+        </div>
+      </div>
+      <div class="flex-1 max-w-2xl"><input class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary/20 rounded-full py-2.5 px-6 text-sm placeholder-on-surface-variant/60" disabled placeholder="Ask about temples…" type="text"/></div>
+    </div>
+    <button class="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center opacity-50 cursor-not-allowed"><span class="material-symbols-outlined text-sm">send</span></button>
+  </div>
+</footer>
+
+<script type="module">
+import { currentCity } from '/js/shared.js';
+
+const TEMPLES = [
+  { name:'Kapaleeshwarar Temple', deity:'Lord Shiva (Kapaleeshwara)', city:'Chennai', region:'Tamil Nadu', tag:'Saivite', desc:'Ancient Dravidian temple dedicated to Lord Shiva. The presiding deity is Kapaleeshwara and the goddess is Karpagambal.' },
+  { name:'Meenakshi Amman Temple', deity:'Goddess Meenakshi', city:'Madurai', region:'Tamil Nadu', tag:'Shakta', desc:'One of the largest temple complexes in India, renowned for its stunning gopurams adorned with thousands of sculptures.' },
+  { name:'Brihadeeswarar Temple', deity:'Lord Shiva', city:'Thanjavur', region:'Tamil Nadu', tag:'Saivite', desc:'UNESCO World Heritage Site built by Raja Raja Chola I. An outstanding example of Dravidian architecture.' },
+  { name:'Ekambareswarar Temple', deity:'Lord Shiva (Prithvi Lingam)', city:'Kanchipuram', region:'Tamil Nadu', tag:'Saivite', desc:'One of the Pancha Bhuta Stalas representing the element Earth. Ancient temple with a 1000-pillar hall.' },
+  { name:'Ranganathaswamy Temple', deity:'Lord Vishnu (Ranganatha)', city:'Tiruchirapalli', region:'Tamil Nadu', tag:'Vaishnavite', desc:'The largest functioning Hindu temple in the world, situated on the Srirangam island in the Kaveri river.' },
+  { name:'Venkateswara Temple', deity:'Lord Venkateswara', city:'Tirupati', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'The most visited pilgrimage site in the world, perched atop the Tirumala hills. Famous for the Laddu prasadam.' },
+  { name:'Kanaka Durga Temple', deity:'Goddess Kanaka Durga', city:'Vijayawada', region:'Andhra Pradesh', tag:'Shakta', desc:'Situated on the Indrakeeladri hill on the banks of the Krishna river, this temple is dedicated to Goddess Durga.' },
+  { name:'Simhachalam Temple', deity:'Lord Narasimha', city:'Visakhapatnam', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'An ancient temple dedicated to Lord Narasimha (Varaha Lakshmi Narasimha), known for its unique sandal paste ritual.' },
+  { name:'Yadagirigutta Temple', deity:'Lord Narasimha', city:'Yadagirigutta', region:'Telangana', tag:'Vaishnavite', desc:'One of the most revered Vaishnavite temples in Telangana, recently renovated with a grand new structure.' },
+  { name:'Sri Jagannath Temple', deity:'Lord Jagannath', city:'Hyderabad', region:'Telangana', tag:'Vaishnavite', desc:'A replica of the famous Puri Jagannath temple, serving the large Odia community in Hyderabad.' },
+  { name:'Udupi Krishna Temple', deity:'Lord Krishna', city:'Udupi', region:'Karnataka', tag:'Vaishnavite', desc:'One of the most important Krishna temples in South India, associated with philosopher-saint Madhvacharya.' },
+  { name:'Chamundeshwari Temple', deity:'Goddess Chamundeshwari', city:'Mysuru', region:'Karnataka', tag:'Shakta', desc:'Situated atop the Chamundi Hills, this temple overlooks the beautiful city of Mysuru. Famous during Dasara.' },
+  { name:'Dharmasthala Temple', deity:'Lord Shiva (Manjunatha)', city:'Dharmasthala', region:'Karnataka', tag:'Saivite', desc:'Unique temple managed by the Jain Heggade family. Known for annadana (free food) served to thousands daily.' },
+  { name:'Padmanabhaswamy Temple', deity:'Lord Vishnu (Padmanabha)', city:'Thiruvananthapuram', region:'Kerala', tag:'Vaishnavite', desc:'One of the 108 Divya Desams, this temple is famous for its magnificent idol of Lord Vishnu in the Ananthasayana posture.' },
+  { name:'Guruvayur Temple', deity:'Lord Krishna (Guruvayurappan)', city:'Guruvayur', region:'Kerala', tag:'Vaishnavite', desc:'Known as the Dwaraka of the South. The presiding deity is Lord Krishna in his Vishwarupa form. Famous for elephant rituals.' },
+  { name:'Sabarimala Temple', deity:'Lord Ayyappa', city:'Pathanamthitta', region:'Kerala', tag:'Saivite', desc:'One of the largest annual pilgrimages in the world. The temple is open only during specific seasons and Mandala days.' },
+];
+
+let activeRegion = 'all';
+let searchQuery = '';
+
+function updateCityUI() {
+  document.getElementById('city-sidebar-text').textContent = `${currentCity.name}, ${currentCity.region.slice(0,2).toUpperCase()}`;
+}
+
+function tagBg(tag) {
+  return { Saivite:'bg-primary/10 text-primary', Vaishnavite:'bg-secondary/10 text-secondary', Shakta:'bg-error-container text-on-error-container' }[tag] || 'bg-surface-container text-on-surface-variant';
+}
+
+function renderTemples() {
+  const q = searchQuery.toLowerCase();
+  const filtered = TEMPLES.filter(t =>
+    (activeRegion === 'all' || t.region === activeRegion) &&
+    (!q || t.name.toLowerCase().includes(q) || t.city.toLowerCase().includes(q) || t.deity.toLowerCase().includes(q))
+  );
+  const grid = document.getElementById('temples-grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="col-span-full text-center py-16 text-on-surface-variant">No temples found.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(t => `
+    <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary" style="font-size:20px">temple_hindu</span>
+      </div>
+      <div>
+        <h3 class="font-headline font-bold text-on-surface mb-0.5">${t.name}</h3>
+        <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-2">
+          <span class="material-symbols-outlined" style="font-size:12px">location_on</span>
+          ${t.city}, ${t.region}
+        </div>
+        <span class="text-[9px] font-bold uppercase tracking-wider ${tagBg(t.tag)} px-2 py-0.5 rounded-full">${t.tag}</span>
+      </div>
+      <p class="text-xs text-on-surface-variant leading-relaxed flex-1">${t.desc}</p>
+      <div class="text-xs font-semibold text-primary/80">${t.deity}</div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('region-chips').addEventListener('click', e => {
+  const chip = e.target.closest('.region-chip');
+  if (!chip) return;
+  activeRegion = chip.dataset.region;
+  document.querySelectorAll('.region-chip').forEach(c => {
+    const active = c.dataset.region === activeRegion;
+    c.className = `region-chip whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${active ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'}`;
+  });
+  renderTemples();
+});
+
+document.getElementById('search-input').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderTemples();
+});
+
+updateCityUI();
+renderTemples();
+</script>
+</body>
+</html>
