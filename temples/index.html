@@ -101,22 +101,22 @@
 import { currentCity } from '/js/shared.js';
 
 const TEMPLES = [
-  { name:'Kapaleeshwarar Temple', deity:'Lord Shiva (Kapaleeshwara)', city:'Chennai', region:'Tamil Nadu', tag:'Saivite', desc:'Ancient Dravidian temple dedicated to Lord Shiva. The presiding deity is Kapaleeshwara and the goddess is Karpagambal.' },
-  { name:'Meenakshi Amman Temple', deity:'Goddess Meenakshi', city:'Madurai', region:'Tamil Nadu', tag:'Shakta', desc:'One of the largest temple complexes in India, renowned for its stunning gopurams adorned with thousands of sculptures.' },
-  { name:'Brihadeeswarar Temple', deity:'Lord Shiva', city:'Thanjavur', region:'Tamil Nadu', tag:'Saivite', desc:'UNESCO World Heritage Site built by Raja Raja Chola I. An outstanding example of Dravidian architecture.' },
-  { name:'Ekambareswarar Temple', deity:'Lord Shiva (Prithvi Lingam)', city:'Kanchipuram', region:'Tamil Nadu', tag:'Saivite', desc:'One of the Pancha Bhuta Stalas representing the element Earth. Ancient temple with a 1000-pillar hall.' },
-  { name:'Ranganathaswamy Temple', deity:'Lord Vishnu (Ranganatha)', city:'Tiruchirapalli', region:'Tamil Nadu', tag:'Vaishnavite', desc:'The largest functioning Hindu temple in the world, situated on the Srirangam island in the Kaveri river.' },
-  { name:'Venkateswara Temple', deity:'Lord Venkateswara', city:'Tirupati', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'The most visited pilgrimage site in the world, perched atop the Tirumala hills. Famous for the Laddu prasadam.' },
-  { name:'Kanaka Durga Temple', deity:'Goddess Kanaka Durga', city:'Vijayawada', region:'Andhra Pradesh', tag:'Shakta', desc:'Situated on the Indrakeeladri hill on the banks of the Krishna river, this temple is dedicated to Goddess Durga.' },
-  { name:'Simhachalam Temple', deity:'Lord Narasimha', city:'Visakhapatnam', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'An ancient temple dedicated to Lord Narasimha (Varaha Lakshmi Narasimha), known for its unique sandal paste ritual.' },
-  { name:'Yadagirigutta Temple', deity:'Lord Narasimha', city:'Yadagirigutta', region:'Telangana', tag:'Vaishnavite', desc:'One of the most revered Vaishnavite temples in Telangana, recently renovated with a grand new structure.' },
-  { name:'Sri Jagannath Temple', deity:'Lord Jagannath', city:'Hyderabad', region:'Telangana', tag:'Vaishnavite', desc:'A replica of the famous Puri Jagannath temple, serving the large Odia community in Hyderabad.' },
-  { name:'Udupi Krishna Temple', deity:'Lord Krishna', city:'Udupi', region:'Karnataka', tag:'Vaishnavite', desc:'One of the most important Krishna temples in South India, associated with philosopher-saint Madhvacharya.' },
-  { name:'Chamundeshwari Temple', deity:'Goddess Chamundeshwari', city:'Mysuru', region:'Karnataka', tag:'Shakta', desc:'Situated atop the Chamundi Hills, this temple overlooks the beautiful city of Mysuru. Famous during Dasara.' },
-  { name:'Dharmasthala Temple', deity:'Lord Shiva (Manjunatha)', city:'Dharmasthala', region:'Karnataka', tag:'Saivite', desc:'Unique temple managed by the Jain Heggade family. Known for annadana (free food) served to thousands daily.' },
-  { name:'Padmanabhaswamy Temple', deity:'Lord Vishnu (Padmanabha)', city:'Thiruvananthapuram', region:'Kerala', tag:'Vaishnavite', desc:'One of the 108 Divya Desams, this temple is famous for its magnificent idol of Lord Vishnu in the Ananthasayana posture.' },
-  { name:'Guruvayur Temple', deity:'Lord Krishna (Guruvayurappan)', city:'Guruvayur', region:'Kerala', tag:'Vaishnavite', desc:'Known as the Dwaraka of the South. The presiding deity is Lord Krishna in his Vishwarupa form. Famous for elephant rituals.' },
-  { name:'Sabarimala Temple', deity:'Lord Ayyappa', city:'Pathanamthitta', region:'Kerala', tag:'Saivite', desc:'One of the largest annual pilgrimages in the world. The temple is open only during specific seasons and Mandala days.' },
+  { id:'kapaleeshwarar', name:'Kapaleeshwarar Temple', deity:'Lord Shiva (Kapaleeshwara)', city:'Chennai', region:'Tamil Nadu', tag:'Saivite', desc:'Ancient Dravidian temple dedicated to Lord Shiva. The presiding deity is Kapaleeshwara and the goddess is Karpagambal.' },
+  { id:'meenakshi', name:'Meenakshi Amman Temple', deity:'Goddess Meenakshi', city:'Madurai', region:'Tamil Nadu', tag:'Shakta', desc:'One of the largest temple complexes in India, renowned for its stunning gopurams adorned with thousands of sculptures.' },
+  { id:'brihadeeswarar', name:'Brihadeeswarar Temple', deity:'Lord Shiva', city:'Thanjavur', region:'Tamil Nadu', tag:'Saivite', desc:'UNESCO World Heritage Site built by Raja Raja Chola I. An outstanding example of Dravidian architecture.' },
+  { id:'ekambareswarar', name:'Ekambareswarar Temple', deity:'Lord Shiva (Prithvi Lingam)', city:'Kanchipuram', region:'Tamil Nadu', tag:'Saivite', desc:'One of the Pancha Bhuta Stalas representing the element Earth. Ancient temple with a 1000-pillar hall.' },
+  { id:'ranganathaswamy', name:'Ranganathaswamy Temple', deity:'Lord Vishnu (Ranganatha)', city:'Tiruchirapalli', region:'Tamil Nadu', tag:'Vaishnavite', desc:'The largest functioning Hindu temple in the world, situated on the Srirangam island in the Kaveri river.' },
+  { id:'venkateswara', name:'Venkateswara Temple', deity:'Lord Venkateswara', city:'Tirupati', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'The most visited pilgrimage site in the world, perched atop the Tirumala hills. Famous for the Laddu prasadam.' },
+  { id:'kanaka-durga', name:'Kanaka Durga Temple', deity:'Goddess Kanaka Durga', city:'Vijayawada', region:'Andhra Pradesh', tag:'Shakta', desc:'Situated on the Indrakeeladri hill on the banks of the Krishna river, this temple is dedicated to Goddess Durga.' },
+  { id:'simhachalam', name:'Simhachalam Temple', deity:'Lord Narasimha', city:'Visakhapatnam', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'An ancient temple dedicated to Lord Narasimha (Varaha Lakshmi Narasimha), known for its unique sandal paste ritual.' },
+  { id:'yadagirigutta', name:'Yadagirigutta Temple', deity:'Lord Narasimha', city:'Yadagirigutta', region:'Telangana', tag:'Vaishnavite', desc:'One of the most revered Vaishnavite temples in Telangana, recently renovated with a grand new structure.' },
+  { id:'jagannath-hyderabad', name:'Sri Jagannath Temple', deity:'Lord Jagannath', city:'Hyderabad', region:'Telangana', tag:'Vaishnavite', desc:'A replica of the famous Puri Jagannath temple, serving the large Odia community in Hyderabad.' },
+  { id:'udupi-krishna', name:'Udupi Krishna Temple', deity:'Lord Krishna', city:'Udupi', region:'Karnataka', tag:'Vaishnavite', desc:'One of the most important Krishna temples in South India, associated with philosopher-saint Madhvacharya.' },
+  { id:'chamundeshwari', name:'Chamundeshwari Temple', deity:'Goddess Chamundeshwari', city:'Mysuru', region:'Karnataka', tag:'Shakta', desc:'Situated atop the Chamundi Hills, this temple overlooks the beautiful city of Mysuru. Famous during Dasara.' },
+  { id:'dharmasthala', name:'Dharmasthala Temple', deity:'Lord Shiva (Manjunatha)', city:'Dharmasthala', region:'Karnataka', tag:'Saivite', desc:'Unique temple managed by the Jain Heggade family. Known for annadana (free food) served to thousands daily.' },
+  { id:'padmanabhaswamy', name:'Padmanabhaswamy Temple', deity:'Lord Vishnu (Padmanabha)', city:'Thiruvananthapuram', region:'Kerala', tag:'Vaishnavite', desc:'One of the 108 Divya Desams, this temple is famous for its magnificent idol of Lord Vishnu in the Ananthasayana posture.' },
+  { id:'guruvayur', name:'Guruvayur Temple', deity:'Lord Krishna (Guruvayurappan)', city:'Guruvayur', region:'Kerala', tag:'Vaishnavite', desc:'Known as the Dwaraka of the South. The presiding deity is Lord Krishna in his Vishwarupa form. Famous for elephant rituals.' },
+  { id:'sabarimala', name:'Sabarimala Temple', deity:'Lord Ayyappa', city:'Pathanamthitta', region:'Kerala', tag:'Saivite', desc:'One of the largest annual pilgrimages in the world. The temple is open only during specific seasons and Mandala days.' },
 ];
 
 let activeRegion = 'all';
@@ -142,12 +142,12 @@ function renderTemples() {
     return;
   }
   grid.innerHTML = filtered.map(t => `
-    <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
-      <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+    <a href="/temples/detail/?id=${t.id}" class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all flex flex-col gap-3 group cursor-pointer">
+      <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
         <span class="material-symbols-outlined text-primary" style="font-size:20px">temple_hindu</span>
       </div>
       <div>
-        <h3 class="font-headline font-bold text-on-surface mb-0.5">${t.name}</h3>
+        <h3 class="font-headline font-bold text-on-surface mb-0.5 group-hover:text-primary transition-colors">${t.name}</h3>
         <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-2">
           <span class="material-symbols-outlined" style="font-size:12px">location_on</span>
           ${t.city}, ${t.region}
@@ -155,8 +155,11 @@ function renderTemples() {
         <span class="text-[9px] font-bold uppercase tracking-wider ${tagBg(t.tag)} px-2 py-0.5 rounded-full">${t.tag}</span>
       </div>
       <p class="text-xs text-on-surface-variant leading-relaxed flex-1">${t.desc}</p>
-      <div class="text-xs font-semibold text-primary/80">${t.deity}</div>
-    </div>
+      <div class="flex items-center justify-between mt-1">
+        <span class="text-xs font-semibold text-primary/80">${t.deity}</span>
+        <span class="material-symbols-outlined text-primary/40 group-hover:text-primary transition-colors" style="font-size:16px">arrow_forward</span>
+      </div>
+    </a>
   `).join('');
 }
 

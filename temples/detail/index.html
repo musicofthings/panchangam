@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Temple Detail - Dakshin Panchangam</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{colors:{"on-secondary-container":"#562100","on-error-container":"#93000a","on-error":"#ffffff","primary-fixed-dim":"#ebb2ff","inverse-surface":"#2f3037","on-tertiary-container":"#83d57e","tertiary":"#00430c","primary-fixed":"#f8d8ff","surface-variant":"#e3e1ea","background":"#fbf8ff","secondary":"#9e4200","on-surface":"#1a1b21","on-tertiary":"#ffffff","tertiary-fixed-dim":"#88d982","surface-tint":"#8c33b3","on-primary-container":"#e8aaff","secondary-fixed-dim":"#ffb691","secondary-fixed":"#ffdbcb","surface-container-low":"#f4f2fb","on-secondary":"#ffffff","on-surface-variant":"#4e4351","on-primary-fixed-variant":"#721199","surface-container-highest":"#e3e1ea","surface-container-high":"#e9e7f0","on-tertiary-fixed-variant":"#005312","error":"#ba1a1a","error-container":"#ffdad6","surface":"#fbf8ff","primary-container":"#7b1fa2","outline-variant":"#d2c1d3","on-primary-fixed":"#320047","on-primary":"#ffffff","primary":"#5e0081","on-secondary-fixed-variant":"#793100","inverse-on-surface":"#f1f0f8","tertiary-fixed":"#a3f69c","surface-container-lowest":"#ffffff","tertiary-container":"#015d16","on-background":"#1a1b21","secondary-container":"#fb6d00","surface-bright":"#fbf8ff","on-secondary-fixed":"#341100","surface-dim":"#dad9e2","surface-container":"#efedf6","on-tertiary-fixed":"#002204","inverse-primary":"#ebb2ff","outline":"#807382"},fontFamily:{"headline":["Noto Serif"],"body":["Plus Jakarta Sans"],"label":["Plus Jakarta Sans"]},borderRadius:{"DEFAULT":"0.25rem","lg":"1rem","xl":"1.25rem","full":"9999px"}}},
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background-color:#fbf8ff; }
+  .hero-gradient { background:linear-gradient(to bottom,rgba(94,0,129,0.2) 0%,rgba(94,0,129,0.85) 100%); }
+  .no-scrollbar::-webkit-scrollbar{display:none;} .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}
+</style>
+</head>
+<body class="bg-surface text-on-surface">
+
+<!-- Top nav -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-5 py-4 bg-[#fbf8ff]/90 backdrop-blur-md border-b border-slate-100/60">
+  <div class="flex items-center gap-3">
+    <a href="/temples/" class="p-2 rounded-full hover:bg-surface-container transition-colors">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </a>
+    <span class="text-lg font-headline font-bold text-purple-900">Temple Directory</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <a href="/" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container">Today</a>
+    <a href="/calendar/" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container">Calendar</a>
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="pt-16 pb-24">
+
+  <!-- Hero -->
+  <section id="hero-section" class="relative h-80 sm:h-[480px] w-full overflow-hidden bg-surface-dim">
+    <!-- Gradient placeholder shown until image loads -->
+    <div id="hero-placeholder" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/60">
+      <span class="material-symbols-outlined text-white/60" style="font-size:80px;font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 48">temple_hindu</span>
+    </div>
+    <img id="hero-img" class="w-full h-full object-cover hidden" alt="" onload="this.classList.remove('hidden');document.getElementById('hero-placeholder').classList.add('hidden')"/>
+    <div class="absolute inset-0 hero-gradient flex flex-col justify-end p-6 md:p-12">
+      <span id="hero-badge" class="inline-block w-fit px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-bold text-[10px] tracking-wider uppercase mb-3">Divine Destination</span>
+      <h1 id="hero-name" class="font-headline text-3xl sm:text-5xl text-white font-bold leading-tight mb-1">—</h1>
+      <p id="hero-deity" class="font-headline text-lg sm:text-2xl text-primary-fixed-dim">—</p>
+    </div>
+  </section>
+
+  <!-- Content grid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- Main column -->
+    <div class="lg:col-span-8 space-y-10">
+
+      <!-- Quick facts chips -->
+      <div id="quick-facts" class="flex flex-wrap gap-3"></div>
+
+      <!-- History -->
+      <section>
+        <h2 class="font-headline text-2xl font-bold mb-4 text-primary">Sacred History</h2>
+        <div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-secondary">
+          <p id="history-text" class="text-on-surface-variant leading-relaxed">—</p>
+        </div>
+      </section>
+
+      <!-- Pooja Schedule -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-headline text-2xl font-bold text-primary">Daily Pooja Schedule</h2>
+          <span class="material-symbols-outlined text-secondary">schedule</span>
+        </div>
+        <div class="overflow-hidden rounded-xl bg-surface-container-low">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-primary text-white">
+                <th class="p-3 text-sm font-semibold">Session</th>
+                <th class="p-3 text-sm font-semibold">Ritual</th>
+                <th class="p-3 text-sm font-semibold">Timing</th>
+              </tr>
+            </thead>
+            <tbody id="pooja-tbody" class="divide-y divide-outline-variant/10"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Festivals -->
+      <section>
+        <h2 class="font-headline text-2xl font-bold mb-4 text-primary">Major Festivals</h2>
+        <div id="festivals-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      </section>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="lg:col-span-4 space-y-6">
+      <div class="bg-surface-container-high rounded-2xl p-6 lg:sticky lg:top-24">
+        <h3 class="font-headline text-lg font-bold mb-4 text-primary">Location &amp; Contact</h3>
+
+        <!-- Map placeholder -->
+        <div class="rounded-xl overflow-hidden h-40 mb-5 bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center relative">
+          <span class="material-symbols-outlined text-primary/40" style="font-size:48px;font-variation-settings:'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 48">map</span>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="bg-white/90 p-2 rounded-full shadow">
+              <span class="material-symbols-outlined text-secondary" style="font-size:24px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">location_on</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-5">
+          <div class="flex gap-3 items-start">
+            <span class="material-symbols-outlined text-primary mt-0.5" style="font-size:18px">home_pin</span>
+            <p id="address" class="text-sm text-on-surface-variant">—</p>
+          </div>
+          <div id="phone-row" class="hidden flex gap-3 items-center">
+            <span class="material-symbols-outlined text-primary" style="font-size:18px">call</span>
+            <p id="phone" class="text-sm text-on-surface-variant">—</p>
+          </div>
+          <div id="website-row" class="hidden flex gap-3 items-center">
+            <span class="material-symbols-outlined text-primary" style="font-size:18px">public</span>
+            <a id="website" href="#" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline">—</a>
+          </div>
+          <div class="flex gap-3 items-center">
+            <span class="material-symbols-outlined text-primary" style="font-size:18px">schedule</span>
+            <p id="timings" class="text-sm text-on-surface-variant">—</p>
+          </div>
+        </div>
+
+        <a id="directions-btn" href="#" target="_blank" rel="noopener noreferrer"
+           class="w-full py-3 bg-secondary-container text-on-secondary-container font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-secondary hover:text-white transition-all shadow-sm text-sm">
+          <span class="material-symbols-outlined" style="font-size:18px">directions</span>
+          Get Directions
+        </a>
+      </div>
+
+      <!-- Book pooja card -->
+      <div class="bg-primary p-6 rounded-2xl text-white">
+        <h3 class="font-headline text-lg font-bold mb-1">Book a Pooja</h3>
+        <p class="text-xs text-primary-fixed-dim mb-4">Experience divine blessings through guided ritual offerings.</p>
+        <a href="/stitch/temples_pooja_seva_booking/code" class="block w-full py-3 bg-white text-primary font-bold rounded-xl text-center text-sm hover:bg-primary-fixed transition-colors">
+          View Ritual Options
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- AI Chat Footer -->
+<footer class="fixed bottom-0 left-0 right-0 z-[100] bg-surface/95 backdrop-blur-xl border-t border-primary/10 py-3">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4 flex-1">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center text-white shadow-sm"><span class="material-symbols-outlined text-[18px]">bolt</span></div>
+        <div class="flex flex-col md:flex-row md:items-center gap-0 md:gap-2">
+          <span class="font-headline font-bold text-primary text-sm whitespace-nowrap">Panchangam AI</span>
+          <span class="bg-secondary/10 text-secondary text-[9px] font-bold px-1.5 py-0.5 rounded uppercase w-fit">Coming Soon</span>
+        </div>
+      </div>
+      <div class="flex-1 max-w-2xl"><input id="ai-placeholder" class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary/20 rounded-full py-2.5 px-6 text-sm placeholder-on-surface-variant/60" disabled placeholder="Ask about this temple…" type="text"/></div>
+    </div>
+    <button class="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center opacity-50 cursor-not-allowed"><span class="material-symbols-outlined text-sm">send</span></button>
+  </div>
+</footer>
+
+<!-- 404 / not found state -->
+<div id="not-found" class="hidden fixed inset-0 flex flex-col items-center justify-center gap-4 bg-surface z-50">
+  <span class="material-symbols-outlined text-on-surface-variant/30" style="font-size:64px">temple_hindu</span>
+  <p class="text-on-surface-variant font-semibold">Temple not found</p>
+  <a href="/temples/" class="text-primary text-sm hover:underline">← Back to directory</a>
+</div>
+
+<script>
+const TEMPLES = {
+  'kapaleeshwarar': {
+    name: 'Kapaleeshwarar Temple',
+    deity: 'Lord Shiva (Kapaleeshwara) & Goddess Karpagambal',
+    city: 'Chennai', region: 'Tamil Nadu', tag: 'Saivite',
+    history: 'The Kapaleeshwarar Temple is a sacred shrine of Lord Shiva located in Mylapore, Chennai. Built around the 7th century CE in Dravidian architecture, it is one of the most significant Paadal Petra Sthalams — temples praised in the devotional hymns of the Nayanmars. The temple\'s name is derived from "Kapalam" (skull) and "Eeshwarar" (Shiva), referencing a legend where Brahma received his skull-bearing curse here. The towering 37-metre gopuram was erected in 1906 and is elaborately adorned with painted stucco figures.',
+    timings: '5:30 AM – 12:00 PM, 4:00 PM – 9:30 PM',
+    address: '234, Ramakrishna Mutt Rd, Mylapore, Chennai, Tamil Nadu 600004',
+    phone: '044 2464 1670',
+    website: 'kapaleeshwarartemple.tn.gov.in',
+    mapsQ: 'Kapaleeshwarar+Temple+Mylapore+Chennai',
+    pooja: [
+      { session:'Early Morning', ritual:'Ko Pooja (Thiruvanandal)', timing:'5:30 AM – 6:30 AM' },
+      { session:'Morning', ritual:'Kala Santhi', timing:'8:00 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'11:00 AM – 12:00 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'6:00 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja', timing:'9:00 PM – 9:30 PM' },
+    ],
+    festivals: [
+      { icon:'auto_awesome', name:'Panguni Peruvizha', desc:'The 9-day annual festival featuring the famous Arupathimoovar procession of 63 Nayanmars, celebrated in March–April.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'An overnight celebration of Lord Shiva with continuous abhishekam and devotional hymns chanted by priests.' },
+      { icon:'water_drop', name:'Teppam (Float Festival)', desc:'The sacred tank comes alive with a decorated float carrying the deities during the Thai month (Jan–Feb).' },
+      { icon:'celebration', name:'Navaratri', desc:'Nine nights dedicated to the Divine Mother Karpagambal with special decorations, music, and recitals.' },
+    ],
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqJjelfxtYSHO29F3tidtxfnp6wFP2vsGytEU_NS9mBjuSuNHQFp_pNF_549iQyYyCOhhmZnfaObazKrR2uBNPu0sCO_Ag4rnmD82TarECL8CqP7Oj57EEuli0Y_e_xXKx41dJ0afJw8X96G3e5AY4xRPqidtNNU2WMLyQx6TfkBwGzFbvaCYzxUor3hfOrvn4QIDAS0q_274qNodM6MBjbczdUTR23GjNmoiWBxtV5dbpOJpHTLXIH4hx4RbS4RksPJ-R5k6bKc8',
+    facts: ['7th Century CE', 'Paadal Petra Sthalams', '37m Gopuram', 'Mylapore'],
+  },
+  'meenakshi': {
+    name: 'Meenakshi Amman Temple',
+    deity: 'Goddess Meenakshi & Lord Sundareswarar',
+    city: 'Madurai', region: 'Tamil Nadu', tag: 'Shakta',
+    history: 'The Meenakshi Amman Temple in Madurai is one of the most magnificent and largest temple complexes in India, covering 14.5 acres. Dedicated to Goddess Meenakshi (an avatar of Parvati) and her consort Lord Sundareswarar (Shiva), the present structure was largely built during the Nayak period (1623–1655 CE). It features 14 towering gopurams (gateway towers) ranging from 45–51 metres high, covered with thousands of painted stucco sculptures. The temple is considered one of the wonders of the ancient world.',
+    timings: '5:00 AM – 12:30 PM, 4:00 PM – 10:00 PM',
+    address: 'Madurai Main, Madurai, Tamil Nadu 625001',
+    phone: '0452 234 4360',
+    website: 'maduraimeenakshi.org',
+    mapsQ: 'Meenakshi+Amman+Temple+Madurai',
+    pooja: [
+      { session:'Thiruvanandal', ritual:'Morning Awakening Pooja', timing:'5:00 AM – 6:00 AM' },
+      { session:'Morning', ritual:'Kala Santhi Pooja', timing:'8:00 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'6:00 PM – 7:30 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja & Palli Arai', timing:'9:30 PM – 10:00 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Chithirai Festival', desc:'The grand 15-day annual festival celebrating the celestial wedding of Meenakshi and Sundareswarar, drawing millions of devotees.' },
+      { icon:'auto_awesome', name:'Navaratri', desc:'Nine nights of elaborate decorations and special alankarams to the Goddess, featuring classical music and dance.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'All-night vigil with abhishekam, hymns and special rituals honoring Lord Sundareswarar.' },
+      { icon:'water_drop', name:'Float Festival (Teppam)', desc:'Deities placed on a decorated raft in the Mariamman Teppakulam tank — one of the most spectacular rituals.' },
+    ],
+    image: null,
+    facts: ['14.5 Acres', '14 Gopurams', 'Nayak Period', '33,000 Sculptures'],
+  },
+  'brihadeeswarar': {
+    name: 'Brihadeeswarar Temple',
+    deity: 'Lord Shiva (Brihadeeswarar)',
+    city: 'Thanjavur', region: 'Tamil Nadu', tag: 'Saivite',
+    history: 'The Brihadeeswarar Temple (also known as the Big Temple or Peruvudaiyar Kovil) in Thanjavur was built by the Chola emperor Raja Raja Chola I between 1003–1010 CE. A UNESCO World Heritage Site and part of the "Great Living Chola Temples" group, its vimana (tower) soars to 66 metres — one of the tallest in the world. The capstone alone weighs 80 tonnes. The temple was built without any mortar — only interlocking stones. Its massive Nandi statue cut from a single rock and the 216 lingams in the ambulatory are iconic.',
+    timings: '6:00 AM – 12:30 PM, 4:00 PM – 8:30 PM',
+    address: 'Membalam Rd, Balaganapathy Nagar, Thanjavur, Tamil Nadu 613001',
+    phone: '04362 274 506',
+    website: 'tanjorebrihadeeswarar.com',
+    mapsQ: 'Brihadeeswarar+Temple+Thanjavur',
+    pooja: [
+      { session:'Morning', ritual:'Tiruvanandal & Vishwarupam', timing:'6:00 AM – 8:00 AM' },
+      { session:'Mid-Morning', ritual:'Kala Santhi Pooja', timing:'8:30 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'5:00 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja', timing:'8:00 PM – 8:30 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Aadi Pooram', desc:'Grand celebration of Raja Raja Chola\'s birthday in the Aadi month (Jul–Aug) with special abhishekam.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'All-night celebration with special utsavams and elaborate rituals throughout the night.' },
+      { icon:'auto_awesome', name:'Brahmotsavam', desc:'The annual chariot festival where the temple deities are taken in procession through the temple streets.' },
+      { icon:'water_drop', name:'Karthigai Deepam', desc:'The festival of lights where thousands of lamps illuminate the temple complex on the Karthigai full moon.' },
+    ],
+    image: null,
+    facts: ['UNESCO Heritage', 'Built 1003–1010 CE', '66m Vimana', 'Raja Raja Chola I'],
+  },
+  'ekambareswarar': {
+    name: 'Ekambareswarar Temple',
+    deity: 'Lord Shiva (Prithvi Lingam)',
+    city: 'Kanchipuram', region: 'Tamil Nadu', tag: 'Saivite',
+    history: 'The Ekambareswarar Temple in Kanchipuram is one of the Pancha Bhuta Stalas representing the element Earth (Prithvi). The presiding deity is the Prithvi Lingam (earth linga), said to have been created by Goddess Parvati herself from sand under an ancient mango tree. The complex covers about 40 acres with a magnificent 59-metre tall gopuram. The temple has a remarkable 1000-pillar hall built by the Vijayanagara kings in the 16th century. The mango tree in the temple courtyard is believed to be 3500 years old.',
+    timings: '6:00 AM – 12:00 PM, 4:00 PM – 8:30 PM',
+    address: 'Ekambaranatha Kovil St, Kanchipuram, Tamil Nadu 631502',
+    phone: '044 2722 2886',
+    website: null,
+    mapsQ: 'Ekambareswarar+Temple+Kanchipuram',
+    pooja: [
+      { session:'Morning', ritual:'Thiruvanandal & Vishwarupam', timing:'6:00 AM – 8:00 AM' },
+      { session:'Mid-Morning', ritual:'Kala Santhi', timing:'9:00 AM – 10:30 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'5:30 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja', timing:'8:00 PM – 8:30 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Panguni Uthiram', desc:'The divine wedding of Shiva and Parvati is grandly celebrated during the Panguni month under the Uthiram star.' },
+      { icon:'auto_awesome', name:'Masi Magam', desc:'Chariot festival where the processional deities are taken to the tank for the sacred Theerthavari ritual.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'All-night vigil with continuous abhishekam and hymns from the Thevaram.' },
+      { icon:'water_drop', name:'Aadi Ammavasai', desc:'The new moon day in Aadi month when thousands gather for the sacred bath at the Shiva Ganga tank.' },
+    ],
+    image: null,
+    facts: ['Pancha Bhuta Stala', 'Earth Element', '40 Acres', '1000-Pillar Hall'],
+  },
+  'ranganathaswamy': {
+    name: 'Ranganathaswamy Temple',
+    deity: 'Lord Vishnu (Ranganatha)',
+    city: 'Tiruchirapalli', region: 'Tamil Nadu', tag: 'Vaishnavite',
+    history: 'The Ranganathaswamy Temple at Srirangam is the largest functioning Hindu temple in the world, covering 156 acres across the Srirangam island on the Kaveri river. With 21 gopurams, 39 pavilions, and 7 enclosures (prakarams), it is the foremost of the 108 Divya Desams (sacred Vaishnava shrines). The presiding deity Lord Ranganatha (Vishnu) is shown in the Ananthasayana posture (reclining on Adishesha). The temple\'s history spans 2000 years, with most of its present structure built by the Chola, Pandya, and Vijayanagara kingdoms.',
+    timings: '6:00 AM – 1:00 PM, 3:15 PM – 9:00 PM',
+    address: 'Srirangam, Tiruchirapalli, Tamil Nadu 620006',
+    phone: '0431 243 1246',
+    website: 'srirangam.org',
+    mapsQ: 'Ranganathaswamy+Temple+Srirangam+Trichy',
+    pooja: [
+      { session:'Early Morning', ritual:'Thiruvanandal', timing:'6:00 AM – 7:30 AM' },
+      { session:'Morning', ritual:'Kala Santhi', timing:'8:00 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'12:00 PM – 1:00 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'5:00 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja', timing:'8:30 PM – 9:00 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Vaikunta Ekadashi', desc:'The most sacred event — the Paramapada Vasal (door to heaven) opens at midnight and devotees queue for hours for darshan.' },
+      { icon:'auto_awesome', name:'Brahmotsavam', desc:'The 21-day annual festival including the Garuda Sevai where the deity is carried by Garuda vahana — one of the most spectacular sights.' },
+      { icon:'nightlight_round', name:'Panguni Uthiram', desc:'The divine wedding festival celebrated with great pomp across 10 days during the Panguni month.' },
+      { icon:'water_drop', name:'Teppotsavam', desc:'Float festival on the Kaveri river with decorated floats carrying the processional deities.' },
+    ],
+    image: null,
+    facts: ['Largest Hindu Temple', '156 Acres', '21 Gopurams', 'Divya Desam #1'],
+  },
+  'venkateswara': {
+    name: 'Venkateswara Temple',
+    deity: 'Lord Venkateswara (Balaji)',
+    city: 'Tirupati', region: 'Andhra Pradesh', tag: 'Vaishnavite',
+    history: 'The Venkateswara Temple atop the Tirumala hills is the most visited place of pilgrimage in the world, receiving an average of 50,000–100,000 visitors daily. The presiding deity Lord Venkateswara is an aspect of Vishnu. The temple dates back to antiquity, with inscriptions from the 5th century CE. Managed by the Tirumala Tirupati Devasthanams (TTD), it is the wealthiest temple institution in the world. The Srivari Mettu (stone steps) and the iconic prasadam (Tirupati Laddu, with GI tag) are beloved traditions.',
+    timings: '2:30 AM – 1:30 AM (nearly 24 hours)',
+    address: 'Tirumala, Tirupati, Andhra Pradesh 517504',
+    phone: '0877 227 7777',
+    website: 'tirumala.org',
+    mapsQ: 'Venkateswara+Temple+Tirumala+Tirupati',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Thiruvanandal & Suprabhatam', timing:'2:30 AM – 3:30 AM' },
+      { session:'Morning', ritual:'Tomala Seva & Archana', timing:'6:30 AM – 8:00 AM' },
+      { session:'Noon', ritual:'Asthanam & Ekanta Seva', timing:'12:00 PM – 1:00 PM' },
+      { session:'Evening', ritual:'Dolotsavam & Abhishekam', timing:'6:00 PM – 8:00 PM' },
+      { session:'Night', ritual:'Ekanta Seva (final)', timing:'12:00 AM – 1:00 AM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Brahmotsavam', desc:'The 9-day annual festival (Sep–Oct) featuring celestial vahana (vehicle) processions — Hamsa, Simha, Garuda — each carrying special significance.' },
+      { icon:'auto_awesome', name:'Vaikunta Ekadashi', desc:'Sacred Ekadashi on which darshan through the northern gate (Vaikunta Dwaram) grants liberation. Lakhs queue through the night.' },
+      { icon:'nightlight_round', name:'Rathasapthami', desc:'The chariot festival in the month of Magha marking the sun\'s northward journey, celebrated with special pujas.' },
+      { icon:'water_drop', name:'Teppotsavam', desc:'Float festival on the Swami Pushkarini tank, where the deity is carried on decorated boats at dusk.' },
+    ],
+    image: null,
+    facts: ['Most Visited Temple', '50,000+ Daily', 'Tirumala Hills', 'Laddu GI Tag'],
+  },
+  'kanaka-durga': {
+    name: 'Kanaka Durga Temple',
+    deity: 'Goddess Kanaka Durga',
+    city: 'Vijayawada', region: 'Andhra Pradesh', tag: 'Shakta',
+    history: 'The Kanaka Durga Temple is situated on the Indrakeeladri hill on the northern bank of the Krishna River in Vijayawada. One of the most celebrated Shakti temples in India, the presiding goddess Kanaka Durga (Durga adorned in gold) is believed to be the power behind the Indrakeeladri hill itself. The temple is mentioned in the Skanda Purana and Markandeya Purana. The Bezawada Ganga festival when the river floods is a unique tradition — devotees worship the flooded waters as a manifestation of the goddess.',
+    timings: '4:00 AM – 12:00 PM, 4:00 PM – 10:00 PM',
+    address: 'Indrakeeladri, Vijayawada, Andhra Pradesh 520001',
+    phone: '0866 257 1622',
+    website: null,
+    mapsQ: 'Kanaka+Durga+Temple+Vijayawada',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Suprabhatha Seva', timing:'4:00 AM – 5:00 AM' },
+      { session:'Morning', ritual:'Nijavartana Seva & Archana', timing:'7:00 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Rajanna Prasad & Noon Pooja', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sahasra Deepalankara Seva', timing:'6:30 PM – 8:00 PM' },
+      { session:'Night', ritual:'Ekanta Seva', timing:'9:30 PM – 10:00 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Navaratri', desc:'The most significant festival — 9 nights of spectacular alankarams and sevas attracting millions of devotees from across Andhra Pradesh.' },
+      { icon:'auto_awesome', name:'Vijaya Dasami', desc:'On the 10th day, the goddess is decorated as Mahishasura Mardini — the slayer of the buffalo demon — in a dramatic presentation.' },
+      { icon:'water_drop', name:'Karthika Masam', desc:'The entire month of Karthika is considered sacred here; thousands visit daily for special deepa (lamp) offerings.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'Special sevas and overnight vigils are conducted in honor of Lord Malleswara (Shiva) whose shrine is in the same complex.' },
+    ],
+    image: null,
+    facts: ['Indrakeeladri Hill', 'Krishna Riverbank', 'Skanda Purana', 'Navaratri Hub'],
+  },
+  'simhachalam': {
+    name: 'Simhachalam Temple',
+    deity: 'Lord Narasimha (Varaha Lakshmi Narasimha)',
+    city: 'Visakhapatnam', region: 'Andhra Pradesh', tag: 'Vaishnavite',
+    history: 'Simhachalam Temple, dedicated to Varaha Lakshmi Narasimha (a composite form of Vishnu as Varaha and Narasimha), is one of the most important Vaishnava temples in Andhra Pradesh. The temple is built in the Kalinga architectural style and sits on a hill in Visakhapatnam. Uniquely, the deity is always covered with sandalwood paste (chandana) year-round, with only one day — the Akshaya Tritiya — when the paste is removed and the idol's true form is revealed to devotees.',
+    timings: '6:00 AM – 12:30 PM, 3:00 PM – 9:00 PM',
+    address: 'Simhachalam, Visakhapatnam, Andhra Pradesh 530028',
+    phone: '0891 254 5204',
+    website: 'simhachalamtemple.org',
+    mapsQ: 'Simhachalam+Temple+Visakhapatnam',
+    pooja: [
+      { session:'Morning', ritual:'Suprabhatha Seva', timing:'6:00 AM – 7:00 AM' },
+      { session:'Mid-Morning', ritual:'Asthasthana Seva', timing:'9:00 AM – 11:00 AM' },
+      { session:'Noon', ritual:'Kalyanam & Noon Pooja', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Unjal Seva', timing:'5:30 PM – 7:00 PM' },
+      { session:'Night', ritual:'Pavitrotsavam', timing:'8:30 PM – 9:00 PM' },
+    ],
+    festivals: [
+      { icon:'auto_awesome', name:'Akshaya Tritiya', desc:'The only day of the year when the sandal paste is fully removed, revealing the vigraha in its true magnificent form to devotees.' },
+      { icon:'celebration', name:'Brahmotsavam', desc:'The 11-day annual utsavam with various vahana (vehicle) sevas and night processions around the hill.' },
+      { icon:'nightlight_round', name:'Chandana Yatra', desc:'The ceremonial application of sandalwood paste to the deity, marking the beginning of a year-long covering of the idol.' },
+      { icon:'water_drop', name:'Vaikunta Ekadashi', desc:'The sacred Ekadashi on which devotees believe darshan is equivalent to liberation; thousands throng the hill.' },
+    ],
+    image: null,
+    facts: ['Sandal Paste Ritual', 'Kalinga Architecture', 'Akshaya Tritiya', 'Visakha Hills'],
+  },
+  'yadagirigutta': {
+    name: 'Yadagirigutta Temple',
+    deity: 'Lord Narasimha (Lakshmi Narasimha)',
+    city: 'Yadagirigutta', region: 'Telangana', tag: 'Vaishnavite',
+    history: 'Yadagirigutta Temple, dedicated to Lord Lakshmi Narasimha, is the most visited Hindu temple in Telangana. Situated on the Yadagiri hill (also called Yadagiri Gutta), the temple has a legendary origin connected to Yadava (a sage) who worshipped Narasimha here. The temple underwent a grand renovation (2016–2021) overseen by the Telangana government, transforming it into a modern pilgrimage complex while retaining its spiritual sanctity. The new golden gopuram has become an iconic landmark.',
+    timings: '4:00 AM – 1:00 PM, 3:00 PM – 9:30 PM',
+    address: 'Yadagirigutta, Yadadri Bhuvanagiri, Telangana 508115',
+    phone: '08685 242 222',
+    website: 'yadagirilakshminarasimhaswamy.org',
+    mapsQ: 'Yadagirigutta+Temple+Telangana',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Thiruvanandal Seva', timing:'4:00 AM – 5:00 AM' },
+      { session:'Morning', ritual:'Kala Santhi Seva', timing:'7:30 AM – 9:00 AM' },
+      { session:'Noon', ritual:'Uchikala Pooja', timing:'12:00 PM – 1:00 PM' },
+      { session:'Evening', ritual:'Sayarakshai Seva', timing:'6:00 PM – 7:30 PM' },
+      { session:'Night', ritual:'Ardhajama Pooja', timing:'9:00 PM – 9:30 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Brahmotsavam', desc:'The grand 9-day festival during October–November with elaborate vahana sevas and thousands of devotees.' },
+      { icon:'auto_awesome', name:'Kalyanotsavam', desc:'The celestial wedding of Lord Narasimha and Goddess Lakshmi — the most beloved event, drawing enormous crowds.' },
+      { icon:'nightlight_round', name:'Vaikunta Ekadashi', desc:'Sacred Ekadashi with all-night darshan; devotees queue from the previous evening for the auspicious morning viewing.' },
+      { icon:'water_drop', name:'Karthika Masam', desc:'Daily processions and special pujas throughout the sacred month of Karthika are conducted here with great devotion.' },
+    ],
+    image: null,
+    facts: ['Renovated 2021', 'Golden Gopuram', 'Most Visited in TS', 'Yadagiri Hill'],
+  },
+  'jagannath-hyderabad': {
+    name: 'Sri Jagannath Temple',
+    deity: 'Lord Jagannath, Balabhadra & Subhadra',
+    city: 'Hyderabad', region: 'Telangana', tag: 'Vaishnavite',
+    history: 'The Jagannath Temple in Hyderabad (located at Banjara Hills) was built to serve the large Odia community settled in the city, replicating the spirit of the original Jagannath Temple in Puri, Odisha. The temple is managed by the Odisha Society of the Americas chapter and local Odia associations. The famous Rath Yatra (chariot festival) conducted here closely follows the Puri tradition and draws lakhs of devotees across communities. The temple also serves as a cultural center for Odia traditions.',
+    timings: '6:00 AM – 12:00 PM, 4:00 PM – 8:00 PM',
+    address: 'Road No. 12, Banjara Hills, Hyderabad, Telangana 500034',
+    phone: null,
+    website: null,
+    mapsQ: 'Jagannath+Temple+Banjara+Hills+Hyderabad',
+    pooja: [
+      { session:'Morning', ritual:'Mangal Aarti & Mailam', timing:'6:00 AM – 7:30 AM' },
+      { session:'Mid-Morning', ritual:'Sakala Dhoop & Bhog', timing:'10:00 AM – 11:00 AM' },
+      { session:'Noon', ritual:'Madhyanha Dhoop', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sandhya Aarti', timing:'6:00 PM – 7:00 PM' },
+      { session:'Night', ritual:'Bada Singhara & Badasinghar Bhog', timing:'7:30 PM – 8:00 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Rath Yatra', desc:'The grand chariot festival replicating Puri\'s tradition — three massive chariots for Jagannath, Balabhadra, and Subhadra are pulled through the streets.' },
+      { icon:'auto_awesome', name:'Snana Yatra', desc:'The ceremonial bathing of the deities on the full moon of Jyeshtha — after which the deities are said to "fall ill" and rest (Anavasara).' },
+      { icon:'nightlight_round', name:'Bahuda Yatra', desc:'The return journey of the deities back to the main temple after their 9-day stay at the Gundicha temple.' },
+      { icon:'water_drop', name:'Janmashtami', desc:'Lord Krishna\'s birthday is celebrated with great enthusiasm including bhajans, abhishekam and midnight celebrations.' },
+    ],
+    image: null,
+    facts: ['Puri Replica', 'Odia Community', 'Rath Yatra', 'Banjara Hills'],
+  },
+  'udupi-krishna': {
+    name: 'Udupi Krishna Temple',
+    deity: 'Lord Krishna (Bala Krishna)',
+    city: 'Udupi', region: 'Karnataka', tag: 'Vaishnavite',
+    history: 'The Udupi Sri Krishna Temple was established by the philosopher-saint Madhvacharya (founder of the Dvaita Vedanta school) in the 13th century CE. The temple is famous for the "Kanakana Kindi" — a small window with nine holes through which devotees view the deity, as the devoted saint Kanakadasa could only see Krishna through the wall. Udupi is the headquarters of the Ashtamathas (eight monasteries), and the temple management rotates among these eight mutts on a paryaya (two-year rotation) system.',
+    timings: '5:30 AM – 12:30 PM, 5:00 PM – 8:30 PM',
+    address: 'Car Street, Udupi, Karnataka 576101',
+    phone: '0820 252 0345',
+    website: 'udupisrikrishnamatha.org',
+    mapsQ: 'Udupi+Krishna+Temple+Udupi',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Mangalarati & Abhishekam', timing:'5:30 AM – 6:30 AM' },
+      { session:'Morning', ritual:'Usha Kaala Pooja', timing:'8:00 AM – 9:30 AM' },
+      { session:'Noon', ritual:'Madhyanha Pooja', timing:'11:30 AM – 12:30 PM' },
+      { session:'Evening', ritual:'Sandhya Aarti', timing:'5:30 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ratri Kala Pooja', timing:'8:00 PM – 8:30 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Paryaya', desc:'The biennial change of temple management among the 8 Ashtamathas, celebrated with grand processions and festivities.' },
+      { icon:'auto_awesome', name:'Janmashtami', desc:'Lord Krishna\'s birthday is the most grandly celebrated festival with abhishekam, decorations, and midnight revelry.' },
+      { icon:'nightlight_round', name:'Madhwa Navami', desc:'The birth anniversary of Madhvacharya, the founder of the temple, observed with special sevas and discourses.' },
+      { icon:'water_drop', name:'Rathasapthami', desc:'The chariot festival in Magha month marks the sun\'s northward journey with temple utsavams and processions.' },
+    ],
+    image: null,
+    facts: ['Madhvacharya Founded', 'Kanakana Kindi', '8 Ashtamathas', 'Paryaya System'],
+  },
+  'chamundeshwari': {
+    name: 'Chamundeshwari Temple',
+    deity: 'Goddess Chamundeshwari',
+    city: 'Mysuru', region: 'Karnataka', tag: 'Shakta',
+    history: 'The Chamundeshwari Temple is located atop the Chamundi Hills, 13 kilometres from the royal city of Mysuru. The presiding deity Chamundeshwari (a fierce form of Durga) is the tutelary deity of the Mysore Wodeyar dynasty. The current temple structure dates from the 12th century with significant renovations by the Wodeyars, particularly the seven-story raja gopura built in 1827. Devotees climb 1008 stone steps to reach the temple. A massive statue of the demon Mahishasura stands prominently midway on the steps, symbolizing the goddess\'s victory.',
+    timings: '7:30 AM – 2:00 PM, 3:30 PM – 9:00 PM',
+    address: 'Chamundi Hills, Mysuru, Karnataka 570010',
+    phone: '0821 242 4593',
+    website: null,
+    mapsQ: 'Chamundeshwari+Temple+Mysore',
+    pooja: [
+      { session:'Morning', ritual:'Panchamruta Abhishekam', timing:'7:30 AM – 9:00 AM' },
+      { session:'Mid-Morning', ritual:'Kaala Pooja & Archana', timing:'10:00 AM – 11:30 AM' },
+      { session:'Noon', ritual:'Madhyanha Pooja', timing:'12:00 PM – 2:00 PM' },
+      { session:'Evening', ritual:'Sayarakshai Pooja', timing:'4:00 PM – 6:00 PM' },
+      { session:'Night', ritual:'Rathri Kaala Pooja', timing:'8:00 PM – 9:00 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Mysuru Dasara', desc:'The most iconic festival — 10 days of royal celebrations culminating in the Vijayadasami procession with the goddess on a golden howdah atop an elephant.' },
+      { icon:'auto_awesome', name:'Navaratri', desc:'Nine nights of spectacular alankarams, with the goddess dressed in different forms each day. Lakhs of pilgrims visit daily.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'Special overnight abhishekam and hymns to Lord Mahabaleswara (Shiva) whose shrine is adjacent to the main temple.' },
+      { icon:'water_drop', name:'Karthika Deepotsava', desc:'Thousands of oil lamps illuminate the Chamundi Hills during the festival of lights, visible from the entire city of Mysuru.' },
+    ],
+    image: null,
+    facts: ['Chamundi Hills', '1008 Steps', 'Wodeyar Deity', 'Dasara Hub'],
+  },
+  'dharmasthala': {
+    name: 'Dharmasthala Temple',
+    deity: 'Lord Shiva (Manjunatha)',
+    city: 'Dharmasthala', region: 'Karnataka', tag: 'Saivite',
+    history: 'Dharmasthala is one of the most unique religious institutions in India — a Hindu Shiva temple managed by a Jain family, the Heggades. Founded in the 16th century, the temple of Lord Manjunatha (Shiva) is renowned for its Dharma (righteousness) as much as its Bhakti (devotion). The Heggade family serves as hereditary dharmadhikari (religious trustees). The temple is famous for its legendary free annadana (food offering) — a full meal served to over 10,000 pilgrims daily completely free of charge, every single day of the year.',
+    timings: '6:30 AM – 2:00 PM, 5:00 PM – 8:45 PM',
+    address: 'Dharmasthala, Belthangady Taluk, Dakshina Kannada, Karnataka 574216',
+    phone: '08256 277 006',
+    website: 'dharmasthala.in',
+    mapsQ: 'Dharmasthala+Temple+Karnataka',
+    pooja: [
+      { session:'Morning', ritual:'Mangalarti & Abhishekam', timing:'6:30 AM – 8:00 AM' },
+      { session:'Mid-Morning', ritual:'Astothara Abhishekam', timing:'9:00 AM – 11:00 AM' },
+      { session:'Noon', ritual:'Madhyanha Seva & Prasadam', timing:'12:00 PM – 2:00 PM' },
+      { session:'Evening', ritual:'Sandhya Aarti', timing:'5:30 PM – 7:00 PM' },
+      { session:'Night', ritual:'Ratri Pooja & Ekanta Seva', timing:'8:30 PM – 8:45 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Laksha Deepotsava', desc:'A spectacular festival of 100,000 lamps lit simultaneously around the temple tank, attracting hundreds of thousands of visitors.' },
+      { icon:'auto_awesome', name:'Brahmakalashabhisheka', desc:'The grand reconsecration ceremony held every 12 years involving elaborate rituals and attended by thousands of priests.' },
+      { icon:'nightlight_round', name:'Maha Shivaratri', desc:'The most sacred night of Lord Manjunatha, with all-night vigils and continuous abhishekam throughout the night.' },
+      { icon:'water_drop', name:'Annadana Mahotsava', desc:'A special celebration of the free food offering tradition, recognizing the thousands of volunteers who serve the pilgrims daily.' },
+    ],
+    image: null,
+    facts: ['Jain Management', '10,000 Free Meals/Day', '16th Century', 'Dharmadhikari'],
+  },
+  'padmanabhaswamy': {
+    name: 'Padmanabhaswamy Temple',
+    deity: 'Lord Vishnu (Padmanabha)',
+    city: 'Thiruvananthapuram', region: 'Kerala', tag: 'Vaishnavite',
+    history: 'The Padmanabhaswamy Temple in Thiruvananthapuram houses the world\'s wealthiest idol — Lord Vishnu (Padmanabha) reclining on the serpent Ananta (Adi Shesha) across an 18-foot long sanctum. The idol is visible through three doors. The temple has roots mentioned in the Brahma Purana. The Travancore royal family (Thirunal rulers) served as trustees. In 2011, six underground vaults in the temple were opened, revealing treasures estimated at over $1 trillion — gold, jewels, and artifacts accumulated over centuries. Entry is restricted to Hindus.',
+    timings: '3:30 AM – 4:45 AM, 6:30 AM – 7:00 AM (various slots)',
+    address: 'East Fort, Thiruvananthapuram, Kerala 695023',
+    phone: '0471 245 0233',
+    website: 'sreepadmanabhaswamytemple.org',
+    mapsQ: 'Padmanabhaswamy+Temple+Thiruvananthapuram',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Nirmalya Darshan (Thiruvanandal)', timing:'3:30 AM – 4:45 AM' },
+      { session:'Morning', ritual:'Nirmalya Darshan & Usha Pooja', timing:'6:30 AM – 7:00 AM' },
+      { session:'Mid-Morning', ritual:'Ethirtha Pooja & Panteeradi Pooja', timing:'8:30 AM – 10:00 AM' },
+      { session:'Noon', ritual:'Uchha Pooja', timing:'11:45 AM – 12:00 PM' },
+      { session:'Evening', ritual:'Athazhapuja', timing:'6:45 PM – 7:20 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Alpashy Utsavam', desc:'The grand 10-day festival in Thulam month with elaborate flaghoisting (kodiyettam), processions, and fireworks.' },
+      { icon:'auto_awesome', name:'Painkuni Utsavam', desc:'Another major 10-day festival in the Meenam month, featuring spectacular processions including the Arattu (sacred bath) of the deity at the sea.' },
+      { icon:'nightlight_round', name:'Murajapam', desc:'A rare 56-day ritual recitation of Vedas, conducted once in 6 years, involving hundreds of scholars.' },
+      { icon:'water_drop', name:'Laksha Deepam', desc:'The festival of 100,000 lamps lit in the temple — held once every 6 years, drawing massive crowds.' },
+    ],
+    image: null,
+    facts: ['Wealthiest Temple', '18-ft Reclining Idol', 'Ananthasayana', 'Travancore Royal'],
+  },
+  'guruvayur': {
+    name: 'Guruvayur Temple',
+    deity: 'Lord Krishna (Guruvayurappan)',
+    city: 'Guruvayur', region: 'Kerala', tag: 'Vaishnavite',
+    history: 'Guruvayur Temple is one of the most important Vaishnava shrines in India, often called the "Dwaraka of the South." The presiding deity Guruvayurappan is Lord Krishna in the four-armed Vishnu form (Mahavishnu). According to legend, the idol was installed by Guru (Brihaspati) and Vayu (Wind god), giving the place its name. The temple was consecrated after Brihaspati brought the idol here fleeing a flooding Dwaraka. The Devaswom manages 56 elephants (Anakotta) — the largest temple elephant herd in India.',
+    timings: '3:00 AM – 1:00 PM, 4:30 PM – 9:15 PM',
+    address: 'Temple Road, Guruvayur, Thrissur, Kerala 680101',
+    phone: '0487 255 6236',
+    website: 'guruvayurdevaswom.org',
+    mapsQ: 'Guruvayur+Temple+Kerala',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Nirmalya Darshan', timing:'3:00 AM – 3:30 AM' },
+      { session:'Morning', ritual:'Thiruvanandal & Abhishekam', timing:'4:00 AM – 6:00 AM' },
+      { session:'Late Morning', ritual:'Pantheeradi Pooja', timing:'8:30 AM – 10:30 AM' },
+      { session:'Noon', ritual:'Uchapooja', timing:'12:00 PM – 1:00 PM' },
+      { session:'Evening', ritual:'Diparadhan & Athazhapuja', timing:'6:30 PM – 9:15 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Guruvayur Ekadashi', desc:'The most sacred day at Guruvayur — lakhs of devotees queue from the previous evening for the auspicious darshan believed to grant liberation.' },
+      { icon:'auto_awesome', name:'Utsavam', desc:'The 10-day annual festival featuring the famous elephant procession (Aanayoottu) where 51 elephants are adorned and paraded with caparisoned regalia.' },
+      { icon:'nightlight_round', name:'Janmashtami', desc:'Lord Krishna\'s birthday celebrated with continuous bhajans, elaborate decorations, and special sevas culminating in a midnight abhishekam.' },
+      { icon:'water_drop', name:'Kuchela Dinam', desc:'The festival commemorating the friendship between Lord Krishna and his poor friend Kuchela, observed on the Ashtami of Dhanu month.' },
+    ],
+    image: null,
+    facts: ['Dwaraka of South', '56 Temple Elephants', 'Brihaspati & Vayu', 'Guruvayurappan'],
+  },
+  'sabarimala': {
+    name: 'Sabarimala Temple',
+    deity: 'Lord Ayyappa (Dharma Sastha)',
+    city: 'Pathanamthitta', region: 'Kerala', tag: 'Saivite',
+    history: 'The Sabarimala Sree Dharma Sastha Temple is one of the largest annual pilgrimages in the world, attracting an estimated 40–50 million pilgrims each season. Nestled in the Western Ghats at an altitude of 914 metres within the Periyar Tiger Reserve, the temple is accessible only by foot through dense forests. Pilgrims (predominantly male) observe a strict 41-day Mandala Vrata (vow) of celibacy and austerity, wearing black attire and carrying a "irumudi" (two-compartment bag). The famous 18 golden steps (Pathinettam Padi) lead to the sanctum.',
+    timings: 'Open only during Mandala season (Nov–Jan), Vishu, and Makaravilakku',
+    address: 'Sannidhanam, Sabarimala, Pathanamthitta, Kerala 689514',
+    phone: '0468 222 2066',
+    website: 'sabarimala.kerala.gov.in',
+    mapsQ: 'Sabarimala+Temple+Kerala',
+    pooja: [
+      { session:'Pre-Dawn', ritual:'Nirmalyadarshan & Thiruvanandal', timing:'3:00 AM – 4:00 AM' },
+      { session:'Morning', ritual:'Abhishekam & Archana', timing:'6:00 AM – 8:00 AM' },
+      { session:'Noon', ritual:'Uchapuja & Deeparadhana', timing:'12:00 PM – 12:30 PM' },
+      { session:'Evening', ritual:'Sandhyapuja & Deeparadhana', timing:'5:00 PM – 6:00 PM' },
+      { session:'Night', ritual:'Athazhapuja & Thrippadidhanam', timing:'10:00 PM – 10:30 PM' },
+    ],
+    festivals: [
+      { icon:'celebration', name:'Makaravilakku', desc:'The miraculous star-light appearing on the Makara Jyothi night (January 14) — the most sacred event, witnessed by millions of pilgrims.' },
+      { icon:'auto_awesome', name:'Mandala Puja', desc:'The conclusion of the 41-day Mandala period, after which the 18 sacred steps are ceremonially opened to pilgrims.' },
+      { icon:'nightlight_round', name:'Vishu', desc:'The Malayalam New Year (April 14) when the temple opens for a brief period outside the main pilgrimage season.' },
+      { icon:'water_drop', name:'First Puja Opening', desc:'The commencement of the annual pilgrimage season with the ritual opening of the temple after months of closure.' },
+    ],
+    image: null,
+    facts: ['40–50M Pilgrims/Year', '914m Altitude', '18 Golden Steps', 'Mandala Vrata'],
+  },
+};
+
+const FEST_ICON_FILL = { auto_awesome:'FILL', nightlight_round:'FILL', water_drop:'FILL', celebration:'FILL' };
+
+function tagBg(tag) {
+  return { Saivite:'bg-primary/10 text-primary', Vaishnavite:'bg-secondary/10 text-secondary', Shakta:'bg-error-container text-on-error-container' }[tag] || 'bg-surface-container text-on-surface-variant';
+}
+
+function render(id) {
+  const t = TEMPLES[id];
+  if (!t) {
+    document.getElementById('not-found').classList.remove('hidden');
+    return;
+  }
+
+  document.title = `${t.name} - Dakshin Panchangam`;
+
+  // Hero
+  if (t.image) {
+    const img = document.getElementById('hero-img');
+    img.src = t.image;
+    img.alt = t.name;
+  }
+  document.getElementById('hero-badge').textContent = t.tag + ' Temple';
+  document.getElementById('hero-name').textContent = t.name;
+  document.getElementById('hero-deity').textContent = t.deity;
+
+  // Quick facts
+  document.getElementById('quick-facts').innerHTML = [
+    ...t.facts.map(f => `<span class="bg-surface-container px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant">${f}</span>`),
+    `<span class="${tagBg(t.tag)} px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">${t.tag}</span>`,
+    `<span class="bg-surface-container px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant flex items-center gap-1"><span style="font-family:'Material Symbols Outlined';font-size:12px">location_on</span>${t.city}, ${t.region}</span>`,
+  ].join('');
+
+  // History
+  document.getElementById('history-text').textContent = t.history;
+
+  // Pooja schedule
+  document.getElementById('pooja-tbody').innerHTML = t.pooja.map((p, i) => `
+    <tr class="${i % 2 === 1 ? 'bg-surface-container-lowest/50' : ''} hover:bg-surface-container transition-colors">
+      <td class="p-3 font-bold text-primary text-sm">${p.session}</td>
+      <td class="p-3 text-sm">${p.ritual}</td>
+      <td class="p-3 text-sm text-on-surface-variant">${p.timing}</td>
+    </tr>
+  `).join('');
+
+  // Festivals
+  document.getElementById('festivals-grid').innerHTML = t.festivals.map(f => `
+    <div class="bg-surface-container-lowest p-5 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-shadow group">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">${f.icon}</span>
+        <h3 class="font-bold text-sm">${f.name}</h3>
+      </div>
+      <p class="text-xs text-on-surface-variant leading-relaxed">${f.desc}</p>
+    </div>
+  `).join('');
+
+  // Sidebar
+  document.getElementById('address').textContent = t.address;
+  document.getElementById('timings').textContent = t.timings;
+
+  if (t.phone) {
+    document.getElementById('phone').textContent = t.phone;
+    document.getElementById('phone-row').classList.remove('hidden');
+  }
+  if (t.website) {
+    const wEl = document.getElementById('website');
+    wEl.textContent = t.website;
+    wEl.href = `https://${t.website}`;
+    document.getElementById('website-row').classList.remove('hidden');
+  }
+
+  document.getElementById('directions-btn').href =
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(t.mapsQ)}`;
+
+  document.getElementById('ai-placeholder').placeholder = `Ask about ${t.name}…`;
+}
+
+const id = new URLSearchParams(window.location.search).get('id') || '';
+render(id);
+</script>
+</body>
+</html>
