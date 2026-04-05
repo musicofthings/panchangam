@@ -1,0 +1,22 @@
+{
+  "2026-04-05": {
+    "date": "2026-04-05",
+    "turns": 3,
+    "sessions": [
+      {
+        "id": "unknown",
+        "last_cost": 0.0,
+        "turns": 0,
+        "model": "unknown",
+        "updated": "2026-04-05T05:33:17Z"
+      }
+    ],
+    "cost_usd": 0.0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "first_activity": "2026-04-05T05:28:04Z",
+    "last_activity": "2026-04-05T05:33:17Z",
+    "peak_5h_pct": 0.0,
+    "peak_ctx_pct": 0.0
+  }
+}
