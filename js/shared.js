@@ -203,14 +203,21 @@ export function tamilMonthLabel(tamilDay, moonRasi) {
   return `${tamilDay}`;
 }
 
-/** Full label like "Panguni 15" using current date to derive month. */
-export function solarDayLabel(date, tamilDay) {
-  // Approximate Tamil month from Gregorian month + day
-  // Tamil solar year starts ~April 14. Each month ~30 days.
-  const d = new Date(date);
-  const approxMonthIdx = ((d.getMonth() - 3 + 12) % 12); // April=0
+/** Full label like "Panguni 22" using sunRasi from API. */
+export function solarDayLabel(date, tamilDay, sunRasi) {
+  // sunRasi: 0=Aries(Chittirai)…11=Pisces(Panguni)
   const months = ['Chittirai','Vaikasi','Aani','Aadi','Aavani','Purattasi','Aippasi','Karthigai','Margazhi','Thai','Maasi','Panguni'];
-  return `${months[approxMonthIdx]} ${tamilDay}`;
+  if (sunRasi !== undefined && sunRasi !== null) {
+    return `${months[sunRasi]} ${tamilDay}`;
+  }
+  // Fallback: approximate from Gregorian date + 14-day offset for solar month transition
+  const d = new Date(date);
+  const dayOfMonth = d.getDate();
+  // Tamil solar month starts ~14th of each Gregorian month
+  // April 1–13 = Panguni, April 14+ = Chittirai
+  let mIdx = ((d.getMonth() - 3 + 12) % 12);
+  if (dayOfMonth < 14) mIdx = ((mIdx - 1 + 12) % 12);
+  return `${months[mIdx]} ${tamilDay}`;
 }
 
 export function getShashti(tithi, lang) {

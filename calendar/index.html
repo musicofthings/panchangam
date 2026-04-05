@@ -600,7 +600,7 @@ function selectDay(key, date) {
   const nName = nakshatraName(apiDay.nakshatra, currentLang);
   const rName = rasiName(apiDay.moonRasi, currentLang);
   const pName = pakshaNative(apiDay.tithi, currentLang);
-  const solar  = solarDayLabel(key, apiDay.tamilDay);
+  const solar  = solarDayLabel(key, apiDay.tamilDay, apiDay.sunRasi);
   const festivals = getFestivalTags(new Date(key), apiDay.tithi, currentLang);
 
   const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];

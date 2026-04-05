@@ -352,7 +352,7 @@ async function init() {
 
   // Hero card
   document.getElementById('day-number').textContent = today.getDate();
-  document.getElementById('solar-day-label').textContent = solarDayLabel(today, api.tamilDay);
+  document.getElementById('solar-day-label').textContent = solarDayLabel(today, api.tamilDay, api.sunRasi);
   document.getElementById('paksha-pill').textContent = paksha(api.tithi) + ' Paksha';
   document.getElementById('tithi-pill').textContent = tithiName(api.tithi, currentLang) + ' Tithi';
   document.getElementById('nakshatra-pill').textContent = nakshatraName(api.nakshatra, currentLang) + ' Nakshatram';

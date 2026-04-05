@@ -239,21 +239,33 @@ function computeDay(dateStr, lat, lon) {
   const jdSunrise = sunEvent(jdDayStart, lat, lon, true);
   const jdSunset  = sunEvent(jdDayStart, lat, lon, false);
 
-  const moonLon = moonLongitude(jdSunrise);
-  const sunLon  = sunLongitude(jdSunrise);
+  const moonLonTropical = moonLongitude(jdSunrise);
+  const sunLonTropical  = sunLongitude(jdSunrise);
 
-  // Tithi: Moon–Sun elongation / 12°, 1-indexed (30 = Amavasya)
-  let elong = moonLon - sunLon;
+  // Lahiri ayanamsa (sidereal–tropical offset, Chitrapaksha).
+  // Linear approximation: 23.85° at J2000.0, increasing at 50.3"/yr.
+  const T_ay = (jdSunrise - 2451545.0) / 36525;
+  const ayanamsa = ((23.85 + T_ay * 25 * 0.01397) % 360 + 360) % 360;
+
+  // Sidereal longitudes for rasi/nakshatra computations
+  const moonLon = ((moonLonTropical - ayanamsa) % 360 + 360) % 360;
+  const sunLon  = ((sunLonTropical  - ayanamsa) % 360 + 360) % 360;
+
+  // Tithi: uses tropical elongation — ayanamsa cancels out
+  let elong = moonLonTropical - sunLonTropical;
   if (elong < 0) elong += 360;
   const tithi = Math.floor(elong / 12) + 1;
 
-  // Nakshatra: Moon longitude / (360/27)°, 1-indexed
+  // Nakshatra: sidereal Moon longitude / (360/27)°, 1-indexed
   const nakshatra = Math.floor(moonLon / (360 / 27)) + 1;
 
-  // Moon Rasi index: 0–11
+  // Moon Rasi index: 0–11 (sidereal)
   const moonRasi = Math.floor(moonLon / 30);
 
-  // Tamil solar calendar day: Sun's degree within current rasi
+  // Sun Rasi index: 0–11 sidereal (0=Mesha/Chittirai … 11=Meena/Panguni)
+  const sunRasi = Math.floor(sunLon / 30);
+
+  // Tamil solar calendar day: sidereal Sun's degree within current rasi
   const tamilDay = Math.floor(sunLon % 30) + 1;
 
   return {
@@ -261,6 +273,7 @@ function computeDay(dateStr, lat, lon) {
     tithi,
     nakshatra,
     moonRasi,
+    sunRasi,
     tamilDay,
     sunriseMs: jdToMs(jdSunrise),
     sunsetMs:  jdToMs(jdSunset),
