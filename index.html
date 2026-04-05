@@ -55,8 +55,15 @@
   <div class="flex items-center gap-4">
     <span class="text-2xl font-bold text-purple-900 dark:text-purple-200 font-headline">Dakshin Panchangam</span>
   </div>
-  <div class="hidden md:flex items-center gap-4 bg-surface-container px-6 py-2 rounded-full">
-    <span id="header-date-text" class="text-on-surface-variant font-serif font-bold">Loading…</span>
+  <div class="flex items-center gap-1 bg-surface-container px-2 py-1.5 rounded-full">
+    <button id="date-prev" aria-label="Previous day" class="p-1.5 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-primary">
+      <span class="material-symbols-outlined" style="font-size:20px">chevron_left</span>
+    </button>
+    <input id="date-input" type="date" class="bg-transparent text-on-surface-variant font-serif font-bold text-sm border-none outline-none cursor-pointer px-1" />
+    <button id="date-next" aria-label="Next day" class="p-1.5 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-primary">
+      <span class="material-symbols-outlined" style="font-size:20px">chevron_right</span>
+    </button>
+    <button id="date-today-btn" class="hidden text-[11px] font-bold text-primary px-2 py-1 rounded-full hover:bg-primary/10 transition-colors">Today</button>
   </div>
   <div class="flex items-center gap-3">
     <button id="lang-btn" class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low hover:bg-purple-50 transition-colors">
@@ -83,6 +90,9 @@
     <li><a data-nav="temples" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/temples/"><span class="material-symbols-outlined">temple_hindu</span><span>Temples</span></a></li>
     <li><a data-nav="news" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200" href="/news/"><span class="material-symbols-outlined">newspaper</span><span>News</span></a></li>
   </ul>
+  <div class="mt-auto pt-6 border-t border-surface-variant/30">
+    <a href="/settings/" class="text-slate-600 px-4 py-3 flex items-center gap-4 hover:bg-purple-50 rounded-lg transition-all duration-200"><span class="material-symbols-outlined">settings</span><span class="text-sm">Settings</span></a>
+  </div>
 </nav>
 
 <!-- Main Content -->
@@ -270,12 +280,13 @@
 </main>
 
 <!-- BottomNavBar (Mobile) -->
-<nav class="md:hidden fixed bottom-20 left-4 right-4 z-40 flex justify-around items-center px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-surface-variant/50">
-  <a data-nav="today"     href="/"           class="flex flex-col items-center justify-center text-slate-500 rounded-xl px-3 py-1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ods</span><span class="text-[11px] font-medium">Today</span></a>
-  <a data-nav="calendar"  href="/calendar/"  class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">calendar_month</span><span class="text-[11px] font-medium">Calendar</span></a>
-  <a data-nav="festivals" href="/festivals/" class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">auto_stories</span><span class="text-[11px] font-medium">Festivals</span></a>
-  <a data-nav="temples"   href="/temples/"   class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">temple_hindu</span><span class="text-[11px] font-medium">Temples</span></a>
-  <a data-nav="news"      href="/news/"      class="flex flex-col items-center justify-center text-slate-500 px-3 py-1"><span class="material-symbols-outlined">newspaper</span><span class="text-[11px] font-medium">News</span></a>
+<nav class="md:hidden fixed bottom-20 left-4 right-4 z-40 flex justify-around items-center px-2 py-2 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-surface-variant/50">
+  <a data-nav="today"     href="/"           class="flex flex-col items-center justify-center text-slate-500 rounded-xl px-2 py-1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">ods</span><span class="text-[10px] font-medium">Today</span></a>
+  <a data-nav="calendar"  href="/calendar/"  class="flex flex-col items-center justify-center text-slate-500 px-2 py-1"><span class="material-symbols-outlined">calendar_month</span><span class="text-[10px] font-medium">Calendar</span></a>
+  <a data-nav="festivals" href="/festivals/" class="flex flex-col items-center justify-center text-slate-500 px-2 py-1"><span class="material-symbols-outlined">auto_stories</span><span class="text-[10px] font-medium">Festivals</span></a>
+  <a data-nav="temples"   href="/temples/"   class="flex flex-col items-center justify-center text-slate-500 px-2 py-1"><span class="material-symbols-outlined">temple_hindu</span><span class="text-[10px] font-medium">Temples</span></a>
+  <a data-nav="news"      href="/news/"      class="flex flex-col items-center justify-center text-slate-500 px-2 py-1"><span class="material-symbols-outlined">newspaper</span><span class="text-[10px] font-medium">News</span></a>
+  <a href="/settings/"                       class="flex flex-col items-center justify-center text-slate-500 px-2 py-1"><span class="material-symbols-outlined">settings</span><span class="text-[10px] font-medium">Settings</span></a>
 </nav>
 
 <!-- AI Chat Footer -->
@@ -321,26 +332,36 @@ import {
   getShashti, getFestivalTags, moonPhaseEmoji, fmtTime, toLocalDateStr, wireNav
 } from '/js/shared.js';
 
-async function init() {
-  wireNav('today');
+let currentDateStr = toLocalDateStr(new Date());
 
-  // Mark active nav
+async function init(dateStr) {
+  if (!dateStr) dateStr = currentDateStr;
+  currentDateStr = dateStr;
+
+  wireNav('today');
   document.querySelector('[data-nav="today"]')?.classList.add('!text-purple-900','!font-bold','!bg-purple-50');
 
   const today = new Date();
-  const dateStr = toLocalDateStr(today);
+  const todayStr = toLocalDateStr(today);
+  const viewDate = new Date(dateStr + 'T12:00:00');
   const locale = { ta:'ta-IN', te:'te-IN', kn:'kn-IN', ml:'ml-IN', en:'en-IN' }[currentLang] || 'en-IN';
 
-  // Header date
-  const dateFmt = today.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  document.getElementById('header-date-text').textContent = dateFmt;
-  document.getElementById('location-pill-text').textContent = `${currentCity.name} · ${dateFmt}`;
+  // Date navigator
+  const dateInput = document.getElementById('date-input');
+  dateInput.value = dateStr;
+  dateInput.max = todayStr;
+  const isToday = dateStr === todayStr;
+  document.getElementById('date-today-btn').classList.toggle('hidden', isToday);
+  document.getElementById('date-next').disabled = isToday;
+  document.getElementById('date-next').classList.toggle('opacity-30', isToday);
+
   document.getElementById('city-btn-text').textContent = currentCity.name;
   document.getElementById('city-label-muhurta').textContent = `${currentCity.name} Local Time`;
+  document.getElementById('location-pill-text').textContent = `${currentCity.name} · ${viewDate.toLocaleDateString(locale, { day:'numeric', month:'short', year:'numeric' })}`;
 
   // Fetch API data
   const api = await fetchDayData(dateStr, currentCity.lat, currentCity.lon);
-  if (!api) { document.getElementById('day-number').textContent = today.getDate(); return; }
+  if (!api) { document.getElementById('day-number').textContent = viewDate.getDate(); return; }
 
   const sunrise = new Date(api.sunriseMs);
   const sunset  = new Date(api.sunsetMs);
@@ -351,8 +372,8 @@ async function init() {
   const brahma  = getBrahma(sunrise);
 
   // Hero card
-  document.getElementById('day-number').textContent = today.getDate();
-  document.getElementById('solar-day-label').textContent = solarDayLabel(today, api.tamilDay, api.sunRasi);
+  document.getElementById('day-number').textContent = viewDate.getDate();
+  document.getElementById('solar-day-label').textContent = solarDayLabel(dateStr, api.tamilDay, api.sunRasi);
   document.getElementById('paksha-pill').textContent = paksha(api.tithi) + ' Paksha';
   document.getElementById('tithi-pill').textContent = tithiName(api.tithi, currentLang) + ' Tithi';
   document.getElementById('nakshatra-pill').textContent = nakshatraName(api.nakshatra, currentLang) + ' Nakshatram';
@@ -382,7 +403,7 @@ async function init() {
   }
 
   // Festival badges
-  const festivals = getFestivalTags(today, api.tithi, currentLang);
+  const festivals = getFestivalTags(viewDate, api.tithi, currentLang);
   const badgeEl = document.getElementById('festival-badges');
   if (festivals.length) {
     const colors = ['text-primary bg-primary/5','text-secondary bg-secondary/5','text-tertiary-container bg-tertiary-container/5'];
@@ -392,6 +413,22 @@ async function init() {
     badgeEl.style.display = 'none';
   }
 }
+
+// Date navigation
+function offsetDate(dateStr, days) {
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + days);
+  return toLocalDateStr(d);
+}
+document.getElementById('date-prev').addEventListener('click', () => init(offsetDate(currentDateStr, -1)));
+document.getElementById('date-next').addEventListener('click', () => {
+  const next = offsetDate(currentDateStr, 1);
+  if (next <= toLocalDateStr(new Date())) init(next);
+});
+document.getElementById('date-today-btn').addEventListener('click', () => init(toLocalDateStr(new Date())));
+document.getElementById('date-input').addEventListener('change', (e) => {
+  if (e.target.value) init(e.target.value);
+});
 
 // Lang/City modal
 function openModal() {
