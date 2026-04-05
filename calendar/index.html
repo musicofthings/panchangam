@@ -533,9 +533,8 @@ function renderGrid() {
 
     cell.innerHTML = inner;
     cell.addEventListener('click', () => selectDay(key, cur));
-    grid.appendChild(cur = new Date(cur));
-    cur.setDate(cur.getDate() + 1);
     grid.appendChild(cell);
+    cur.setDate(cur.getDate() + 1);
   }
 }
 
