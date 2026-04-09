@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Book a Pooja - Dakshin Panchangam</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{colors:{"on-secondary-container":"#562100","on-error-container":"#93000a","on-error":"#ffffff","primary-fixed-dim":"#ebb2ff","inverse-surface":"#2f3037","on-tertiary-container":"#83d57e","tertiary":"#00430c","primary-fixed":"#f8d8ff","surface-variant":"#e3e1ea","background":"#fbf8ff","secondary":"#9e4200","on-surface":"#1a1b21","on-tertiary":"#ffffff","tertiary-fixed-dim":"#88d982","surface-tint":"#8c33b3","on-primary-container":"#e8aaff","secondary-fixed-dim":"#ffb691","secondary-fixed":"#ffdbcb","surface-container-low":"#f4f2fb","on-secondary":"#ffffff","on-surface-variant":"#4e4351","on-primary-fixed-variant":"#721199","surface-container-highest":"#e3e1ea","surface-container-high":"#e9e7f0","on-tertiary-fixed-variant":"#005312","error":"#ba1a1a","error-container":"#ffdad6","surface":"#fbf8ff","primary-container":"#7b1fa2","outline-variant":"#d2c1d3","on-primary-fixed":"#320047","on-primary":"#ffffff","primary":"#5e0081","on-secondary-fixed-variant":"#793100","inverse-on-surface":"#f1f0f8","tertiary-fixed":"#a3f69c","surface-container-lowest":"#ffffff","tertiary-container":"#015d16","on-background":"#1a1b21","secondary-container":"#fb6d00","surface-bright":"#fbf8ff","on-secondary-fixed":"#341100","surface-dim":"#dad9e2","surface-container":"#efedf6","on-tertiary-fixed":"#002204","inverse-primary":"#ebb2ff","outline":"#807382"},fontFamily:{"headline":["Noto Serif"],"body":["Plus Jakarta Sans"],"label":["Plus Jakarta Sans"]},borderRadius:{"DEFAULT":"0.25rem","lg":"1rem","xl":"1.25rem","full":"9999px"}}},
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:#fbf8ff; }
+  .custom-scrollbar::-webkit-scrollbar{width:4px;height:4px;}
+  .custom-scrollbar::-webkit-scrollbar-thumb{background:#d2c1d3;border-radius:10px;}
+  .date-chip.active{background:#5e0081;color:#fff;box-shadow:0 4px 16px rgba(94,0,129,0.25);}
+  .date-chip.active .day-label,.date-chip.active .month-label{color:rgba(255,255,255,0.75);}
+</style>
+</head>
+<body class="bg-surface text-on-surface">
+
+<!-- Top nav -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-5 py-4 bg-[#fbf8ff]/90 backdrop-blur-md border-b border-slate-100/60">
+  <div class="flex items-center gap-3">
+    <a id="back-btn" href="/temples/" class="p-2 rounded-full hover:bg-surface-container transition-colors">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </a>
+    <span class="text-lg font-headline font-bold text-purple-900">Book a Pooja</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <a href="/" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container">Today</a>
+    <a href="/calendar/" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container">Calendar</a>
+    <a href="/temples/" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container">Temples</a>
+  </div>
+</nav>
+
+<main class="pt-20 pb-32 max-w-5xl mx-auto px-4 sm:px-6">
+
+  <!-- Hero -->
+  <section class="mt-6 mb-8 flex flex-col md:flex-row gap-8 items-start">
+    <div class="w-full md:w-72 aspect-[4/5] rounded-2xl overflow-hidden shadow-xl shadow-purple-900/10 flex-shrink-0 bg-gradient-to-br from-primary/20 to-primary/60 flex items-center justify-center">
+      <img id="temple-img" class="w-full h-full object-cover hidden" alt="" onload="this.classList.remove('hidden');this.previousElementSibling?.remove()"/>
+      <span class="material-symbols-outlined text-white/40" style="font-size:80px;font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 48">temple_hindu</span>
+    </div>
+    <div class="flex-1 space-y-4 pt-2">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full">
+        <span class="material-symbols-outlined text-primary" style="font-size:14px">location_on</span>
+        <span id="temple-location" class="text-xs font-bold text-on-surface-variant">Loading…</span>
+      </div>
+      <h1 id="temple-name" class="text-3xl sm:text-4xl font-headline font-bold text-on-surface leading-tight">Loading…</h1>
+      <p id="temple-desc" class="text-on-surface-variant leading-relaxed max-w-xl text-sm">Loading…</p>
+
+      <!-- Date selector -->
+      <div class="pt-2">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-bold text-primary">Select Seva Date</span>
+          <span id="selected-date-label" class="text-xs text-on-surface-variant font-medium"></span>
+        </div>
+        <div id="date-strip" class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- Seva list -->
+    <div class="md:col-span-2 space-y-4">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-2xl font-headline font-bold">Daily Sevas</h2>
+        <span class="text-xs text-on-surface-variant">Prices in ₹ per devotee</span>
+      </div>
+      <div id="seva-list" class="space-y-4"></div>
+    </div>
+
+    <!-- Right sidebar -->
+    <div class="space-y-5">
+
+      <!-- Special events -->
+      <div class="bg-surface-container-low p-5 rounded-2xl space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">event_note</span>
+          <h3 class="font-headline font-bold">Upcoming Events</h3>
+        </div>
+        <div id="special-events" class="space-y-3">
+          <div class="text-xs text-on-surface-variant animate-pulse">Fetching events…</div>
+        </div>
+        <button class="w-full py-2.5 text-xs font-bold text-primary hover:bg-primary/5 rounded-xl transition-all flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined" style="font-size:16px">notifications</span>
+          Set Reminders
+        </button>
+      </div>
+
+      <!-- Booking guidelines -->
+      <div class="bg-surface-container-high p-5 rounded-2xl space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary" style="font-size:20px">info</span>
+          <h3 class="font-headline font-bold text-sm">Booking Info</h3>
+        </div>
+        <ul class="space-y-2.5">
+          <li class="flex gap-2.5 items-start">
+            <span class="material-symbols-outlined text-tertiary-container mt-0.5" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+            <span class="text-xs text-on-surface-variant leading-relaxed">Present digital e-receipt at the counter 15 mins before Seva time.</span>
+          </li>
+          <li class="flex gap-2.5 items-start">
+            <span class="material-symbols-outlined text-tertiary-container mt-0.5" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+            <span class="text-xs text-on-surface-variant leading-relaxed">Traditional dress code is mandatory for inner sanctum entry.</span>
+          </li>
+          <li class="flex gap-2.5 items-start">
+            <span class="material-symbols-outlined text-tertiary-container mt-0.5" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+            <span class="text-xs text-on-surface-variant leading-relaxed">Bookings confirmed cannot be cancelled but can be rescheduled within 48h.</span>
+          </li>
+          <li class="flex gap-2.5 items-start">
+            <span class="material-symbols-outlined text-tertiary-container mt-0.5" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+            <span class="text-xs text-on-surface-variant leading-relaxed">Prasadam will be provided after the Seva is completed.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- My bookings summary -->
+      <div id="cart-summary" class="hidden bg-primary p-5 rounded-2xl text-white space-y-3">
+        <h3 class="font-headline font-bold text-sm">My Booking</h3>
+        <div id="cart-items" class="space-y-1.5 text-xs text-primary-fixed-dim"></div>
+        <div class="border-t border-white/20 pt-3 flex items-center justify-between">
+          <span class="text-sm font-bold">Total</span>
+          <span id="cart-total" class="text-lg font-headline font-black">₹0</span>
+        </div>
+        <button onclick="openCheckout()" class="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-primary-fixed transition-colors">
+          Confirm Booking
+        </button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- AI Chat Footer -->
+<footer class="fixed bottom-0 left-0 right-0 z-[100] bg-surface/95 backdrop-blur-xl border-t border-primary/10 py-3">
+  <div class="max-w-5xl mx-auto px-6 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 flex-1">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center text-white shadow-sm">
+        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">bolt</span>
+      </div>
+      <div class="flex flex-col md:flex-row md:items-center gap-0 md:gap-2">
+        <span class="font-headline font-bold text-primary text-sm">Panchangam AI</span>
+        <span class="bg-secondary/10 text-secondary text-[9px] font-bold px-1.5 py-0.5 rounded uppercase w-fit">Coming Soon</span>
+      </div>
+      <div class="flex-1 max-w-2xl">
+        <input class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary/20 rounded-full py-2.5 px-6 text-sm placeholder-on-surface-variant/60" disabled placeholder="Ask about seva timings, dress code, significance…" type="text"/>
+      </div>
+    </div>
+    <button class="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center opacity-50 cursor-not-allowed">
+      <span class="material-symbols-outlined text-sm">send</span>
+    </button>
+  </div>
+</footer>
+
+<!-- Booking Modal -->
+<div id="booking-modal" class="hidden fixed inset-0 z-[200] bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <div class="bg-surface w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-5">
+      <h3 class="font-headline text-xl font-bold text-primary">Book Seva</h3>
+      <button onclick="closeModal()" class="p-2 rounded-full hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Seva summary -->
+    <div id="modal-seva-summary" class="bg-surface-container-low rounded-xl p-4 mb-5 space-y-1">
+      <p id="modal-seva-name" class="font-bold text-base"></p>
+      <p id="modal-seva-date" class="text-sm text-on-surface-variant"></p>
+      <p id="modal-seva-timing" class="text-xs text-on-surface-variant"></p>
+      <div class="flex items-center gap-1 pt-1">
+        <span class="material-symbols-outlined text-secondary" style="font-size:14px">currency_rupee</span>
+        <span id="modal-seva-price" class="font-bold text-secondary text-sm"></span>
+        <span class="text-xs text-on-surface-variant ml-1">per devotee</span>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-4 mb-6">
+      <div>
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-1.5">Full Name</label>
+        <input id="form-name" type="text" placeholder="As per Aadhaar" class="w-full border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-surface-container-lowest"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-1.5">Mobile Number</label>
+        <input id="form-phone" type="tel" placeholder="+91 98765 43210" class="w-full border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-surface-container-lowest"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-1.5">Number of Devotees</label>
+        <div class="flex items-center gap-4">
+          <button onclick="adjustDevotees(-1)" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors font-bold text-primary text-xl">−</button>
+          <span id="devotee-count" class="text-2xl font-headline font-bold w-8 text-center">1</span>
+          <button onclick="adjustDevotees(1)" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors font-bold text-primary text-xl">+</button>
+        </div>
+      </div>
+      <div class="bg-surface-container rounded-xl p-3 flex items-center justify-between">
+        <span class="text-sm font-semibold">Total Amount</span>
+        <span id="modal-total" class="text-lg font-headline font-black text-secondary">₹0</span>
+      </div>
+    </div>
+
+    <button onclick="submitBooking()" class="w-full py-4 bg-secondary text-on-secondary font-bold rounded-2xl text-sm hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-secondary/20">
+      Confirm Booking
+    </button>
+    <p class="text-center text-[10px] text-on-surface-variant mt-3">By confirming, you agree to the temple's Seva terms & dress code policy.</p>
+  </div>
+</div>
+
+<!-- Success Toast -->
+<div id="success-toast" class="hidden fixed top-24 left-1/2 -translate-x-1/2 z-[300] bg-tertiary-container text-on-tertiary-container px-6 py-3 rounded-full shadow-xl flex items-center gap-3 font-bold text-sm">
+  <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+  <span id="toast-text">Booking confirmed!</span>
+</div>
+
+<script type="module">
+import { currentCity, toLocalDateStr } from '/js/shared.js';
+
+// ── Temple data (same subset as detail page) ──────────────────────
+const TEMPLES = {
+  'kapaleeshwarar': {
+    name:'Kapaleeshwarar Temple', city:'Chennai', region:'Tamil Nadu', tag:'Saivite',
+    desc:'A sacred abode of Lord Shiva and Goddess Karpagambal. Known for its majestic 7th-century Dravidian architecture.',
+    image:'https://lh3.googleusercontent.com/aida-public/AB6AXuAqJjelfxtYSHO29F3tidtxfnp6wFP2vsGytEU_NS9mBjuSuNHQFp_pNF_549iQyYyCOhhmZnfaObazKrR2uBNPu0sCO_Ag4rnmD82TarECL8CqP7Oj57EEuli0Y_e_xXKx41dJ0afJw8X96G3e5AY4xRPqidtNNU2WMLyQx6TfkBwGzFbvaCYzxUor3hfOrvn4QIDAS0q_274qNodM6MBjbczdUTR23GjNmoiWBxtV5dbpOJpHTLXIH4hx4RbS4RksPJ-R5k6bKc8',
+  },
+  'meenakshi': { name:'Meenakshi Amman Temple', city:'Madurai', region:'Tamil Nadu', tag:'Shakta', desc:'One of the largest temple complexes in India, renowned for its stunning gopurams adorned with thousands of sculptures.', image:null },
+  'brihadeeswarar': { name:'Brihadeeswarar Temple', city:'Thanjavur', region:'Tamil Nadu', tag:'Saivite', desc:'UNESCO World Heritage Site built by Raja Raja Chola I. An outstanding example of Dravidian architecture.', image:null },
+  'venkateswara': { name:'Venkateswara Temple', city:'Tirupati', region:'Andhra Pradesh', tag:'Vaishnavite', desc:'The most visited pilgrimage site in the world, perched atop the Tirumala hills.', image:null },
+  'ranganathaswamy': { name:'Ranganathaswamy Temple', city:'Tiruchirapalli', region:'Tamil Nadu', tag:'Vaishnavite', desc:'The largest functioning Hindu temple in the world, situated on the Srirangam island.', image:null },
+};
+const DEFAULT_TEMPLE = 'kapaleeshwarar';
+
+// ── Sevas ──────────────────────────────────────────────────────────
+const SEVAS = [
+  { id:'archana', name:'Sahasranama Archana', badge:'Auspicious', badgeClass:'bg-tertiary-fixed text-on-tertiary-fixed-variant', desc:'Chanting of the 1000 names of the presiding deity for peace and prosperity.', timing:'06:00 AM – 08:30 PM (Any Session)', price:50, icon:'auto_stories' },
+  { id:'abhishekam', name:'Abhishekam', badge:'Special', badgeClass:'bg-primary-fixed text-on-primary-fixed-variant', desc:'The ritual bath of the deity with sacred elements including milk, honey, curd, and vibhuti.', timing:'05:30 AM (Daily, Pre-booking required)', price:250, icon:'water_drop' },
+  { id:'aradhana', name:'Deeparadhana', badge:null, badgeClass:'', desc:'Evening prayer offering with lights and divine chants to seek blessings and prosperity.', timing:'06:45 PM (Daily)', price:100, icon:'local_fire_department' },
+  { id:'homam', name:'Ganapathi Homam', badge:'Premium', badgeClass:'bg-secondary-fixed text-on-secondary-fixed-variant', desc:'Fire ritual invoking Lord Ganapathi to remove obstacles. Conducted by a team of learned priests.', timing:'07:00 AM – 09:00 AM (Advance booking)', price:1500, icon:'whatshot' },
+  { id:'kalyanam', name:'Thirukalyanam', badge:'Special', badgeClass:'bg-primary-fixed text-on-primary-fixed-variant', desc:'The celestial wedding ritual of the presiding deities — one of the most auspicious sevas offered.', timing:'10:00 AM (Selected auspicious days)', price:3000, icon:'favorite' },
+];
+
+// ── State ──────────────────────────────────────────────────────────
+let selectedDate = toLocalDateStr(new Date());
+let currentSeva = null;
+let devoteeCount = 1;
+let cart = []; // { seva, date, devotees }
+
+// ── Init ───────────────────────────────────────────────────────────
+const id = new URLSearchParams(window.location.search).get('id') || DEFAULT_TEMPLE;
+const temple = TEMPLES[id] || TEMPLES[DEFAULT_TEMPLE];
+
+document.title = `Book a Pooja — ${temple.name}`;
+document.getElementById('temple-name').textContent = temple.name;
+document.getElementById('temple-location').textContent = `${temple.city}, ${temple.region}`;
+document.getElementById('temple-desc').textContent = temple.desc;
+if (temple.image) {
+  const img = document.getElementById('temple-img');
+  img.src = temple.image;
+  img.alt = temple.name;
+}
+// Back button goes to temple detail if we have an id
+if (id !== DEFAULT_TEMPLE || new URLSearchParams(window.location.search).has('id')) {
+  document.getElementById('back-btn').href = `/temples/detail/?id=${id}`;
+}
+
+// ── Date strip ─────────────────────────────────────────────────────
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function buildDateStrip() {
+  const strip = document.getElementById('date-strip');
+  const today = new Date();
+  strip.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const ds = toLocalDateStr(d);
+    const chip = document.createElement('button');
+    chip.className = 'date-chip flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl transition-all hover:shadow-md';
+    chip.dataset.date = ds;
+    const isToday = i === 0;
+    if (isToday) chip.classList.add('active');
+    else chip.classList.add('bg-surface-container-low', 'hover:bg-surface-container-high');
+    chip.innerHTML = `
+      <span class="day-label text-[10px] font-bold uppercase tracking-wider ${isToday ? 'text-white/75' : 'text-on-surface-variant'}">${isToday ? 'Today' : DAYS[d.getDay()]}</span>
+      <span class="text-xl font-headline font-black">${d.getDate()}</span>
+      <span class="month-label text-[10px] font-medium ${isToday ? 'text-white/75' : 'text-on-surface-variant'}">${MONTHS[d.getMonth()]}</span>
+    `;
+    chip.addEventListener('click', () => selectDate(ds, chip));
+    strip.appendChild(chip);
+  }
+  updateSelectedLabel();
+}
+
+function selectDate(ds, chipEl) {
+  selectedDate = ds;
+  document.querySelectorAll('.date-chip').forEach(c => {
+    c.classList.remove('active');
+    c.classList.add('bg-surface-container-low');
+    c.querySelector('.day-label')?.classList.replace('text-white/75','text-on-surface-variant');
+    c.querySelector('.month-label')?.classList.replace('text-white/75','text-on-surface-variant');
+  });
+  chipEl.classList.add('active');
+  chipEl.classList.remove('bg-surface-container-low','bg-surface-container-high');
+  updateSelectedLabel();
+  updateCartPanel();
+}
+
+function updateSelectedLabel() {
+  const d = new Date(selectedDate + 'T12:00:00');
+  const label = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('selected-date-label').textContent = label;
+}
+
+// ── Seva list ──────────────────────────────────────────────────────
+function buildSevaList() {
+  document.getElementById('seva-list').innerHTML = SEVAS.map(s => `
+    <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col sm:flex-row items-start gap-5 hover:-translate-y-0.5 hover:shadow-lg transition-all group">
+      <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 24">${s.icon}</span>
+      </div>
+      <div class="flex-1 space-y-1">
+        <div class="flex items-center gap-2 flex-wrap">
+          ${s.badge ? `<span class="px-2 py-0.5 ${s.badgeClass} text-[10px] font-black uppercase rounded-full">${s.badge}</span>` : ''}
+          <h3 class="font-bold text-base">${s.name}</h3>
+        </div>
+        <p class="text-sm text-on-surface-variant">${s.desc}</p>
+        <div class="flex items-center gap-4 pt-1 flex-wrap">
+          <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+            <span class="material-symbols-outlined" style="font-size:14px">schedule</span>
+            <span>${s.timing}</span>
+          </div>
+          <div class="flex items-center gap-0.5 text-xs font-bold text-secondary">
+            <span class="material-symbols-outlined" style="font-size:14px">currency_rupee</span>
+            <span>${s.price.toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="openModal('${s.id}')" class="w-full sm:w-auto flex-shrink-0 px-5 py-2.5 bg-secondary text-on-secondary rounded-xl font-bold text-sm hover:brightness-110 active:scale-95 transition-all shadow-sm">
+        Book
+      </button>
+    </div>
+  `).join('');
+}
+
+// ── Special events from panchangam ─────────────────────────────────
+async function loadSpecialEvents() {
+  try {
+    const today = new Date();
+    const end = new Date(today);
+    end.setDate(today.getDate() + 45);
+    const startStr = toLocalDateStr(today);
+    const endStr = toLocalDateStr(end);
+    const res = await fetch(`/api/panchangam?date=${startStr}&endDate=${endStr}&lat=${currentCity.lat}&lon=${currentCity.lon}`);
+    const days = await res.json();
+    const events = [];
+    for (const d of days) {
+      if (events.length >= 4) break;
+      const date = new Date(d.date + 'T12:00:00');
+      const dateLabel = date.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
+      if (d.tithi === 13) events.push({ name:'Pradosham', date:dateLabel, desc:'Shukla Paksha' });
+      else if (d.tithi === 28) events.push({ name:'Pradosham', date:dateLabel, desc:'Krishna Paksha' });
+      else if (d.tithi === 15) events.push({ name:'Pournami Pooja', date:dateLabel, desc:'Full Moon Seva' });
+      else if (d.tithi === 30) events.push({ name:'Amavasai Abhishekam', date:dateLabel, desc:'New Moon Seva' });
+      else if (d.tithi === 6 || d.tithi === 21) events.push({ name:'Shashti', date:dateLabel, desc:'Skanda Shashti' });
+    }
+    const el = document.getElementById('special-events');
+    if (!events.length) { el.innerHTML = '<p class="text-xs text-on-surface-variant">No major events in next 45 days.</p>'; return; }
+    el.innerHTML = events.map(e => `
+      <div class="bg-surface-container-lowest p-3 rounded-xl">
+        <p class="text-[10px] font-black text-secondary uppercase mb-0.5">${e.desc}</p>
+        <p class="text-sm font-bold">${e.name}</p>
+        <p class="text-xs text-on-surface-variant">${e.date}</p>
+      </div>
+    `).join('');
+  } catch {
+    document.getElementById('special-events').innerHTML = '<p class="text-xs text-on-surface-variant">Could not load events.</p>';
+  }
+}
+
+// ── Modal ──────────────────────────────────────────────────────────
+window.openModal = function(sevaId) {
+  currentSeva = SEVAS.find(s => s.id === sevaId);
+  if (!currentSeva) return;
+  devoteeCount = 1;
+  const d = new Date(selectedDate + 'T12:00:00');
+  const dateLabel = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('modal-seva-name').textContent = currentSeva.name;
+  document.getElementById('modal-seva-date').textContent = dateLabel;
+  document.getElementById('modal-seva-timing').textContent = currentSeva.timing;
+  document.getElementById('modal-seva-price').textContent = currentSeva.price.toLocaleString('en-IN');
+  document.getElementById('devotee-count').textContent = devoteeCount;
+  updateModalTotal();
+  document.getElementById('booking-modal').classList.remove('hidden');
+};
+
+window.closeModal = function() {
+  document.getElementById('booking-modal').classList.add('hidden');
+};
+
+window.adjustDevotees = function(delta) {
+  devoteeCount = Math.max(1, Math.min(10, devoteeCount + delta));
+  document.getElementById('devotee-count').textContent = devoteeCount;
+  updateModalTotal();
+};
+
+function updateModalTotal() {
+  const total = currentSeva ? currentSeva.price * devoteeCount : 0;
+  document.getElementById('modal-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+}
+
+window.submitBooking = function() {
+  const name = document.getElementById('form-name').value.trim();
+  const phone = document.getElementById('form-phone').value.trim();
+  if (!name) { document.getElementById('form-name').focus(); return; }
+  if (!phone) { document.getElementById('form-phone').value = ''; document.getElementById('form-phone').focus(); return; }
+
+  closeModal();
+  showToast(`${currentSeva.name} booked for ${name}!`);
+
+  // Add to cart summary
+  cart.push({ seva: currentSeva, date: selectedDate, devotees: devoteeCount });
+  updateCartPanel();
+};
+
+function updateCartPanel() {
+  const panel = document.getElementById('cart-summary');
+  const itemsEl = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total');
+  if (!cart.length) { panel.classList.add('hidden'); return; }
+  panel.classList.remove('hidden');
+  let total = 0;
+  itemsEl.innerHTML = cart.map(c => {
+    const t = c.seva.price * c.devotees;
+    total += t;
+    const d = new Date(c.date + 'T12:00:00');
+    return `<div class="flex justify-between"><span>${c.seva.name} × ${c.devotees}</span><span>₹${t.toLocaleString('en-IN')}</span></div>`;
+  }).join('');
+  totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+}
+
+window.openCheckout = function() {
+  showToast('Booking request sent! You will receive a confirmation SMS shortly.');
+  cart = [];
+  updateCartPanel();
+};
+
+function showToast(msg) {
+  const t = document.getElementById('success-toast');
+  document.getElementById('toast-text').textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 4000);
+}
+
+// Close modal on backdrop click
+document.getElementById('booking-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('booking-modal')) closeModal();
+});
+
+// ── Boot ───────────────────────────────────────────────────────────
+buildDateStrip();
+buildSevaList();
+loadSpecialEvents();
+</script>
+</body>
+</html>

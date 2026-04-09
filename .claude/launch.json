@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "panchangam-dev",
+      "runtimeExecutable": "/Users/theranosis_dx/projects/panchangam/.claude/start-dev.sh",
+      "runtimeArgs": [],
+      "port": 8788
+    }
+  ]
+}
