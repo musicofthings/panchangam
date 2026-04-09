@@ -1,11 +1,10 @@
 // Bump CACHE_VERSION on every deploy to evict stale assets from all clients.
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE = `panchangam-${CACHE_VERSION}`;
 const ASSETS = [
   './',
   'index.html',
   'styles.css',
-  'app.js',
   'manifest.webmanifest',
   'assets/icon-192.svg',
   'assets/icon-512.svg',
@@ -24,6 +23,8 @@ const ASSETS = [
   'settings/index.html',
   'chat/',
   'chat/index.html',
+  'pooja/',
+  'pooja/index.html',
 ];
 
 self.addEventListener('install', (event) => {
