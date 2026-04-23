@@ -8,33 +8,33 @@
 // ---------------------------------------------------------------------------
 
 export const CITY_PRESETS = [
-  { name: 'Chennai',            region: 'Tamil Nadu',     lat: 13.0827,  lon: 80.2707  },
-  { name: 'Madurai',            region: 'Tamil Nadu',     lat: 9.9252,   lon: 78.1198  },
-  { name: 'Thanjavur',          region: 'Tamil Nadu',     lat: 10.7870,  lon: 79.1378  },
-  { name: 'Kanchipuram',        region: 'Tamil Nadu',     lat: 12.8333,  lon: 79.7000  },
-  { name: 'Tiruchirapalli',     region: 'Tamil Nadu',     lat: 10.7905,  lon: 78.7047  },
-  { name: 'Coimbatore',         region: 'Tamil Nadu',     lat: 11.0168,  lon: 76.9558  },
-  { name: 'Tirunelveli',        region: 'Tamil Nadu',     lat: 8.7139,   lon: 77.7567  },
-  { name: 'Tirupati',           region: 'Andhra Pradesh', lat: 13.6288,  lon: 79.4192  },
-  { name: 'Vijayawada',         region: 'Andhra Pradesh', lat: 16.5062,  lon: 80.6480  },
-  { name: 'Visakhapatnam',      region: 'Andhra Pradesh', lat: 17.6868,  lon: 83.2185  },
-  { name: 'Hyderabad',          region: 'Telangana',      lat: 17.3850,  lon: 78.4867  },
-  { name: 'Warangal',           region: 'Telangana',      lat: 17.9784,  lon: 79.5941  },
-  { name: 'Bengaluru',          region: 'Karnataka',      lat: 12.9716,  lon: 77.5946  },
-  { name: 'Mysuru',             region: 'Karnataka',      lat: 12.2958,  lon: 76.6394  },
-  { name: 'Udupi',              region: 'Karnataka',      lat: 13.3409,  lon: 74.7421  },
-  { name: 'Mangaluru',          region: 'Karnataka',      lat: 12.9141,  lon: 74.8560  },
-  { name: 'Dharwad',            region: 'Karnataka',      lat: 15.4589,  lon: 75.0078  },
-  { name: 'Thiruvananthapuram', region: 'Kerala',         lat: 8.5241,   lon: 76.9366  },
-  { name: 'Kochi',              region: 'Kerala',         lat: 9.9312,   lon: 76.2673  },
-  { name: 'Kozhikode',          region: 'Kerala',         lat: 11.2588,  lon: 75.7804  },
-  { name: 'Thrissur',           region: 'Kerala',         lat: 10.5276,  lon: 76.2144  },
-  { name: 'Guruvayur',          region: 'Kerala',         lat: 10.5938,  lon: 76.0417  },
-  { name: 'Singapore',          region: 'Singapore',      lat: 1.3521,   lon: 103.8198 },
-  { name: 'Kuala Lumpur',       region: 'Malaysia',       lat: 3.1390,   lon: 101.6869 },
-  { name: 'New York',           region: 'USA',            lat: 40.7128,  lon: -74.0060 },
-  { name: 'London',             region: 'UK',             lat: 51.5074,  lon: -0.1278  },
-  { name: 'Sydney',             region: 'Australia',      lat: -33.8688, lon: 151.2093 },
+  { name: 'Chennai',            region: 'Tamil Nadu',     lat: 13.0827,  lon: 80.2707,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Madurai',            region: 'Tamil Nadu',     lat: 9.9252,   lon: 78.1198,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Thanjavur',          region: 'Tamil Nadu',     lat: 10.7870,  lon: 79.1378,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Kanchipuram',        region: 'Tamil Nadu',     lat: 12.8333,  lon: 79.7000,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Tiruchirapalli',     region: 'Tamil Nadu',     lat: 10.7905,  lon: 78.7047,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Coimbatore',         region: 'Tamil Nadu',     lat: 11.0168,  lon: 76.9558,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Tirunelveli',        region: 'Tamil Nadu',     lat: 8.7139,   lon: 77.7567,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Tirupati',           region: 'Andhra Pradesh', lat: 13.6288,  lon: 79.4192,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Vijayawada',         region: 'Andhra Pradesh', lat: 16.5062,  lon: 80.6480,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Visakhapatnam',      region: 'Andhra Pradesh', lat: 17.6868,  lon: 83.2185,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Hyderabad',          region: 'Telangana',      lat: 17.3850,  lon: 78.4867,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Warangal',           region: 'Telangana',      lat: 17.9784,  lon: 79.5941,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Bengaluru',          region: 'Karnataka',      lat: 12.9716,  lon: 77.5946,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Mysuru',             region: 'Karnataka',      lat: 12.2958,  lon: 76.6394,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Udupi',              region: 'Karnataka',      lat: 13.3409,  lon: 74.7421,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Mangaluru',          region: 'Karnataka',      lat: 12.9141,  lon: 74.8560,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Dharwad',            region: 'Karnataka',      lat: 15.4589,  lon: 75.0078,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Thiruvananthapuram', region: 'Kerala',         lat: 8.5241,   lon: 76.9366,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Kochi',              region: 'Kerala',         lat: 9.9312,   lon: 76.2673,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Kozhikode',          region: 'Kerala',         lat: 11.2588,  lon: 75.7804,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Thrissur',           region: 'Kerala',         lat: 10.5276,  lon: 76.2144,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Guruvayur',          region: 'Kerala',         lat: 10.5938,  lon: 76.0417,  timeZone: 'Asia/Kolkata'    },
+  { name: 'Singapore',          region: 'Singapore',      lat: 1.3521,   lon: 103.8198, timeZone: 'Asia/Singapore'  },
+  { name: 'Kuala Lumpur',       region: 'Malaysia',       lat: 3.1390,   lon: 101.6869, timeZone: 'Asia/Kuala_Lumpur' },
+  { name: 'New York',           region: 'USA',            lat: 40.7128,  lon: -74.0060, timeZone: 'America/New_York'},
+  { name: 'London',             region: 'UK',             lat: 51.5074,  lon: -0.1278,  timeZone: 'Europe/London'   },
+  { name: 'Sydney',             region: 'Australia',      lat: -33.8688, lon: 151.2093, timeZone: 'Australia/Sydney'},
 ];
 
 export const RSS_SOURCES = [
@@ -177,13 +177,48 @@ export function setLang(lang) {
 // ---------------------------------------------------------------------------
 
 export const t = (key) => (I18N[currentLang] || I18N.en)[key] || key;
-export const fmtTime = (d) => d.toLocaleTimeString(LOCALE_MAP[currentLang] || 'en-IN', { hour:'2-digit', minute:'2-digit' });
+export const fmtTime = (d, timeZone = currentCity.timeZone) => d.toLocaleTimeString(
+  LOCALE_MAP[currentLang] || 'en-IN',
+  { hour:'2-digit', minute:'2-digit', timeZone },
+);
 export const toLocalDateStr = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 export const addMinutes = (date, mins) => new Date(date.getTime() + mins * 60000);
 
-export const getRahuKalam   = (sr) => ({ start: addMinutes(sr,  90), end: addMinutes(sr, 180) });
-export const getYamagandam  = (sr) => ({ start: addMinutes(sr, 450), end: addMinutes(sr, 540) });
-export const getAbhijit     = (sr) => ({ start: addMinutes(sr, 504), end: addMinutes(sr, 552) });
+function weekdayIndexInTimeZone(date, timeZone = currentCity.timeZone) {
+  const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone }).format(date);
+  const map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  return map[weekday] ?? date.getDay();
+}
+
+function daySegmentRange(sunrise, sunset, segmentNo1Indexed) {
+  const segmentMs = (sunset.getTime() - sunrise.getTime()) / 8;
+  const start = new Date(sunrise.getTime() + (segmentNo1Indexed - 1) * segmentMs);
+  const end = new Date(start.getTime() + segmentMs);
+  return { start, end };
+}
+
+export const getRahuKalam = (sunrise, sunset, timeZone = currentCity.timeZone) => {
+  const weekday = weekdayIndexInTimeZone(sunrise, timeZone);
+  const rahuSegmentByWeekday = [8, 2, 7, 5, 6, 4, 3]; // Sun..Sat
+  return daySegmentRange(sunrise, sunset, rahuSegmentByWeekday[weekday]);
+};
+
+export const getYamagandam = (sunrise, sunset, timeZone = currentCity.timeZone) => {
+  const weekday = weekdayIndexInTimeZone(sunrise, timeZone);
+  const yamaSegmentByWeekday = [5, 4, 3, 2, 1, 7, 6]; // Sun..Sat
+  return daySegmentRange(sunrise, sunset, yamaSegmentByWeekday[weekday]);
+};
+
+export const getAbhijit = (sunrise, sunset) => {
+  const dayDurationMs = sunset.getTime() - sunrise.getTime();
+  const localNoonMs = sunrise.getTime() + dayDurationMs / 2;
+  const halfWindowMs = dayDurationMs / 30; // total = 1/15th of daytime
+  return {
+    start: new Date(localNoonMs - halfWindowMs),
+    end: new Date(localNoonMs + halfWindowMs),
+  };
+};
+
 export const getAmrita      = (sr) => ({ start: addMinutes(sr, 240), end: addMinutes(sr, 288) });
 export const getBrahma      = (sr) => ({ start: addMinutes(sr, -96), end: addMinutes(sr, -48) });
 
