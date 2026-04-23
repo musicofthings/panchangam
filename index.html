@@ -337,6 +337,9 @@ let currentDateStr = toLocalDateStr(new Date());
 async function init(dateStr) {
   if (!dateStr) dateStr = currentDateStr;
   currentDateStr = dateStr;
+  const url = new URL(window.location.href);
+  url.searchParams.set('date', currentDateStr);
+  history.replaceState(null, '', `${url.pathname}?${url.searchParams.toString()}`);
 
   wireNav('today');
   document.querySelector('[data-nav="today"]')?.classList.add('!text-purple-900','!font-bold','!bg-purple-50');
@@ -365,9 +368,9 @@ async function init(dateStr) {
 
   const sunrise = new Date(api.sunriseMs);
   const sunset  = new Date(api.sunsetMs);
-  const rahu    = getRahuKalam(sunrise);
-  const yama    = getYamagandam(sunrise);
-  const abhijit = getAbhijit(sunrise);
+  const rahu    = getRahuKalam(sunrise, sunset, currentCity.timeZone);
+  const yama    = getYamagandam(sunrise, sunset, currentCity.timeZone);
+  const abhijit = getAbhijit(sunrise, sunset);
   const amrita  = getAmrita(sunrise);
   const brahma  = getBrahma(sunrise);
 
@@ -449,7 +452,8 @@ document.getElementById('modal-save').addEventListener('click', () => {
   init();
 });
 
-init();
+const dateFromUrl = new URL(window.location.href).searchParams.get('date');
+init(dateFromUrl || undefined);
 </script>
 </body>
 </html>
